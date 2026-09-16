@@ -14,7 +14,7 @@ export const Route = createFileRoute("/")({
       { title: "Gazab Ki Agency — Marketing, AI & Automation" },
       { name: "description", content: "A bold growth agency for social media, content, ads, websites, lead generation, AI and business automation." },
       { property: "og:title", content: "Gazab Ki Agency — Marketing, AI & Automation" },
-      { property: "og:description", content: "Marketing karo. Gazab karo. Creative growth systems without the boring agency playbook." },
+      { property: "og:description", content: "Make your marketing remarkable with creative growth systems built for ambitious brands." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -48,10 +48,10 @@ const cases = [
   ["UBIQEDGE", "Digital marketing, AI automation and connected growth systems.", linkedinResultsAsset.url],
 ];
 const process = [
-  ["01", "DEKHENGE", "We understand the business, audience, competitors and actual problem."],
-  ["02", "BANAYENGE", "We build the content, campaigns, websites and systems."],
-  ["03", "AUTOMATE KARENGE", "We remove repetitive work wherever technology can handle it."],
-  ["04", "GROW KARENGE", "We track what works, optimise it and keep improving."],
+  ["01", "DISCOVER", "We understand the business, audience, competitors and actual problem."],
+  ["02", "BUILD", "We create the content, campaigns, websites and systems."],
+  ["03", "AUTOMATE", "We remove repetitive work wherever technology can handle it."],
+  ["04", "GROW", "We track what works, optimise it and keep improving."],
 ];
 
 function ButtonLink({ href, children, dark = false }: { href: string; children: ReactNode; dark?: boolean }) {
@@ -86,72 +86,72 @@ function Index() {
       <section className="hero-section section-shell">
         <div className="hero-copy">
           <span className="eyebrow">MARKETING <i>•</i> AI <i>•</i> AUTOMATION</span>
-          <h1>MARKETING<br />KARO.<br /><span>GAZAB</span><br />KARO.</h1>
-          <p>Social media, ads, websites, AI & automation —<br className="hidden sm:block" /> sab ek jagah. Aur boring bilkul nahi.</p>
+          <h1>MAKE YOUR<br />MARKETING<br /><span>GAZAB.</span></h1>
+          <p>Social media, ads, websites, AI and automation —<br className="hidden sm:block" /> all working together to grow your business.</p>
           <div className="button-row"><ButtonLink href="#contact">LET'S MAKE IT GAZAB <ArrowRight /></ButtonLink><ButtonLink href="#work" dark>SEE WHAT WE'VE DONE <ArrowDown /></ButtonLink></div>
         </div>
         <div className="hero-art" aria-label="Gazab Ki Agency logo artwork">
           <div className="orange-orbit" /><div className="purple-splash" />
           <img src={logoAsset.url} alt="Gazab Ki Agency — Marketing, AI, Automation" />
-          <span className="sticker sticker-one">NO BORING BRANDS</span><span className="sticker sticker-two">AI WALA SCENE</span><span className="sticker sticker-three">MORE LEADS ↗</span>
-          <span className="scribble">scroll kar na. ↓</span>
+          <span className="sticker sticker-one">NO BORING BRANDS</span><span className="sticker sticker-two">AI IN ACTION</span><span className="sticker sticker-three">MORE LEADS ↗</span>
+          <span className="scribble">keep scrolling. ↓</span>
         </div>
       </section>
       <div className="marquee"><div>SOCIAL MEDIA • CONTENT • ADS • AI • AUTOMATION • WEBSITES • LEADS • GROWTH • SOCIAL MEDIA • CONTENT • ADS • AI • AUTOMATION • WEBSITES • LEADS • GROWTH •</div></div>
 
       <section id="services" className="section-shell cream-section">
-        <div className="section-heading"><span className="section-number">02</span><div><p className="kicker">WHAT WE DO / KAAM KI BAAT HAI</p><h2>BUSINESS HAI.<br /><span>AB GAZAB BANAO.</span></h2></div></div>
+        <div className="section-heading"><span className="section-number">02</span><div><p className="kicker">WHAT WE DO / WHAT MATTERS</p><h2>BUILD A BUSINESS.<br /><span>MAKE IT GAZAB.</span></h2></div></div>
         <p className="lead-copy">We don't just post content and call it marketing. We build the digital systems around your business — from attention and content to leads, websites and automation.</p>
         <div className="services-grid">{services.map(([n, title, copy, icon], i) => <article className={`service-card service-${i + 1}`} key={title}><div className="service-top"><span>{n}</span><b>{icon}</b></div><h3>{title}</h3><p>{copy}</p><span className="card-arrow">↗</span></article>)}</div>
       </section>
 
       <section id="results" className="black-section section-shell">
         <p className="kicker kicker-orange">OK BUT CAN YOU ACTUALLY DO IT?</p><h2 className="receipts">THE<br /><span>RECEIPTS.</span></h2>
-        <div className="proof-intro"><h3>Sirf bakchodi nahi.<br />Numbers bhi hain.</h3><p>Gazab Ki Agency is founder-led by Abdallah Dalvi, bringing years of hands-on experience across social media, digital marketing, growth, content and automation.</p></div>
+        <div className="proof-intro"><h3>Bold ideas.<br />Real numbers.</h3><p>Gazab Ki Agency is founder-led by Abdallah Dalvi, bringing years of hands-on experience across social media, digital marketing, growth, content and automation.</p></div>
         <div className="stats-grid">{stats.map(([value, label], i) => <article key={label} className={`stat stat-${i + 1}`}><strong>{value}</strong><span>{label}</span></article>)}</div>
         <p className="proof-note">Founder-led track record based on Abdallah's professional experience. No borrowed glory. No made-up numbers.</p>
       </section>
 
       <section id="work" className="work-section">
-        <div className="section-shell work-head"><p className="kicker">SELECTED WORK / YEH WALA DEKHO →</p><h2>KAAM DEKHO.<br /><span>BAATEIN BAAD MEIN.</span></h2></div>
+        <div className="section-shell work-head"><p className="kicker">SELECTED WORK / TAKE A LOOK →</p><h2>SEE THE WORK.<br /><span>THEN LET'S TALK.</span></h2></div>
         <div className="case-scroll">{cases.map(([brand, copy, image], i) => <article className="case-card" key={brand}><div className="case-image"><img src={image} alt={`${brand} work sample`} loading="lazy" /></div><div className="case-copy"><span>0{i + 1} / CASE STUDY</span><h3>{brand}</h3><p>{copy}</p><b>VIEW THE WORK <ArrowUpRight /></b></div></article>)}</div>
       </section>
 
       <section className="process-section section-shell">
-        <p className="kicker">OUR SECRET SAUCE</p><h2>TOH HOGA <span>KAISE?</span></h2>
+        <p className="kicker">OUR APPROACH</p><h2>HOW WE MAKE IT <span>HAPPEN.</span></h2>
         <div className="process-grid">{process.map(([n, title, copy]) => <article key={n}><strong>{n}</strong><div><h3>{title}</h3><p>{copy}</p></div><span className="process-arrow">→</span></article>)}</div>
       </section>
 
       <section className="systems-section section-shell">
-        <div><p className="kicker kicker-orange">POSTING ≠ MARKETING</p><h2>POST KARNE SE<br /><span>BUSINESS NAHI CHALTA.</span></h2><p className="lead-copy">Marketing tab kaam karti hai jab content, traffic, conversion and operations ek doosre se connected ho.</p></div>
+        <div><p className="kicker kicker-orange">POSTING ≠ MARKETING</p><h2>POSTS ALONE<br /><span>DON'T GROW A BUSINESS.</span></h2><p className="lead-copy">Marketing works when content, traffic, conversion and operations are connected.</p></div>
         <div className="system-flow">{["ATTENTION", "CONTENT", "TRAFFIC", "LEADS", "SALES", "RETENTION", "AUTOMATION"].map((item, i) => <div key={item}><span>{String(i + 1).padStart(2, "0")}</span><strong>{item}</strong>{i < 6 && <b>↓</b>}</div>)}</div>
       </section>
 
       <section id="pricing" className="pricing-section section-shell">
-        <p className="kicker">PRICING / SEEDHI BAAT</p><h2>PAISA KITNA<br /><span>LAGEGA, BHAI?</span></h2><p className="lead-copy">No confusing 17-page pricing PDF. Seedhi baat.</p>
+        <p className="kicker">PRICING / STRAIGHT TALK</p><h2>WHAT DOES IT<br /><span>COST?</span></h2><p className="lead-copy">Clear packages. No confusing 17-page pricing document.</p>
         <div className="pricing-grid">
-          <PriceCard number="01" title="THODA GAZAB" price="₹14,999" note="For businesses that need a consistent social media presence." items={["Social media management", "Content calendar", "8–12 content pieces / month", "Reels + static creatives", "Captions & hashtags", "Basic analytics", "Monthly strategy call"]} cta="THODA GAZAB KARO" />
-          <PriceCard number="02" title="FULL GAZAB" price="₹24,999" note="For businesses that want growth + lead generation." items={["Everything in Thoda Gazab", "More reels / content", "Social media strategy", "Meta Ads management", "Lead generation", "Website optimisation", "Google Business Profile support", "Performance reporting", "Basic automation"]} cta="FULL GAZAB KARO" featured />
-          <PriceCard number="03" title="APNA SCENE, APNA PRICE" price="CUSTOM" note="Har business ka scene alag hota hai. Custom strategy, custom work, custom pricing." items={["Full digital marketing", "Advanced automation", "AI workflows", "Website development", "Marketplace management", "Paid advertising", "Custom growth systems"]} cta="BAAT KARTE HAIN" />
+          <PriceCard number="01" title="GAZAB STARTER" price="₹14,999" note="For businesses that need a consistent social media presence." items={["Social media management", "Content calendar", "8–12 content pieces / month", "Reels + static creatives", "Captions & hashtags", "Basic analytics", "Monthly strategy call"]} cta="CHOOSE STARTER" />
+          <PriceCard number="02" title="FULL GAZAB" price="₹24,999" note="For businesses that want growth + lead generation." items={["Everything in Gazab Starter", "More reels / content", "Social media strategy", "Meta Ads management", "Lead generation", "Website optimisation", "Google Business Profile support", "Performance reporting", "Basic automation"]} cta="CHOOSE FULL GAZAB" featured />
+          <PriceCard number="03" title="CUSTOM GAZAB" price="CUSTOM" note="Every business is different. Get a tailored strategy, scope and price." items={["Full digital marketing", "Advanced automation", "AI workflows", "Website development", "Marketplace management", "Paid advertising", "Custom growth systems"]} cta="LET'S TALK" />
         </div>
       </section>
 
       <section className="why-section section-shell">
-        <p className="kicker">WHY US?</p><h2>KYUN <span>HUM?</span></h2>
-        <div className="why-list"><strong>NO BORING CONTENT.</strong><strong>NO COPY-PASTE STRATEGIES.</strong><strong>NO RANDOM POSTING.</strong><strong>NO “BHAI REACH NAHI AA RAHI.”</strong></div>
+        <p className="kicker">WHY US?</p><h2>WHY <span>GAZAB?</span></h2>
+        <div className="why-list"><strong>NO BORING CONTENT.</strong><strong>NO COPY-PASTE STRATEGIES.</strong><strong>NO RANDOM POSTING.</strong><strong>NO EMPTY PROMISES.</strong></div>
         <div className="formula"><span>STRATEGY</span><b>+</b><span>CREATIVITY</span><b>+</b><span>TECHNOLOGY</span></div>
       </section>
 
       <section id="about" className="about-section section-shell">
         <div className="founder-art"><div className="founder-z">Z</div><span>FOUNDER-LED.<br />SYSTEM-OBSESSED.</span></div>
-        <div><p className="kicker">ABOUT THE FOUNDER</p><h2>IS GAZAB KE<br /><span>PICHE KAUN HAI?</span></h2><h3>ABDALLAH DALVI</h3><h4>FOUNDER / GROWTH & MARKETING STRATEGIST</h4><p>Abdallah works across social media, digital marketing, growth, content, websites, AI and automation — combining creative execution with systems that help businesses grow.</p><div className="tag-list">{["SOCIAL STRATEGY", "AI AUTOMATION", "LEAD GENERATION", "WEBSITES", "CONTENT", "PAID ADS"].map(t => <span key={t}>{t}</span>)}</div></div>
+        <div><p className="kicker">ABOUT THE FOUNDER</p><h2>MEET THE MIND<br /><span>BEHIND GAZAB.</span></h2><h3>ABDALLAH DALVI</h3><h4>FOUNDER / GROWTH & MARKETING STRATEGIST</h4><p>Abdallah works across social media, digital marketing, growth, content, websites, AI and automation — combining creative execution with systems that help businesses grow.</p><div className="tag-list">{["SOCIAL STRATEGY", "AI AUTOMATION", "LEAD GENERATION", "WEBSITES", "CONTENT", "PAID ADS"].map(t => <span key={t}>{t}</span>)}</div></div>
       </section>
 
-      <section className="mega-cta section-shell"><span className="cta-sticker">HAAN BHAI.</span><p>BAS AB. NEXT STEP?</p><h2>LET'S MAKE<br />YOUR BUSINESS<br /><span>GAZAB.</span></h2><div className="button-row"><ButtonLink href="#contact">START A PROJECT <ArrowRight /></ButtonLink><ButtonLink dark href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20let%27s%20make%20my%20business%20Gazab!">WHATSAPP US <ArrowUpRight /></ButtonLink></div></section>
+      <section className="mega-cta section-shell"><span className="cta-sticker">READY?</span><p>YOUR NEXT STEP.</p><h2>LET'S MAKE<br />YOUR BUSINESS<br /><span>GAZAB.</span></h2><div className="button-row"><ButtonLink href="#contact">START A PROJECT <ArrowRight /></ButtonLink><ButtonLink dark href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20let%27s%20make%20my%20business%20Gazab!">WHATSAPP US <ArrowUpRight /></ButtonLink></div></section>
 
       <section id="contact" className="contact-section section-shell">
-        <div className="contact-info"><p className="kicker">NO CORPORATE JARGON REQUIRED.</p><h2>BAAT<br /><span>KARTE HAIN.</span></h2><a href="mailto:dalviabdallah76@gmail.com">dalviabdallah76@gmail.com ↗</a><a href="tel:+917400239134">+91 74002 39134 ↗</a><a href="https://www.linkedin.com/in/abdallahdalvi" target="_blank" rel="noreferrer">LINKEDIN ↗</a><span className="social-pending">INSTAGRAM — LINK COMING SOON</span></div>
-        <form onSubmit={submit} className="contact-form"><div className="form-row"><label>NAME<input name="name" required maxLength={100} /></label><label>COMPANY<input name="company" maxLength={100} /></label></div><div className="form-row"><label>EMAIL<input name="email" type="email" required maxLength={255} /></label><label>PHONE<input name="phone" type="tel" maxLength={20} /></label></div><div className="form-row"><label>WHAT DO YOU NEED?<select name="need" required defaultValue=""><option value="" disabled>Choose the scene</option><option>Social media</option><option>Content & reels</option><option>Paid ads & leads</option><option>Website</option><option>AI & automation</option><option>Full Gazab</option></select></label><label>BUDGET<select name="budget" required defaultValue=""><option value="" disabled>Pick a range</option><option>₹15K–₹25K / month</option><option>₹25K–₹50K / month</option><option>₹50K+ / month</option><option>Let's discuss</option></select></label></div><label>MESSAGE<textarea name="message" required maxLength={1500} rows={4} /></label><button className="form-submit" type="submit">CHALO SHURU KARTE HAIN <ArrowRight /></button></form>
+        <div className="contact-info"><p className="kicker">NO CORPORATE JARGON REQUIRED.</p><h2>LET'S<br /><span>TALK.</span></h2><a href="mailto:dalviabdallah76@gmail.com">dalviabdallah76@gmail.com ↗</a><a href="tel:+917400239134">+91 74002 39134 ↗</a><a href="https://www.linkedin.com/in/abdallahdalvi" target="_blank" rel="noreferrer">LINKEDIN ↗</a><span className="social-pending">INSTAGRAM — LINK COMING SOON</span></div>
+        <form onSubmit={submit} className="contact-form"><div className="form-row"><label>NAME<input name="name" required maxLength={100} /></label><label>COMPANY<input name="company" maxLength={100} /></label></div><div className="form-row"><label>EMAIL<input name="email" type="email" required maxLength={255} /></label><label>PHONE<input name="phone" type="tel" maxLength={20} /></label></div><div className="form-row"><label>WHAT DO YOU NEED?<select name="need" required defaultValue=""><option value="" disabled>Choose a service</option><option>Social media</option><option>Content & reels</option><option>Paid ads & leads</option><option>Website</option><option>AI & automation</option><option>Full Gazab</option></select></label><label>BUDGET<select name="budget" required defaultValue=""><option value="" disabled>Pick a range</option><option>₹15K–₹25K / month</option><option>₹25K–₹50K / month</option><option>₹50K+ / month</option><option>Let's discuss</option></select></label></div><label>MESSAGE<textarea name="message" required maxLength={1500} rows={4} /></label><button className="form-submit" type="submit">START THE CONVERSATION <ArrowRight /></button></form>
       </section>
 
       <footer><div className="footer-main section-shell"><img src={logoAsset.url} alt="Gazab Ki Agency" /><div><h2>GAZAB KI<br />AGENCY</h2><p>MARKETING • AI • AUTOMATION</p></div><nav>{nav.slice(0, 6).map(item => <a key={item} href={`#${item}`}>{item.toUpperCase()}</a>)}</nav></div><div className="footer-strip"><strong>GAZAB KI AGENCY BY AGHANIMS GROUP</strong><span>© 2026 Aghanims Group. All Rights Reserved.</span><span>Made with too much coffee & too many ideas.</span></div></footer>
