@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Menu, X } from "lucide-react";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import logoAsset from "@/assets/gazab-logo.jpeg.asset.json";
 import iconAsset from "@/assets/gazab-icon.jpeg.asset.json";
 import socialWorkAsset from "@/assets/social-work.png.asset.json";
@@ -54,7 +54,7 @@ const process = [
   ["04", "GROW KARENGE", "We track what works, optimise it and keep improving."],
 ];
 
-function ButtonLink({ href, children, dark = false }: { href: string; children: React.ReactNode; dark?: boolean }) {
+function ButtonLink({ href, children, dark = false }: { href: string; children: ReactNode; dark?: boolean }) {
   return <a href={href} className={`brand-button ${dark ? "brand-button-dark" : ""}`}>{children}</a>;
 }
 
