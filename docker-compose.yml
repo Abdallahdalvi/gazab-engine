@@ -1,8 +1,11 @@
 services:
   gazab-agency:
-    build: .
+    image: ghcr.io/abdallahdalvi/gazab-engine:latest
+    pull_policy: always
     container_name: gazab-agency
     restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
     ports:
       - "9740:3000"
     env_file:
