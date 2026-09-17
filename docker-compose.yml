@@ -1,0 +1,16 @@
+services:
+  gazab-agency:
+    build: .
+    container_name: gazab-agency
+    restart: unless-stopped
+    ports:
+      - "9740:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      PACKAGE_DATA_DIR: /app/data
+    volumes:
+      - ./data:/app/data

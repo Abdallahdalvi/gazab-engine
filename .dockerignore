@@ -1,0 +1,10 @@
+.git
+.gitignore
+.env
+.output
+.vinxi
+data
+node_modules
+tmp
+npm-debug.log*
+*.local
