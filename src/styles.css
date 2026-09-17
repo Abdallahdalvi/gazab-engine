@@ -178,3 +178,103 @@ footer{background:var(--purple);color:var(--cream)}.footer-main{padding-top:5rem
   .desktop-nav{font-size:.74rem;gap:clamp(.5rem,1vw,1.05rem)}
   .nav-cta{font-size:.79rem}
 }
+
+/* Case studies live on focused reading pages; the homepage only previews them. */
+.case-card-link{color:inherit;text-decoration:none;transition:transform .18s,box-shadow .18s}
+.case-card-link:hover{transform:translate(-3px,-3px);box-shadow:12px 12px 0 var(--ink)}
+.case-study-page{min-height:100vh;background:var(--cream);color:var(--ink)}
+.case-study-nav{position:sticky;z-index:40;top:0;height:72px;padding:0 clamp(1rem,4vw,4rem);background:var(--cream);border-bottom:3px solid var(--ink);display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.case-study-brand{display:flex;align-items:center;gap:.8rem;font-family:"Archivo Black";font-size:.92rem}
+.case-study-brand img{width:44px;height:44px;object-fit:contain}
+.case-study-nav nav{display:flex;align-items:center;gap:.85rem}
+.case-study-nav nav a{display:flex;align-items:center;gap:.45rem;font-size:.72rem;font-weight:950}
+.case-study-nav-cta{min-height:42px;padding:.65rem 1rem;background:var(--orange);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.case-study-article{width:min(calc(100% - 2.5rem),1180px);margin:0 auto;padding:3rem 0 5rem}
+.case-study-hero{display:grid;grid-template-columns:1.2fr .8fr;gap:3rem;align-items:end;padding:clamp(2rem,4.5vw,4rem);background:var(--ink);color:var(--cream);border:4px solid var(--ink)}
+.case-study-kicker,.case-study-section-intro>p{margin:0;font-size:.7rem;font-weight:950;letter-spacing:.06em}
+.case-study-hero h1{margin:1rem 0 0;font-family:"Archivo Black";font-size:clamp(2.8rem,5.3vw,5.2rem);line-height:.89;letter-spacing:-.035em}
+.case-study-hero h1 span,.case-study-section-intro h2 span,.case-study-cta h2 span{color:var(--orange)}
+.case-study-summary p{margin:0;font-size:1.06rem;font-weight:650;line-height:1.6}
+.case-study-summary a{display:inline-flex;align-items:center;gap:.4rem;margin-top:1.5rem;padding-bottom:.2rem;border-bottom:2px solid var(--orange);font-size:.76rem;font-weight:950}
+.case-study-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:4px solid var(--ink);border-top:0}
+.case-study-metrics>div{min-height:142px;padding:1.2rem;border:1.5px solid var(--ink);display:flex;flex-direction:column;background:var(--cream)}
+.case-study-metrics>div:nth-child(2),.case-study-metrics>div:nth-child(5){background:var(--purple);color:var(--cream)}
+.case-study-metrics strong{font-family:"Archivo Black";font-size:clamp(1.75rem,3vw,2.8rem);line-height:1;overflow-wrap:anywhere}
+.case-study-metrics span{margin-top:auto;font-size:.7rem;font-weight:950}
+.case-study-metrics small{margin-top:.3rem;font-size:.74rem;font-weight:750}
+.case-study-story,.case-study-evidence{padding:5rem 0 0}
+.case-study-section-intro{display:grid;grid-template-columns:170px 1fr;gap:2rem;align-items:start;padding-bottom:2rem;border-bottom:3px solid var(--ink)}
+.case-study-section-intro h2{margin:0;font-family:"Archivo Black";font-size:clamp(2rem,4vw,4rem);line-height:.94}
+.case-study-story-list>section{display:grid;grid-template-columns:120px minmax(0,740px);gap:2rem;padding:2.25rem 0;border-bottom:2px solid var(--ink)}
+.case-study-story-list>section>span{font-family:"Archivo Black";font-size:2.2rem;color:var(--purple)}
+.case-study-story-list small{font-size:.68rem;font-weight:950}
+.case-study-story-list h3{margin:.65rem 0 .85rem;font-size:clamp(1.35rem,2.4vw,2.2rem);line-height:1.03}
+.case-study-story-list p{max-width:680px;margin:0;font-size:1rem;font-weight:620;line-height:1.7}
+.case-study-proof-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;margin-top:2rem}
+.case-study-proof-grid>a{min-width:0;padding:1rem;background:#fff;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);display:flex;flex-direction:column;gap:.6rem;transition:transform .18s}
+.case-study-proof-grid>a:hover{transform:translateY(-4px)}
+.case-study-proof-grid>a>div{height:380px;overflow:hidden;border:2px solid var(--ink);background:#f4f2ed}
+.case-study-proof-grid img{width:100%;height:100%;display:block;object-fit:contain;object-position:top}
+.case-study-proof-grid span{font-size:.65rem;font-weight:950;color:var(--purple)}
+.case-study-proof-grid strong{font-size:.92rem;line-height:1.35}
+.case-study-proof-grid small{display:flex;align-items:center;gap:.3rem;margin-top:auto;font-size:.62rem;font-weight:900}
+.case-study-source{max-width:900px;margin:1.5rem 0 0;font-size:.65rem;font-weight:850;line-height:1.6}
+.case-study-cta{margin-top:5rem;padding:clamp(2rem,5vw,4.5rem);background:var(--purple);color:var(--cream);border:4px solid var(--ink);box-shadow:10px 10px 0 var(--orange)}
+.case-study-cta>p{margin:0;font-size:.72rem;font-weight:950}
+.case-study-cta h2{margin:1rem 0 2rem;font-family:"Archivo Black";font-size:clamp(2.2rem,4.8vw,4.8rem);line-height:.92}
+.case-study-cta a{display:inline-flex;align-items:center;gap:.55rem;padding:.9rem 1.15rem;background:var(--orange);color:var(--ink);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font-size:.78rem;font-weight:950}
+
+/* Compact desktop rhythm for a comfortable, information-dense 100% zoom view. */
+@media (min-width:1051px){
+  body{font-size:15.5px}
+  .section-shell{padding-left:clamp(1.5rem,3.5vw,4.25rem);padding-right:clamp(1.5rem,3.5vw,4.25rem)}
+  .site-nav{height:74px;padding:0 clamp(1.5rem,3.5vw,4.25rem)}
+  .nav-brand img{width:46px;height:46px}
+  .nav-brand span{font-size:.9rem}
+  .nav-select select{min-width:180px;height:42px;font-size:.7rem}
+  .nav-cta{min-height:48px;padding:0 1rem}
+  .hero-section{min-height:72vh;padding-top:94px;padding-bottom:2.5rem;gap:2.5rem}
+  .hero-copy h1{font-size:clamp(2.75rem,3.85vw,4.5rem)}
+  .hero-copy p{font-size:clamp(.95rem,1.25vw,1.15rem)}
+  .hero-art{min-height:430px}
+  .hero-art img{width:min(86%,420px)}
+  .cream-section,.black-section,.solutions-section,.work-section,.process-section,.systems-section,.pricing-section,.why-section,.about-section,.contact-section,.package-builder-section{padding-top:clamp(2.75rem,4vw,4rem);padding-bottom:clamp(2.75rem,4vw,4rem)}
+  .section-heading h2,.solutions-heading h2,.work-head h2,.process-section h2,.systems-section h2,.pricing-section h2,.why-section h2,.about-section h2,.contact-info h2{font-size:clamp(2.15rem,3.25vw,3.75rem)}
+  .lead-copy{font-size:clamp(.95rem,1.2vw,1.15rem);margin-top:1.3rem;margin-bottom:2.2rem}
+  .receipts{font-size:clamp(3rem,5.8vw,5.8rem)}
+  .service-card{min-height:255px;padding:1.25rem}
+  .service-card h3{margin-top:2rem;font-size:1.4rem}
+  .product-card{min-height:335px}
+  .product-card h3{font-size:clamp(1.35rem,1.85vw,2rem)}
+  .product-thumbnail{height:116px}
+  .case-scroll{gap:1.2rem;padding:1rem clamp(1.5rem,3.5vw,4.25rem) 2.2rem}
+  .case-card{flex-basis:min(62vw,650px);min-height:360px}
+  .case-visual{padding:1.25rem}
+  .case-visual>strong{font-size:clamp(1.65rem,2.5vw,2.75rem)}
+  .case-copy{padding:1.5rem}
+  .case-copy h3{font-size:clamp(1.45rem,2vw,2.15rem)}
+  .process-grid,.why-list{margin-top:2.4rem}
+  .process-grid h3{font-size:clamp(1.5rem,2.35vw,2.55rem)}
+  .why-list strong{font-size:clamp(1.45rem,2.5vw,2.65rem);padding:.8rem 0}
+  .mega-cta{padding-top:3.2rem;padding-bottom:3.2rem}
+  .mega-cta h2{font-size:clamp(2.6rem,4.4vw,4.4rem)}
+  .price-card{padding:1.5rem}
+}
+
+@media (max-width:800px){
+  .case-study-nav{height:66px;padding:0 1rem}
+  .case-study-brand img{width:40px;height:40px}
+  .case-study-brand span,.case-study-nav nav>a:first-child{display:none}
+  .case-study-article{width:min(calc(100% - 1.5rem),1180px);padding:1rem 0 3rem}
+  .case-study-hero{grid-template-columns:1fr;gap:2rem;padding:1.5rem}
+  .case-study-hero h1{font-size:clamp(2.5rem,11vw,4rem)}
+  .case-study-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .case-study-metrics>div{min-height:125px;padding:1rem}
+  .case-study-story,.case-study-evidence{padding-top:3.5rem}
+  .case-study-section-intro{grid-template-columns:1fr;gap:.75rem}
+  .case-study-story-list>section{grid-template-columns:52px minmax(0,1fr);gap:1rem;padding:1.7rem 0}
+  .case-study-story-list>section>span{font-size:1.45rem}
+  .case-study-proof-grid{grid-template-columns:1fr}
+  .case-study-proof-grid>a>div{height:min(105vw,480px)}
+  .case-study-cta{margin-top:3.5rem}
+}

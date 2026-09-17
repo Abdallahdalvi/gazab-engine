@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CaseStudiesUbiqedgeRouteImport } from './routes/case-studies.ubiqedge'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CaseStudiesUbiqedgeRoute = CaseStudiesUbiqedgeRouteImport.update({
+  id: '/case-studies/ubiqedge',
+  path: '/case-studies/ubiqedge',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/case-studies/ubiqedge': typeof CaseStudiesUbiqedgeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/case-studies/ubiqedge': typeof CaseStudiesUbiqedgeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/case-studies/ubiqedge': typeof CaseStudiesUbiqedgeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin'
+  fullPaths: '/' | '/admin' | '/case-studies/ubiqedge'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin'
-  id: '__root__' | '/' | '/admin'
+  to: '/' | '/admin' | '/case-studies/ubiqedge'
+  id: '__root__' | '/' | '/admin' | '/case-studies/ubiqedge'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  CaseStudiesUbiqedgeRoute: typeof CaseStudiesUbiqedgeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/case-studies/ubiqedge': {
+      id: '/case-studies/ubiqedge'
+      path: '/case-studies/ubiqedge'
+      fullPath: '/case-studies/ubiqedge'
+      preLoaderRoute: typeof CaseStudiesUbiqedgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  CaseStudiesUbiqedgeRoute: CaseStudiesUbiqedgeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
