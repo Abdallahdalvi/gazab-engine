@@ -65,8 +65,22 @@ const cases = [
   ["RENTMAX", "Website improvement, content strategy and Meta lead generation.", "LEAD GENERATION"],
   ["MOTOHOM", "Content production, community management and Instagram growth.", "CONTENT SYSTEM"],
   ["FURNDEPOT", "Organic growth strategy, analytics and creative campaigns.", "ORGANIC GROWTH"],
-  ["UBIQEDGE", "Digital marketing, AI automation and connected growth systems.", "AI + AUTOMATION"],
 ];
+const ubiqedgeLinkedInStats = [
+  ["1,239 → 4,416", "FOLLOWERS", "+3,177 / +256.4%"],
+  ["99.9%", "NEW FOLLOWERS ORGANIC", "3,173 of 3,177"],
+  ["83,315", "CONTENT IMPRESSIONS", "1,344 reactions"],
+  ["12,833", "PAGE VIEWS", "4,347 unique visitors"],
+  ["388 → 1,786", "NEWSLETTER SUBSCRIBERS", "+1,398 / +360.3%"],
+  ["2,379", "ARTICLE VIEWS", "9,554 impressions"],
+] as const;
+const ubiqedgeLinkedInProofs = [
+  ["CONTENT PERFORMANCE", "83,315 impressions · 1,344 reactions", "/results/ubiqedge-linkedin-content.jpg"],
+  ["FOLLOWER GROWTH", "4,416 total · 3,177 added", "/results/ubiqedge-linkedin-followers.jpg"],
+  ["PAGE VISITORS", "12,833 views · 4,347 unique visitors", "/results/ubiqedge-linkedin-visitors.jpg"],
+  ["NEWSLETTER GROWTH", "1,786 subscribers · 1,398 added", "/results/ubiqedge-linkedin-newsletter.jpg"],
+  ["COMPETITOR BENCHMARKING", "Category growth and engagement tracking", "/results/ubiqedge-linkedin-competitors.jpg"],
+] as const;
 const process = [
   ["01", "DISCOVER", "We understand the business, audience, competitors and actual problem."],
   ["02", "BUILD", "We create the content, campaigns, websites and systems."],
@@ -293,6 +307,23 @@ function Index() {
 
       <section id="work" className="work-section">
         <div className="section-shell work-head"><p className="kicker">SELECTED WORK / TAKE A LOOK →</p><h2>SEE THE WORK.<br /><span>THEN LET'S TALK.</span></h2></div>
+        <article className="company-case-study section-shell">
+          <div className="company-case-heading">
+            <div><p className="kicker">COMPANY CASE STUDY / 01</p><h3>UBIQEDGE.<br /><span>LINKEDIN THAT COMPOUNDS.</span></h3></div>
+            <div className="company-case-intro"><div className="channel-tabs"><b>LINKEDIN</b><span>INSTAGRAM / COMING NEXT</span><span>FACEBOOK / COMING NEXT</span></div><p>Ubiqedge needed a consistent B2B presence that could grow a relevant professional audience, earn repeat page visits and turn industry content into an owned newsletter audience.</p><a href="https://ubiqedge.com" target="_blank" rel="noreferrer">VISIT UBIQEDGE.COM <ArrowUpRight size={18} /></a></div>
+          </div>
+
+          <div className="company-case-stats">{ubiqedgeLinkedInStats.map(([value, label, detail]) => <div key={label}><strong>{value}</strong><span>{label}</span><small>{detail}</small></div>)}</div>
+
+          <div className="company-case-story">
+            <div><span>01 / CHALLENGE</span><h4>BUILD AUTHORITY, NOT EMPTY REACH.</h4><p>The goal was to make a specialist technology brand easier to discover and worth following—while reaching engineers, business-development teams, decision-makers and future hires.</p></div>
+            <div><span>02 / EXECUTION</span><h4>CONSISTENT, INDUSTRY-LED CONTENT.</h4><p>We built the LinkedIn engine around company news, hiring, engineering, infrastructure and sector insight; maintained the publishing rhythm; grew the newsletter; and used analytics and competitor tracking to refine the work.</p></div>
+            <div><span>03 / OUTCOME</span><h4>AN ORGANIC AUDIENCE THAT KEPT GROWING.</h4><p>The page added 3,177 followers—3,173 organically—while content generated 83K+ impressions, the page attracted 12.8K visits and the newsletter added nearly 1.4K subscribers.</p></div>
+          </div>
+
+          <div className="company-case-proof-grid">{ubiqedgeLinkedInProofs.map(([label, result, image]) => <a href={image} target="_blank" rel="noreferrer" key={label}><div><img src={image} alt={`Ubiqedge LinkedIn analytics — ${label.toLowerCase()}`} /></div><span>{label}</span><strong>{result}</strong><small>OPEN SOURCE SCREENSHOT <ArrowUpRight size={14} /></small></a>)}</div>
+          <p className="company-case-source">LINKEDIN ANALYTICS · 15 DEC 2025–16 SEP 2026 · FOLLOWER STARTING VALUES CALCULATED AS CURRENT TOTAL MINUS REPORTED NEW FOLLOWERS. THIS IS THE LINKEDIN CHAPTER; OTHER CHANNELS WILL BE ADDED AS THEIR DATA IS SUPPLIED.</p>
+        </article>
         <div className="case-scroll">{cases.map(([brand, copy, discipline], i) => <article className="case-card" key={brand}><div className={`case-image case-visual case-visual-${i + 1}`}><span>0{i + 1} / {discipline}</span><strong>{brand}</strong><b>GAZAB / WORK ↗</b></div><div className="case-copy"><span>0{i + 1} / CASE STUDY</span><h3>{brand}</h3><p>{copy}</p><b>VIEW THE WORK <ArrowUpRight /></b></div></article>)}</div>
       </section>
 
