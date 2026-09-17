@@ -4,7 +4,11 @@ import { createServerFn } from "@tanstack/react-start";
 import { useSession as getSession } from "@tanstack/react-start/server";
 import { z } from "zod";
 
-import { DEFAULT_SERVICE_PRICING, INTERNATIONAL_SERVICE_PRICING, type ServicePricing } from "./package-types";
+import {
+  DEFAULT_SERVICE_PRICING,
+  INTERNATIONAL_SERVICE_PRICING,
+  type ServicePricing,
+} from "./package-types";
 
 const selectionSchema = z.object({
   websiteEnabled: z.boolean(),
@@ -21,13 +25,32 @@ const selectionSchema = z.object({
   googleProfileService: z.enum(["setup", "optimise", "management"]),
   strategyReporting: z.boolean(),
   automationEnabled: z.boolean(),
-  automationType: z.enum(["weekly-reporting", "lead-routing", "social-content", "ai-visibility", "custom"]),
+  automationType: z.enum([
+    "weekly-reporting",
+    "lead-routing",
+    "social-content",
+    "ai-visibility",
+    "custom",
+  ]),
   automationComplexity: z.enum(["basic", "advanced"]),
   automationCount: z.number().int().min(1).max(10),
   adsEnabled: z.boolean(),
   adPlatforms: z.array(z.enum(["Meta Ads", "Google Ads", "LinkedIn Ads"])).max(3),
   marketplaceEnabled: z.boolean(),
-  marketplaces: z.array(z.enum(["IndiaMART", "Amazon", "Flipkart", "Facebook Marketplace", "OLX", "eBay", "Etsy", "Other"])).max(8),
+  marketplaces: z
+    .array(
+      z.enum([
+        "IndiaMART",
+        "Amazon",
+        "Flipkart",
+        "Facebook Marketplace",
+        "OLX",
+        "eBay",
+        "Etsy",
+        "Other",
+      ]),
+    )
+    .max(8),
   otherMarketplace: z.string().trim().max(200),
   seo: z.boolean(),
   aeo: z.boolean(),
@@ -37,21 +60,38 @@ const selectionSchema = z.object({
 });
 
 const estimateSchema = z.object({
-  lines: z.array(z.object({ label: z.string().max(200), setup: z.number().nonnegative(), monthly: z.number().nonnegative(), complimentary: z.boolean().optional() })).max(30),
+  lines: z
+    .array(
+      z.object({
+        label: z.string().max(200),
+        setup: z.number().min(-10_000_000).max(10_000_000),
+        monthly: z.number().min(-10_000_000).max(10_000_000),
+        complimentary: z.boolean().optional(),
+        discount: z.boolean().optional(),
+      }),
+    )
+    .max(30),
   complimentary: z.array(z.string().max(200)).max(10),
   currency: z.enum(["INR", "USD"]),
   setupTotal: z.number().nonnegative(),
   monthlyTotal: z.number().nonnegative(),
   firstMonthTotal: z.number().nonnegative(),
+  matchedPackage: z.enum(["Gazab Starter", "Full Gazab"]).optional(),
 });
 
-const pricingSchema = z.object(Object.fromEntries(
-  Object.keys(DEFAULT_SERVICE_PRICING).map((key) => [key, z.number().int().min(0).max(10_000_000)]),
-) as Record<keyof ServicePricing, z.ZodNumber>);
+const pricingSchema = z.object(
+  Object.fromEntries(
+    Object.keys(DEFAULT_SERVICE_PRICING).map((key) => [
+      key,
+      z.number().int().min(0).max(10_000_000),
+    ]),
+  ) as Record<keyof ServicePricing, z.ZodNumber>,
+);
 
 function getSessionConfig() {
   const password = process.env["ADMIN_SESSION_SECRET"];
-  if (!password || password.length < 32) throw new Error("ADMIN_SESSION_SECRET must contain at least 32 characters");
+  if (!password || password.length < 32)
+    throw new Error("ADMIN_SESSION_SECRET must contain at least 32 characters");
   return {
     password,
     name: "gazab-admin-session",
@@ -98,18 +138,23 @@ export const getPublicTrackingConfig = createServerFn({ method: "GET" }).handler
 }));
 
 export const submitPackageRequest = createServerFn({ method: "POST" })
-  .validator((input: unknown) => z.object({
-    name: z.string().trim().min(2).max(100),
-    email: z.string().trim().email().max(255),
-    phone: z.string().trim().min(7).max(30),
-    company: z.string().trim().max(120),
-    market: z.enum(["IN", "INTL"]),
-    selection: selectionSchema,
-    estimate: estimateSchema,
-  }).parse(input))
+  .validator((input: unknown) =>
+    z
+      .object({
+        name: z.string().trim().min(2).max(100),
+        email: z.string().trim().email().max(255),
+        phone: z.string().trim().min(7).max(30),
+        company: z.string().trim().max(120),
+        market: z.enum(["IN", "INTL"]),
+        selection: selectionSchema,
+        estimate: estimateSchema,
+      })
+      .parse(input),
+  )
   .handler(async ({ data }) => {
     const { calculatePackageEstimate } = await import("./package-types");
-    const { createRequest, getPricing, markEmailSent, sendPackageRequestEmail } = await import("./package-store.server");
+    const { createRequest, getPricing, markEmailSent, sendPackageRequestEmail } =
+      await import("./package-store.server");
     const pricing = await getPricing();
     const trustedEstimate = calculatePackageEstimate(
       data.selection,
@@ -128,18 +173,29 @@ export const submitPackageRequest = createServerFn({ method: "POST" })
   });
 
 export const getAdminState = createServerFn({ method: "GET" }).handler(async () => {
-  if (!(await isAdmin())) return { authenticated: false as const, requests: [], pricing: DEFAULT_SERVICE_PRICING };
+  if (!(await isAdmin()))
+    return { authenticated: false as const, requests: [], pricing: DEFAULT_SERVICE_PRICING };
   const { getPricing, getRequests } = await import("./package-store.server");
-  return { authenticated: true as const, requests: await getRequests(), pricing: await getPricing() };
+  return {
+    authenticated: true as const,
+    requests: await getRequests(),
+    pricing: await getPricing(),
+  };
 });
 
 export const adminLogin = createServerFn({ method: "POST" })
-  .validator((input: unknown) => z.object({ email: z.string().email(), password: z.string().min(1).max(500) }).parse(input))
+  .validator((input: unknown) =>
+    z.object({ email: z.string().email(), password: z.string().min(1).max(500) }).parse(input),
+  )
   .handler(async ({ data }) => {
     const expectedEmail = process.env["ADMIN_EMAIL"];
     const expectedPassword = process.env["ADMIN_PASSWORD"];
-    if (!expectedEmail || !expectedPassword) throw new Error("Admin login is not configured on this server");
-    if (!safeCompare(data.email.trim().toLowerCase(), expectedEmail.trim().toLowerCase()) || !safeCompare(data.password, expectedPassword)) {
+    if (!expectedEmail || !expectedPassword)
+      throw new Error("Admin login is not configured on this server");
+    if (
+      !safeCompare(data.email.trim().toLowerCase(), expectedEmail.trim().toLowerCase()) ||
+      !safeCompare(data.password, expectedPassword)
+    ) {
       throw new Error("Incorrect email or password");
     }
     const session = await getSession<{ authenticated?: boolean }>(getSessionConfig());
@@ -162,11 +218,15 @@ export const saveAdminPricing = createServerFn({ method: "POST" })
   });
 
 export const saveAdminRequest = createServerFn({ method: "POST" })
-  .validator((input: unknown) => z.object({
-    id: z.string().uuid(),
-    status: z.enum(["new", "contacted", "proposal-sent", "won", "lost"]),
-    adminNotes: z.string().max(5000),
-  }).parse(input))
+  .validator((input: unknown) =>
+    z
+      .object({
+        id: z.string().uuid(),
+        status: z.enum(["new", "contacted", "proposal-sent", "won", "lost"]),
+        adminNotes: z.string().max(5000),
+      })
+      .parse(input),
+  )
   .handler(async ({ data }) => {
     await requireAdmin();
     const { updateRequest } = await import("./package-store.server");

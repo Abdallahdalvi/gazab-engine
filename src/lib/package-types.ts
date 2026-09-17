@@ -4,7 +4,8 @@ export type WebsiteService = "new" | "redesign" | "management";
 export type SocialService = "setup" | "optimise" | "management" | "content";
 export type GoogleProfileService = "setup" | "optimise" | "management";
 export type AutomationComplexity = "basic" | "advanced";
-export type AutomationType = "weekly-reporting" | "lead-routing" | "social-content" | "ai-visibility" | "custom";
+export type AutomationType =
+  "weekly-reporting" | "lead-routing" | "social-content" | "ai-visibility" | "custom";
 export type PricingMarket = "IN" | "INTL";
 export type CurrencyCode = "INR" | "USD";
 
@@ -160,6 +161,7 @@ export type EstimateLine = {
   setup: number;
   monthly: number;
   complimentary?: boolean;
+  discount?: boolean;
 };
 
 export type PackageEstimate = {
@@ -169,6 +171,7 @@ export type PackageEstimate = {
   setupTotal: number;
   monthlyTotal: number;
   firstMonthTotal: number;
+  matchedPackage?: "Gazab Starter" | "Full Gazab";
 };
 
 const websiteTypeLabels: Record<WebsiteType, string> = {
@@ -187,7 +190,57 @@ const automationTypeLabels: Record<AutomationType, string> = {
 
 export const AUTOMATION_TYPE_LABELS = automationTypeLabels;
 
-export function calculatePackageEstimate(selection: PackageSelection, pricing: ServicePricing, currency: CurrencyCode = "INR"): PackageEstimate {
+function getMatchedPackage(selection: PackageSelection, pricing: ServicePricing) {
+  const sharedPackageServices =
+    selection.websiteEnabled &&
+    selection.websiteService === "new" &&
+    selection.websiteType === "business" &&
+    selection.websitePages === 5 &&
+    selection.hostingFiveYears &&
+    selection.websiteManagement &&
+    selection.socialEnabled &&
+    selection.socialService === "management" &&
+    selection.googleProfile &&
+    selection.googleProfileService === "setup" &&
+    selection.strategyReporting &&
+    !selection.marketplaceEnabled;
+
+  const matchesFull =
+    sharedPackageServices &&
+    selection.socialAccounts === 4 &&
+    selection.contentVolume === 12 &&
+    selection.automationEnabled &&
+    selection.automationComplexity === "basic" &&
+    selection.automationCount === 2 &&
+    selection.adsEnabled &&
+    selection.adPlatforms.length === 1 &&
+    selection.seo &&
+    selection.aeo &&
+    selection.geo &&
+    selection.backlinks;
+  if (matchesFull) return { name: "Full Gazab" as const, monthlyPrice: pricing.fullMonthly };
+
+  const matchesStarter =
+    sharedPackageServices &&
+    selection.socialAccounts === 2 &&
+    selection.contentVolume === 8 &&
+    !selection.automationEnabled &&
+    !selection.adsEnabled &&
+    !selection.seo &&
+    !selection.aeo &&
+    !selection.geo &&
+    !selection.backlinks;
+  if (matchesStarter)
+    return { name: "Gazab Starter" as const, monthlyPrice: pricing.starterMonthly };
+
+  return undefined;
+}
+
+export function calculatePackageEstimate(
+  selection: PackageSelection,
+  pricing: ServicePricing,
+  currency: CurrencyCode = "INR",
+): PackageEstimate {
   const lines: EstimateLine[] = [];
   const websiteService = selection.websiteService || "new";
   const socialService = selection.socialService || "management";
@@ -195,38 +248,53 @@ export function calculatePackageEstimate(selection: PackageSelection, pricing: S
 
   if (selection.websiteEnabled) {
     if (websiteService === "management") {
-      lines.push({ label: "Existing website management", setup: 0, monthly: pricing.websiteManagementMonthly });
+      lines.push({
+        label: "Existing website management",
+        setup: 0,
+        monthly: pricing.websiteManagementMonthly,
+      });
     } else {
-      const base = selection.websiteType === "single"
-        ? pricing.websiteSingleSetup
-        : selection.websiteType === "ecommerce"
-          ? pricing.websiteEcommerceSetup
-          : pricing.websiteBusinessSetup;
-      const websitePages = selection.websiteType === "single" ? 1 : Math.max(1, selection.websitePages);
+      const base =
+        selection.websiteType === "single"
+          ? pricing.websiteSingleSetup
+          : selection.websiteType === "ecommerce"
+            ? pricing.websiteEcommerceSetup
+            : pricing.websiteBusinessSetup;
+      const websitePages =
+        selection.websiteType === "single" ? 1 : Math.max(1, selection.websitePages);
       const includedPages = selection.websiteType === "single" ? 1 : 5;
       const extraPages = Math.max(0, websitePages - includedPages);
-      const extraPagePrice = selection.websiteType === "ecommerce"
-        ? pricing.websiteEcommerceExtraPageSetup
-        : pricing.websiteBusinessExtraPageSetup;
+      const extraPagePrice =
+        selection.websiteType === "ecommerce"
+          ? pricing.websiteEcommerceExtraPageSetup
+          : pricing.websiteBusinessExtraPageSetup;
       const workLabel = websiteService === "redesign" ? "redesign / rebuild" : "new build";
       lines.push({
-        label: selection.websiteType === "single"
-          ? `${websiteTypeLabels.single} ${workLabel}`
-          : `${websiteTypeLabels[selection.websiteType]} ${workLabel} (${websitePages} page${websitePages === 1 ? "" : "s"})`,
+        label:
+          selection.websiteType === "single"
+            ? `${websiteTypeLabels.single} ${workLabel}`
+            : `${websiteTypeLabels[selection.websiteType]} ${workLabel} (${websitePages} page${websitePages === 1 ? "" : "s"})`,
         setup: base + extraPages * extraPagePrice,
         monthly: 0,
       });
-      if (selection.hostingFiveYears) lines.push({ label: "5-year hosting", setup: 0, monthly: 0, complimentary: true });
-      if (selection.websiteManagement) lines.push({ label: "Ongoing website management", setup: 0, monthly: pricing.websiteManagementMonthly });
+      if (selection.hostingFiveYears)
+        lines.push({ label: "5-year hosting", setup: 0, monthly: 0, complimentary: true });
+      if (selection.websiteManagement)
+        lines.push({
+          label: "Ongoing website management",
+          setup: 0,
+          monthly: pricing.websiteManagementMonthly,
+        });
     }
   }
 
   if (selection.socialEnabled) {
-    const contentPrice = selection.contentVolume === 20
-      ? pricing.content20Monthly
-      : selection.contentVolume === 12
-        ? pricing.content12Monthly
-        : pricing.content8Monthly;
+    const contentPrice =
+      selection.contentVolume === 20
+        ? pricing.content20Monthly
+        : selection.contentVolume === 12
+          ? pricing.content12Monthly
+          : pricing.content8Monthly;
     if (socialService === "setup" || socialService === "optimise") {
       lines.push({
         label: `${selection.socialAccounts} social account${selection.socialAccounts === 1 ? "" : "s"} ${socialService === "setup" ? "setup" : "optimisation"}`,
@@ -234,22 +302,46 @@ export function calculatePackageEstimate(selection: PackageSelection, pricing: S
         monthly: 0,
       });
     } else {
-      if (socialService === "management") lines.push({
-        label: `${selection.socialAccounts} social account${selection.socialAccounts === 1 ? "" : "s"} managed`,
+      if (socialService === "management")
+        lines.push({
+          label: `${selection.socialAccounts} social account${selection.socialAccounts === 1 ? "" : "s"} managed`,
+          setup: 0,
+          monthly: pricing.socialAccountMonthly * selection.socialAccounts,
+        });
+      lines.push({
+        label: `${selection.contentVolume} posts / reels per month`,
         setup: 0,
-        monthly: pricing.socialAccountMonthly * selection.socialAccounts,
+        monthly: contentPrice,
       });
-      lines.push({ label: `${selection.contentVolume} posts / reels per month`, setup: 0, monthly: contentPrice });
     }
   }
 
-  if (selection.googleProfile) lines.push(googleProfileService === "management"
-    ? { label: "Google Business Profile management", setup: 0, monthly: pricing.googleProfileManagementMonthly }
-    : { label: `Google Business Profile ${googleProfileService === "setup" ? "setup + optimisation" : "optimisation / rebuild"}`, setup: pricing.googleProfileSetup, monthly: 0 });
-  if (selection.strategyReporting) lines.push({ label: "Monthly strategy, reporting + two calls", setup: 0, monthly: pricing.strategyReportingMonthly });
+  if (selection.googleProfile)
+    lines.push(
+      googleProfileService === "management"
+        ? {
+            label: "Google Business Profile management",
+            setup: 0,
+            monthly: pricing.googleProfileManagementMonthly,
+          }
+        : {
+            label: `Google Business Profile ${googleProfileService === "setup" ? "setup + optimisation" : "optimisation / rebuild"}`,
+            setup: pricing.googleProfileSetup,
+            monthly: 0,
+          },
+    );
+  if (selection.strategyReporting)
+    lines.push({
+      label: "Monthly strategy, reporting + two calls",
+      setup: 0,
+      monthly: pricing.strategyReportingMonthly,
+    });
 
   if (selection.automationEnabled) {
-    const unitPrice = selection.automationComplexity === "advanced" ? pricing.automationAdvancedSetup : pricing.automationBasicSetup;
+    const unitPrice =
+      selection.automationComplexity === "advanced"
+        ? pricing.automationAdvancedSetup
+        : pricing.automationBasicSetup;
     lines.push({
       label: `${selection.automationCount} × ${automationTypeLabels[selection.automationType]} (${selection.automationComplexity})`,
       setup: unitPrice * selection.automationCount,
@@ -266,9 +358,11 @@ export function calculatePackageEstimate(selection: PackageSelection, pricing: S
   }
 
   if (selection.marketplaceEnabled && selection.marketplaces.length > 0) {
-    const marketplaceNames = selection.marketplaces.map((marketplace) => marketplace === "Other"
-      ? (selection.otherMarketplace || "").trim() || "Other platform"
-      : marketplace);
+    const marketplaceNames = selection.marketplaces.map((marketplace) =>
+      marketplace === "Other"
+        ? (selection.otherMarketplace || "").trim() || "Other platform"
+        : marketplace,
+    );
     lines.push({
       label: `${marketplaceNames.join(" + ")} marketplace management`,
       setup: 0,
@@ -278,15 +372,55 @@ export function calculatePackageEstimate(selection: PackageSelection, pricing: S
 
   if (selection.seo) lines.push({ label: "SEO", setup: 0, monthly: pricing.seoMonthly });
   if (selection.aeo) lines.push({ label: "AEO", setup: 0, monthly: pricing.aeoMonthly });
-  if (selection.geo) lines.push({ label: "GEO / AI visibility", setup: 0, monthly: pricing.geoMonthly });
-  if (selection.backlinks) lines.push({ label: "Backlink building", setup: 0, monthly: pricing.backlinksMonthly });
+  if (selection.geo)
+    lines.push({ label: "GEO / AI visibility", setup: 0, monthly: pricing.geoMonthly });
+  if (selection.backlinks)
+    lines.push({ label: "Backlink building", setup: 0, monthly: pricing.backlinksMonthly });
 
-  const setupTotal = lines.reduce((sum, line) => sum + line.setup, 0);
-  const monthlyTotal = lines.reduce((sum, line) => sum + line.monthly, 0);
-  const complimentary = lines.length > 0
-    ? ["Links DC link-in-bio page", "Monthly AI visibility report", "No lock-in period"]
-    : [];
-  return { lines, complimentary, currency, setupTotal, monthlyTotal, firstMonthTotal: setupTotal + monthlyTotal };
+  const subtotalSetup = lines.reduce((sum, line) => sum + line.setup, 0);
+  const subtotalMonthly = lines.reduce((sum, line) => sum + line.monthly, 0);
+  const matchedPackage = getMatchedPackage(selection, pricing);
+  if (matchedPackage) {
+    // A custom selection that recreates a published package should never cost
+    // more than that package. Preserve normal item pricing, then show the exact
+    // bundle saving required to cap both recurring and first-month totals.
+    const monthlyDiscount = Math.max(0, subtotalMonthly - matchedPackage.monthlyPrice);
+    const adjustedMonthly = subtotalMonthly - monthlyDiscount;
+    const setupDiscount = Math.max(
+      0,
+      subtotalSetup + adjustedMonthly - matchedPackage.monthlyPrice,
+    );
+    if (setupDiscount > 0 || monthlyDiscount > 0) {
+      lines.push({
+        label: `${matchedPackage.name} bundle saving`,
+        setup: -setupDiscount,
+        monthly: -monthlyDiscount,
+        discount: true,
+      });
+    }
+  }
+
+  const setupTotal = Math.max(
+    0,
+    lines.reduce((sum, line) => sum + line.setup, 0),
+  );
+  const monthlyTotal = Math.max(
+    0,
+    lines.reduce((sum, line) => sum + line.monthly, 0),
+  );
+  const complimentary =
+    lines.length > 0
+      ? ["Links DC link-in-bio page", "Monthly AI visibility report", "No lock-in period"]
+      : [];
+  return {
+    lines,
+    complimentary,
+    currency,
+    setupTotal,
+    monthlyTotal,
+    firstMonthTotal: setupTotal + monthlyTotal,
+    ...(matchedPackage ? { matchedPackage: matchedPackage.name } : {}),
+  };
 }
 
 export function formatMoney(value: number, currency: CurrencyCode = "INR") {

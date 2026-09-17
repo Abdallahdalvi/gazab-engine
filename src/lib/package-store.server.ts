@@ -29,11 +29,15 @@ async function readDatabase(): Promise<Database> {
     const parsed = JSON.parse(raw) as Partial<Database>;
     return {
       version: 8,
-      pricing: parsed.version === 8 ? { ...DEFAULT_SERVICE_PRICING, ...(parsed.pricing || {}) } : DEFAULT_SERVICE_PRICING,
+      pricing:
+        parsed.version === 8
+          ? { ...DEFAULT_SERVICE_PRICING, ...(parsed.pricing || {}) }
+          : DEFAULT_SERVICE_PRICING,
       requests: Array.isArray(parsed.requests) ? parsed.requests : [],
     };
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "ENOENT") console.error("Could not read package database", error);
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT")
+      console.error("Could not read package database", error);
     return { version: 8, pricing: DEFAULT_SERVICE_PRICING, requests: [] };
   }
 }
@@ -111,7 +115,12 @@ export async function updateRequest(id: string, status: PackageRequestStatus, ad
 }
 
 function escapeHtml(value: string) {
-  return value.replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character] || character);
+  return value.replace(
+    /[&<>'"]/g,
+    (character) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character] ||
+      character,
+  );
 }
 
 export async function sendPackageRequestEmail(record: PackageRequestRecord) {
@@ -122,7 +131,20 @@ export async function sendPackageRequestEmail(record: PackageRequestRecord) {
 
   const symbol = record.estimate.currency === "USD" ? "$" : "₹";
   const locale = record.estimate.currency === "USD" ? "en-US" : "en-IN";
-  const services = record.estimate.lines.map((line) => `<li>${escapeHtml(line.label)} — ${line.complimentary ? "FREE" : `setup ${symbol}${line.setup.toLocaleString(locale)}, monthly ${symbol}${line.monthly.toLocaleString(locale)}`}</li>`).join("");
+  const services = record.estimate.lines
+    .map((line) => {
+      if (line.complimentary) return `<li>${escapeHtml(line.label)} — FREE</li>`;
+      const setup =
+        line.setup !== 0
+          ? `${line.setup < 0 ? "−" : ""}${symbol}${Math.abs(line.setup).toLocaleString(locale)} setup`
+          : "";
+      const monthly =
+        line.monthly !== 0
+          ? `${line.monthly < 0 ? "−" : ""}${symbol}${Math.abs(line.monthly).toLocaleString(locale)} monthly`
+          : "";
+      return `<li>${escapeHtml(line.label)} — ${setup}${setup && monthly ? ", " : ""}${monthly}</li>`;
+    })
+    .join("");
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
@@ -131,9 +153,10 @@ export async function sendPackageRequestEmail(record: PackageRequestRecord) {
       to: [to],
       reply_to: record.email,
       subject: `New Gazab package request — ${record.company || record.name}`,
-      html: `<h1>New Build Your Own Package request</h1><p><strong>Market:</strong> ${record.market === "INTL" ? "International / USD" : "India / INR"}</p><p><strong>Name:</strong> ${escapeHtml(record.name)}</p><p><strong>Company:</strong> ${escapeHtml(record.company || "Not provided")}</p><p><strong>Email:</strong> ${escapeHtml(record.email)}</p><p><strong>WhatsApp / phone:</strong> ${escapeHtml(record.phone)}</p><h2>Selected services</h2><ul>${services}</ul><p><strong>Complimentary:</strong> ${record.estimate.complimentary?.map(escapeHtml).join(", ") || "None"}</p><p><strong>Estimated setup:</strong> ${symbol}${record.estimate.setupTotal.toLocaleString(locale)}</p><p><strong>Estimated monthly:</strong> ${symbol}${record.estimate.monthlyTotal.toLocaleString(locale)}</p><p><strong>Estimated first month:</strong> ${symbol}${record.estimate.firstMonthTotal.toLocaleString(locale)}</p><p><strong>Extra details:</strong><br>${escapeHtml(record.selection.otherDetails || "None")}</p><p>Request ID: ${record.id}</p>`,
+      html: `<h1>New Build Your Own Package request</h1><p><strong>Market:</strong> ${record.market === "INTL" ? "International / USD" : "India / INR"}</p><p><strong>Name:</strong> ${escapeHtml(record.name)}</p><p><strong>Company:</strong> ${escapeHtml(record.company || "Not provided")}</p><p><strong>Email:</strong> ${escapeHtml(record.email)}</p><p><strong>WhatsApp / phone:</strong> ${escapeHtml(record.phone)}</p>${record.estimate.matchedPackage ? `<p><strong>Matched package:</strong> ${escapeHtml(record.estimate.matchedPackage)} value protection applied</p>` : ""}<h2>Selected services</h2><ul>${services}</ul><p><strong>Complimentary:</strong> ${record.estimate.complimentary?.map(escapeHtml).join(", ") || "None"}</p><p><strong>Estimated setup:</strong> ${symbol}${record.estimate.setupTotal.toLocaleString(locale)}</p><p><strong>Estimated monthly:</strong> ${symbol}${record.estimate.monthlyTotal.toLocaleString(locale)}</p><p><strong>Estimated first month:</strong> ${symbol}${record.estimate.firstMonthTotal.toLocaleString(locale)}</p><p><strong>Extra details:</strong><br>${escapeHtml(record.selection.otherDetails || "None")}</p><p>Request ID: ${record.id}</p>`,
     }),
   });
-  if (!response.ok) throw new Error(`Resend email failed (${response.status}): ${await response.text()}`);
+  if (!response.ok)
+    throw new Error(`Resend email failed (${response.status}): ${await response.text()}`);
   return true;
 }
