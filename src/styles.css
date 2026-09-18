@@ -360,3 +360,9 @@ img,svg{max-width:100%}
 .hero-copy p{margin-top:1.7rem}
 @media (min-width:641px) and (max-width:1050px){.hero-copy p{margin-top:1.75rem}}
 @media (max-width:640px){.hero-copy p{margin-top:1.45rem}}
+
+/* Never pair the orange and purple brand colours as text/background contrast. */
+.retainer-term .kicker-orange,.retainer-term h3 span,.systems-section h2 span,.founder-z{color:var(--cream)}
+.retainer-term h3 span,.systems-section h2 span{--tw-text-stroke-color:var(--ink);-webkit-text-stroke-color:var(--ink)}
+.service-2 .service-outcome,.service-7 .service-outcome,.barter-trial h3 span,.why-section h2 span,.mega-cta h2 span,.product-thumbnail-4 span{color:var(--ink);-webkit-text-stroke-color:var(--ink)}
+.product-thumbnail-3 span,.product-thumbnail-6 span{color:var(--cream)}
