@@ -389,12 +389,11 @@ function RequestOverview({ request }: { request: PackageRequestRecord }) {
               </li>
             ))}
           </ul>
-          {request.estimate.matchedPackage && (
-            <p>
-              <strong>MATCHED PACKAGE</strong>
-              {request.estimate.matchedPackage} value protection applied
-            </p>
-          )}
+          <p>
+            <strong>RETAINER TERM</strong>
+            {request.selection.retainerMonths || 1} month
+            {(request.selection.retainerMonths || 1) === 1 ? "" : "s"}
+          </p>
           {request.estimate.complimentary?.length > 0 && (
             <p>
               <strong>COMPLIMENTARY</strong>

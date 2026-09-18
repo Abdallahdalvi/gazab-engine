@@ -203,6 +203,35 @@ export function PackageBuilder({
           </p>
         </div>
       </div>
+      <div className="retainer-term">
+        <div>
+          <p className="kicker kicker-orange">RETAINER LENGTH</p>
+          <h3>
+            STAY LONGER. <span>SAVE ON ONGOING SERVICES.</span>
+          </h3>
+          <p>
+            Select the period you need us for. The discount applies to recurring services only;
+            setup work, ad spend, travel and third-party tools stay separate.
+          </p>
+        </div>
+        <label>
+          HOW LONG DO YOU NEED SUPPORT?
+          <select
+            value={selection.retainerMonths}
+            onChange={(event) =>
+              update(
+                "retainerMonths",
+                Number(event.target.value) as PackageSelection["retainerMonths"],
+              )
+            }
+          >
+            <option value={1}>1 month — standard service rate</option>
+            <option value={3}>3 months — save 5% on ongoing services</option>
+            <option value={6}>6 months — save 10% on ongoing services</option>
+            <option value={12}>12 months — save 15% on ongoing services</option>
+          </select>
+        </label>
+      </div>
       <div className="package-builder-layout">
         <div className="builder-services">
           <ToggleCard
@@ -539,11 +568,6 @@ export function PackageBuilder({
               ? `${estimate.lines.filter((line) => !line.discount).length} SERVICE${estimate.lines.filter((line) => !line.discount).length === 1 ? "" : "S"}`
               : "START BUILDING"}
           </h3>
-          {estimate.matchedPackage && (
-            <p className="builder-bundle-match">
-              <Check size={16} /> {estimate.matchedPackage.toUpperCase()} VALUE PROTECTION APPLIED
-            </p>
-          )}
           <div className="builder-line-items">
             {hasServices ? (
               estimate.lines.map((line) => (
@@ -583,9 +607,9 @@ export function PackageBuilder({
             </div>
           </div>
           <p className="estimate-note">
-            Starting estimate only. Final pricing is confirmed after a scope call. No lock-in
-            period; each month is paid in advance. Ad spend and third-party subscriptions are not
-            included.
+            Starting estimate only. Final pricing is confirmed after a scope call. The selected
+            retainer saving applies to ongoing services for that term; setup work, ad spend and
+            third-party subscriptions are not included.
           </p>
           <button
             className="print-package-button"

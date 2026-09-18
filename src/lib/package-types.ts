@@ -8,6 +8,7 @@ export type AutomationType =
   "weekly-reporting" | "lead-routing" | "social-content" | "ai-visibility" | "custom";
 export type PricingMarket = "IN" | "INTL";
 export type CurrencyCode = "INR" | "USD";
+export type RetainerMonths = 1 | 3 | 6 | 12;
 
 export type ServicePricing = {
   starterMonthly: number;
@@ -38,65 +39,66 @@ export type ServicePricing = {
 };
 
 export const DEFAULT_SERVICE_PRICING: ServicePricing = {
-  // Public starting rates: retainers cover recurring work, while builds and
-  // custom systems remain separately scoped in the package builder.
-  starterMonthly: 24_999,
-  fullMonthly: 49_999,
-  websiteSingleSetup: 12_000,
-  websiteBusinessSetup: 25_000,
-  websiteEcommerceSetup: 45_000,
-  websiteBusinessExtraPageSetup: 3_000,
-  websiteEcommerceExtraPageSetup: 5_000,
+  // Internal estimate rates. The public site guides people through scope
+  // rather than publishing fixed packages.
+  starterMonthly: 14_999,
+  fullMonthly: 24_999,
+  websiteSingleSetup: 7_500,
+  websiteBusinessSetup: 15_000,
+  websiteEcommerceSetup: 25_000,
+  websiteBusinessExtraPageSetup: 1_500,
+  websiteEcommerceExtraPageSetup: 3_000,
   hostingFiveYearsSetup: 0,
-  websiteManagementMonthly: 3_500,
-  socialAccountSetup: 2_500,
-  socialAccountMonthly: 5_000,
-  content8Monthly: 12_000,
-  content12Monthly: 18_000,
-  content20Monthly: 28_000,
-  googleProfileSetup: 4_000,
-  googleProfileManagementMonthly: 4_000,
-  strategyReportingMonthly: 6_000,
-  automationBasicSetup: 10_000,
-  automationAdvancedSetup: 30_000,
-  adsPlatformMonthly: 8_000,
-  seoMonthly: 12_000,
-  aeoMonthly: 8_000,
-  geoMonthly: 10_000,
-  backlinksMonthly: 8_000,
-  marketplacePlatformMonthly: 6_000,
+  websiteManagementMonthly: 2_500,
+  socialAccountSetup: 1_500,
+  socialAccountMonthly: 2_500,
+  content8Monthly: 7_500,
+  content12Monthly: 10_500,
+  content20Monthly: 16_000,
+  googleProfileSetup: 2_500,
+  googleProfileManagementMonthly: 2_500,
+  strategyReportingMonthly: 3_000,
+  automationBasicSetup: 7_500,
+  automationAdvancedSetup: 20_000,
+  adsPlatformMonthly: 5_000,
+  seoMonthly: 7_500,
+  aeoMonthly: 5_000,
+  geoMonthly: 6_000,
+  backlinksMonthly: 5_000,
+  marketplacePlatformMonthly: 4_000,
 };
 
 // Deliberately rounded international rates: easy to understand and quote.
 export const INTERNATIONAL_SERVICE_PRICING: ServicePricing = {
-  starterMonthly: 399,
-  fullMonthly: 799,
-  websiteSingleSetup: 399,
-  websiteBusinessSetup: 799,
-  websiteEcommerceSetup: 1_499,
-  websiteBusinessExtraPageSetup: 149,
-  websiteEcommerceExtraPageSetup: 249,
+  starterMonthly: 199,
+  fullMonthly: 299,
+  websiteSingleSetup: 149,
+  websiteBusinessSetup: 299,
+  websiteEcommerceSetup: 599,
+  websiteBusinessExtraPageSetup: 75,
+  websiteEcommerceExtraPageSetup: 125,
   hostingFiveYearsSetup: 0,
-  websiteManagementMonthly: 199,
-  socialAccountSetup: 99,
-  socialAccountMonthly: 199,
-  content8Monthly: 299,
-  content12Monthly: 449,
-  content20Monthly: 699,
-  googleProfileSetup: 149,
-  googleProfileManagementMonthly: 199,
-  strategyReportingMonthly: 199,
-  automationBasicSetup: 399,
-  automationAdvancedSetup: 1_499,
-  adsPlatformMonthly: 349,
-  seoMonthly: 399,
-  aeoMonthly: 249,
-  geoMonthly: 299,
-  backlinksMonthly: 249,
-  marketplacePlatformMonthly: 249,
+  websiteManagementMonthly: 99,
+  socialAccountSetup: 49,
+  socialAccountMonthly: 99,
+  content8Monthly: 149,
+  content12Monthly: 229,
+  content20Monthly: 349,
+  googleProfileSetup: 99,
+  googleProfileManagementMonthly: 99,
+  strategyReportingMonthly: 149,
+  automationBasicSetup: 249,
+  automationAdvancedSetup: 799,
+  adsPlatformMonthly: 199,
+  seoMonthly: 249,
+  aeoMonthly: 149,
+  geoMonthly: 199,
+  backlinksMonthly: 149,
+  marketplacePlatformMonthly: 149,
 };
 
 export type PackageSelection = {
+  retainerMonths: RetainerMonths;
   websiteEnabled: boolean;
   websiteService: WebsiteService;
   websiteType: WebsiteType;
@@ -127,6 +129,7 @@ export type PackageSelection = {
 };
 
 export const DEFAULT_PACKAGE_SELECTION: PackageSelection = {
+  retainerMonths: 1,
   websiteEnabled: false,
   websiteService: "new",
   websiteType: "business",
@@ -171,7 +174,6 @@ export type PackageEstimate = {
   setupTotal: number;
   monthlyTotal: number;
   firstMonthTotal: number;
-  matchedPackage?: "Gazab Starter" | "Full Gazab";
 };
 
 const websiteTypeLabels: Record<WebsiteType, string> = {
@@ -190,46 +192,12 @@ const automationTypeLabels: Record<AutomationType, string> = {
 
 export const AUTOMATION_TYPE_LABELS = automationTypeLabels;
 
-function getMatchedPackage(selection: PackageSelection, pricing: ServicePricing) {
-  const sharedPackageServices =
-    !selection.websiteEnabled &&
-    selection.socialEnabled &&
-    selection.socialService === "management" &&
-    selection.googleProfile &&
-    selection.googleProfileService === "setup" &&
-    selection.strategyReporting &&
-    !selection.marketplaceEnabled;
-
-  const matchesFull =
-    sharedPackageServices &&
-    selection.socialAccounts === 4 &&
-    selection.contentVolume === 12 &&
-    selection.automationEnabled &&
-    selection.automationComplexity === "basic" &&
-    selection.automationCount === 2 &&
-    selection.adsEnabled &&
-    selection.adPlatforms.length === 1 &&
-    selection.seo &&
-    selection.aeo &&
-    selection.geo &&
-    selection.backlinks;
-  if (matchesFull) return { name: "Full Gazab" as const, monthlyPrice: pricing.fullMonthly };
-
-  const matchesStarter =
-    sharedPackageServices &&
-    selection.socialAccounts === 2 &&
-    selection.contentVolume === 8 &&
-    !selection.automationEnabled &&
-    !selection.adsEnabled &&
-    !selection.seo &&
-    !selection.aeo &&
-    !selection.geo &&
-    !selection.backlinks;
-  if (matchesStarter)
-    return { name: "Gazab Starter" as const, monthlyPrice: pricing.starterMonthly };
-
-  return undefined;
-}
+export const RETAINER_DISCOUNT_BY_MONTHS: Record<RetainerMonths, number> = {
+  1: 0,
+  3: 5,
+  6: 10,
+  12: 15,
+};
 
 export function calculatePackageEstimate(
   selection: PackageSelection,
@@ -374,25 +342,14 @@ export function calculatePackageEstimate(
 
   const subtotalSetup = lines.reduce((sum, line) => sum + line.setup, 0);
   const subtotalMonthly = lines.reduce((sum, line) => sum + line.monthly, 0);
-  const matchedPackage = getMatchedPackage(selection, pricing);
-  if (matchedPackage) {
-    // A custom selection that recreates a published package should never cost
-    // more than that package. Preserve normal item pricing, then show the exact
-    // bundle saving required to cap both recurring and first-month totals.
-    const monthlyDiscount = Math.max(0, subtotalMonthly - matchedPackage.monthlyPrice);
-    const adjustedMonthly = subtotalMonthly - monthlyDiscount;
-    const setupDiscount = Math.max(
-      0,
-      subtotalSetup + adjustedMonthly - matchedPackage.monthlyPrice,
-    );
-    if (setupDiscount > 0 || monthlyDiscount > 0) {
-      lines.push({
-        label: `${matchedPackage.name} bundle saving`,
-        setup: -setupDiscount,
-        monthly: -monthlyDiscount,
-        discount: true,
-      });
-    }
+  const retainerDiscount = RETAINER_DISCOUNT_BY_MONTHS[selection.retainerMonths] || 0;
+  if (subtotalMonthly > 0 && retainerDiscount > 0) {
+    lines.push({
+      label: `${selection.retainerMonths}-month retainer saving (${retainerDiscount}% ongoing services)`,
+      setup: 0,
+      monthly: -Math.round((subtotalMonthly * retainerDiscount) / 100),
+      discount: true,
+    });
   }
 
   const setupTotal = Math.max(
@@ -414,7 +371,6 @@ export function calculatePackageEstimate(
     setupTotal,
     monthlyTotal,
     firstMonthTotal: setupTotal + monthlyTotal,
-    ...(matchedPackage ? { matchedPackage: matchedPackage.name } : {}),
   };
 }
 

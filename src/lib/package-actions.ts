@@ -11,6 +11,7 @@ import {
 } from "./package-types";
 
 const selectionSchema = z.object({
+  retainerMonths: z.union([z.literal(1), z.literal(3), z.literal(6), z.literal(12)]),
   websiteEnabled: z.boolean(),
   websiteService: z.enum(["new", "redesign", "management"]),
   websiteType: z.enum(["single", "business", "ecommerce"]),
@@ -76,7 +77,6 @@ const estimateSchema = z.object({
   setupTotal: z.number().nonnegative(),
   monthlyTotal: z.number().nonnegative(),
   firstMonthTotal: z.number().nonnegative(),
-  matchedPackage: z.enum(["Gazab Starter", "Full Gazab"]).optional(),
 });
 
 const pricingSchema = z.object(

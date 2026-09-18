@@ -13,7 +13,7 @@ import {
 } from "./package-types";
 
 type Database = {
-  version: 9;
+  version: 10;
   pricing: ServicePricing;
   requests: PackageRequestRecord[];
 };
@@ -28,9 +28,9 @@ async function readDatabase(): Promise<Database> {
     const raw = await readFile(databasePath, "utf8");
     const parsed = JSON.parse(raw) as Partial<Database>;
     return {
-      version: 9,
+      version: 10,
       pricing:
-        parsed.version === 9
+        parsed.version === 10
           ? { ...DEFAULT_SERVICE_PRICING, ...(parsed.pricing || {}) }
           : DEFAULT_SERVICE_PRICING,
       requests: Array.isArray(parsed.requests) ? parsed.requests : [],
@@ -38,7 +38,7 @@ async function readDatabase(): Promise<Database> {
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT")
       console.error("Could not read package database", error);
-    return { version: 9, pricing: DEFAULT_SERVICE_PRICING, requests: [] };
+    return { version: 10, pricing: DEFAULT_SERVICE_PRICING, requests: [] };
   }
 }
 
@@ -153,7 +153,7 @@ export async function sendPackageRequestEmail(record: PackageRequestRecord) {
       to: [to],
       reply_to: record.email,
       subject: `New Gazab package request — ${record.company || record.name}`,
-      html: `<h1>New Build Your Own Package request</h1><p><strong>Market:</strong> ${record.market === "INTL" ? "International / USD" : "India / INR"}</p><p><strong>Name:</strong> ${escapeHtml(record.name)}</p><p><strong>Company:</strong> ${escapeHtml(record.company || "Not provided")}</p><p><strong>Email:</strong> ${escapeHtml(record.email)}</p><p><strong>WhatsApp / phone:</strong> ${escapeHtml(record.phone)}</p>${record.estimate.matchedPackage ? `<p><strong>Matched package:</strong> ${escapeHtml(record.estimate.matchedPackage)} value protection applied</p>` : ""}<h2>Selected services</h2><ul>${services}</ul><p><strong>Complimentary:</strong> ${record.estimate.complimentary?.map(escapeHtml).join(", ") || "None"}</p><p><strong>Estimated setup:</strong> ${symbol}${record.estimate.setupTotal.toLocaleString(locale)}</p><p><strong>Estimated monthly:</strong> ${symbol}${record.estimate.monthlyTotal.toLocaleString(locale)}</p><p><strong>Estimated first month:</strong> ${symbol}${record.estimate.firstMonthTotal.toLocaleString(locale)}</p><p><strong>Extra details:</strong><br>${escapeHtml(record.selection.otherDetails || "None")}</p><p>Request ID: ${record.id}</p>`,
+      html: `<h1>New Build Your Own Package request</h1><p><strong>Market:</strong> ${record.market === "INTL" ? "International / USD" : "India / INR"}</p><p><strong>Name:</strong> ${escapeHtml(record.name)}</p><p><strong>Company:</strong> ${escapeHtml(record.company || "Not provided")}</p><p><strong>Email:</strong> ${escapeHtml(record.email)}</p><p><strong>WhatsApp / phone:</strong> ${escapeHtml(record.phone)}</p><p><strong>Requested retainer:</strong> ${record.selection.retainerMonths || 1} month${(record.selection.retainerMonths || 1) === 1 ? "" : "s"}</p><h2>Selected services</h2><ul>${services}</ul><p><strong>Complimentary:</strong> ${record.estimate.complimentary?.map(escapeHtml).join(", ") || "None"}</p><p><strong>Estimated setup:</strong> ${symbol}${record.estimate.setupTotal.toLocaleString(locale)}</p><p><strong>Estimated monthly:</strong> ${symbol}${record.estimate.monthlyTotal.toLocaleString(locale)}</p><p><strong>Estimated first month:</strong> ${symbol}${record.estimate.firstMonthTotal.toLocaleString(locale)}</p><p><strong>Extra details:</strong><br>${escapeHtml(record.selection.otherDetails || "None")}</p><p>Request ID: ${record.id}</p>`,
     }),
   });
   if (!response.ok)
