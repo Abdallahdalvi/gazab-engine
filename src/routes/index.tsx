@@ -4,7 +4,11 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 
 import { PackageBuilder } from "../components/package-builder";
 import { getPublicPricing, getPublicTrackingConfig } from "../lib/package-actions";
-import { INTERNATIONAL_SERVICE_PRICING, type PricingMarket } from "../lib/package-types";
+import {
+  formatMoney,
+  INTERNATIONAL_SERVICE_PRICING,
+  type PricingMarket,
+} from "../lib/package-types";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,7 +30,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const nav = ["home", "services", "results", "solutions", "work", "build-package", "about", "contact"];
+const nav = ["home", "services", "results", "solutions", "work", "pricing", "about", "contact"];
 const heroKeywords = ["ATTENTION.", "LEADS.", "SALES.", "TIME BACK."];
 const countryOptions = [
   ["IN", "India — INR (₹)"], ["US", "United States — USD ($)"], ["GB", "United Kingdom — USD ($)"],
@@ -243,6 +247,8 @@ function Index() {
   const [selectedCountry, setSelectedCountry] = useState("IN");
   const [market, setMarket] = useState<PricingMarket>("IN");
   const activePricing = market === "INTL" ? INTERNATIONAL_SERVICE_PRICING : pricing;
+  const currency = market === "INTL" ? "USD" : "INR";
+  const customStartingPrice = formatMoney(activePricing.websiteSingleSetup, currency);
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 50);
     onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
@@ -372,9 +378,15 @@ function Index() {
         <div className="system-flow">{["ATTENTION", "CONTENT", "TRAFFIC", "LEADS", "SALES", "RETENTION", "AUTOMATION"].map((item, i) => <div key={item}><span>{String(i + 1).padStart(2, "0")}</span><strong>{item}</strong>{i < 6 && <b>↓</b>}</div>)}</div>
       </section>
 
-      <section className="pricing-section section-shell">
-        <p className="kicker">SCOPE / STRAIGHT TALK</p><h2>BUILD THE RIGHT SCOPE.<br /><span>THEN SEE THE ESTIMATE.</span></h2><p className="lead-copy">Every business needs a different mix. Choose the services you need, select a retainer length and get a working estimate before we talk.</p>
+      <section id="pricing" className="pricing-section section-shell">
+        <p className="kicker">PRICING / STRAIGHT TALK</p><h2>KNOW THE BUDGET.<br /><span>BEFORE THE SALES CALL.</span></h2><p className="lead-copy">Clear starting prices for the most common growth needs. For a different mix, build your scope below and choose the retainer length that works for you.</p>
         <div className="scope-benefits"><div><strong>CHOOSE WHAT FITS</strong><p>Pick the services, platforms and output that make sense for your business—not a forced package.</p></div><div><strong>LONGER RETAINERS SAVE MORE</strong><p>Choose 3, 6 or 12 months in the builder to receive a modest saving on ongoing services.</p></div><div><strong>CLEAR EXCLUSIONS</strong><p>Ad spend, travel, shoots, paid tools and complex production are scoped separately when needed.</p></div></div>
+        <div className="pricing-promises"><span><Check size={21} /> <b>NO LOCK-IN. EVER.</b></span><span><Check size={21} /> PAY MONTH-BY-MONTH IN ADVANCE</span><span><Check size={21} /> LOWER STARTING PRICES</span><span><Check size={21} /> AD SPEND + THIRD-PARTY TOOLS SEPARATE</span></div>
+        <div className="pricing-grid">
+          <PriceCard number="01" title="GAZAB STARTER" price={formatMoney(activePricing.starterMonthly, currency)} billing=" / MONTH" note="For businesses that need a consistent, professional social presence without a heavy retainer." items={["Growth plan + monthly content calendar", "2 social platforms managed", "8 posts / reels every month", "Captions, publishing + basic community care", "Google Business Profile setup + optimisation", "Monthly performance report + strategy call", "Complimentary Links DC page", "Monthly AI visibility report"]} cta="CHOOSE STARTER" />
+          <PriceCard number="02" title="FULL GAZAB" price={formatMoney(activePricing.fullMonthly, currency)} billing=" / MONTH" note="For businesses ready to connect content, search, paid growth and automation into one focused system." items={["Everything in Gazab Starter", "4 social platforms + 12 monthly content pieces", "Paid ads management for 1 platform", "SEO + AEO + GEO / AI visibility", "Monthly backlink outreach", "2 basic business automations", "Monthly website conversion review", "Advanced reporting + priority strategy"]} cta="CHOOSE FULL GAZAB" featured />
+          <PriceCard number="03" title="CUSTOM SCOPE" price={customStartingPrice} priceLabel="STARTING FROM" note="For websites, campaigns, automations or the precise service mix your business actually needs." items={["Websites and landing pages", "Custom AI and n8n systems", "Campaigns, content sprints and shoots", "Marketplace and lead operations", "One written scope before work starts", "Live estimate in the package builder below"]} cta="BUILD YOUR SCOPE" href="#build-package" />
+        </div>
         <aside className="barter-trial"><div><p className="kicker">10-DAY TRIAL / CASH OR BARTER</p><h3>TRY THE WORK.<br /><span>THEN DECIDE.</span></h3><p>A focused ten-day sprint for selected product-led businesses. We can discuss a cash fee or a pre-approved product or service exchange that suits the work.</p></div><div><strong>THE TRIAL INCLUDES</strong><ul><li><Check size={17} />One channel audit + quick-win plan</li><li><Check size={17} />One clearly defined ten-day objective</li><li><Check size={17} />Up to 3 content pieces or equivalent agreed work</li><li><Check size={17} />Publishing / implementation + end-of-trial recap</li></ul><small>Subject to fit and availability. Ad spend, travel, shoots, website builds and paid tools are excluded unless agreed in writing.</small><a href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%27d%20like%20to%20discuss%20the%2010-day%20cash%20or%20barter%20trial." target="_blank" rel="noreferrer">PROPOSE A 10-DAY TRIAL <ArrowUpRight size={18} /></a></div></aside>
       </section>
 
@@ -403,6 +415,32 @@ function Index() {
       <footer><div className="footer-main section-shell"><img className="footer-brand-banner" src="/brand/footer-brand-banner.png" alt="Gazab Ki Agency — Marketing, AI and Automation" /><nav>{nav.map(item => <a key={item} href={`#${item}`}>{item.replace("-", " ").toUpperCase()}</a>)}</nav></div><div className="footer-strip"><strong>GAZAB KI AGENCY BY AGHANIMS GROUP</strong><span>© 2026 Aghanims Group. All Rights Reserved.</span><span>Made with too much coffee & too many ideas.</span></div></footer>
     </main>
   );
+}
+
+function PriceCard({
+  number,
+  title,
+  price,
+  billing,
+  priceLabel = "STARTING AT",
+  note,
+  items,
+  cta,
+  href = "#contact",
+  featured = false,
+}: {
+  number: string;
+  title: string;
+  price: string;
+  billing?: string;
+  priceLabel?: string;
+  note: string;
+  items: string[];
+  cta: string;
+  href?: string;
+  featured?: boolean;
+}) {
+  return <article className={`price-card ${featured ? "featured" : ""}`}>{featured && <span className="popular">MOST POPULAR ✦</span>}<span className="price-number">PACKAGE {number}</span><h3>{title}</h3><span className="price-label">{priceLabel}</span><strong>{price}{billing && <small>{billing}</small>}</strong><p>{note}</p><ul>{items.map(item => <li key={item}><Check size={17} />{item}</li>)}</ul><a href={href}>{cta} <ArrowRight /></a></article>;
 }
 
 type TrackingConfig = { clarityProjectId: string; gaMeasurementId: string; metaPixelId: string };
