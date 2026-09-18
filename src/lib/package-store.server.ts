@@ -13,7 +13,7 @@ import {
 } from "./package-types";
 
 type Database = {
-  version: 8;
+  version: 9;
   pricing: ServicePricing;
   requests: PackageRequestRecord[];
 };
@@ -28,9 +28,9 @@ async function readDatabase(): Promise<Database> {
     const raw = await readFile(databasePath, "utf8");
     const parsed = JSON.parse(raw) as Partial<Database>;
     return {
-      version: 8,
+      version: 9,
       pricing:
-        parsed.version === 8
+        parsed.version === 9
           ? { ...DEFAULT_SERVICE_PRICING, ...(parsed.pricing || {}) }
           : DEFAULT_SERVICE_PRICING,
       requests: Array.isArray(parsed.requests) ? parsed.requests : [],
@@ -38,7 +38,7 @@ async function readDatabase(): Promise<Database> {
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT")
       console.error("Could not read package database", error);
-    return { version: 8, pricing: DEFAULT_SERVICE_PRICING, requests: [] };
+    return { version: 9, pricing: DEFAULT_SERVICE_PRICING, requests: [] };
   }
 }
 

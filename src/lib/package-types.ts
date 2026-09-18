@@ -38,62 +38,62 @@ export type ServicePricing = {
 };
 
 export const DEFAULT_SERVICE_PRICING: ServicePricing = {
-  // Fixed packages keep their original prices. BYOP rates are maintained
-  // independently so changing a custom service never changes a package.
-  starterMonthly: 14_999,
-  fullMonthly: 24_999,
-  websiteSingleSetup: 2_640,
-  websiteBusinessSetup: 2_640,
-  websiteEcommerceSetup: 5_280,
-  websiteBusinessExtraPageSetup: 660,
-  websiteEcommerceExtraPageSetup: 1_320,
+  // Public starting rates: retainers cover recurring work, while builds and
+  // custom systems remain separately scoped in the package builder.
+  starterMonthly: 24_999,
+  fullMonthly: 49_999,
+  websiteSingleSetup: 12_000,
+  websiteBusinessSetup: 25_000,
+  websiteEcommerceSetup: 45_000,
+  websiteBusinessExtraPageSetup: 3_000,
+  websiteEcommerceExtraPageSetup: 5_000,
   hostingFiveYearsSetup: 0,
-  websiteManagementMonthly: 1_188,
-  socialAccountSetup: 1_386,
-  socialAccountMonthly: 1_386,
-  content8Monthly: 1_782,
-  content12Monthly: 2_574,
-  content20Monthly: 4_158,
-  googleProfileSetup: 1_386,
-  googleProfileManagementMonthly: 1_386,
-  strategyReportingMonthly: 1_386,
-  automationBasicSetup: 2_772,
-  automationAdvancedSetup: 7_128,
-  adsPlatformMonthly: 2_772,
-  seoMonthly: 2_574,
-  aeoMonthly: 1_584,
-  geoMonthly: 1_980,
-  backlinksMonthly: 2_376,
-  marketplacePlatformMonthly: 1_980,
+  websiteManagementMonthly: 3_500,
+  socialAccountSetup: 2_500,
+  socialAccountMonthly: 5_000,
+  content8Monthly: 12_000,
+  content12Monthly: 18_000,
+  content20Monthly: 28_000,
+  googleProfileSetup: 4_000,
+  googleProfileManagementMonthly: 4_000,
+  strategyReportingMonthly: 6_000,
+  automationBasicSetup: 10_000,
+  automationAdvancedSetup: 30_000,
+  adsPlatformMonthly: 8_000,
+  seoMonthly: 12_000,
+  aeoMonthly: 8_000,
+  geoMonthly: 10_000,
+  backlinksMonthly: 8_000,
+  marketplacePlatformMonthly: 6_000,
 };
 
 // Deliberately rounded international rates: easy to understand and quote.
 export const INTERNATIONAL_SERVICE_PRICING: ServicePricing = {
-  starterMonthly: 199,
-  fullMonthly: 299,
-  websiteSingleSetup: 39,
-  websiteBusinessSetup: 39,
-  websiteEcommerceSetup: 65,
-  websiteBusinessExtraPageSetup: 13,
-  websiteEcommerceExtraPageSetup: 20,
+  starterMonthly: 399,
+  fullMonthly: 799,
+  websiteSingleSetup: 399,
+  websiteBusinessSetup: 799,
+  websiteEcommerceSetup: 1_499,
+  websiteBusinessExtraPageSetup: 149,
+  websiteEcommerceExtraPageSetup: 249,
   hostingFiveYearsSetup: 0,
-  websiteManagementMonthly: 65,
-  socialAccountSetup: 39,
-  socialAccountMonthly: 39,
-  content8Monthly: 65,
-  content12Monthly: 105,
-  content20Monthly: 171,
-  googleProfileSetup: 65,
-  googleProfileManagementMonthly: 65,
-  strategyReportingMonthly: 65,
-  automationBasicSetup: 131,
-  automationAdvancedSetup: 395,
-  adsPlatformMonthly: 131,
-  seoMonthly: 105,
-  aeoMonthly: 65,
-  geoMonthly: 105,
-  backlinksMonthly: 105,
-  marketplacePlatformMonthly: 65,
+  websiteManagementMonthly: 199,
+  socialAccountSetup: 99,
+  socialAccountMonthly: 199,
+  content8Monthly: 299,
+  content12Monthly: 449,
+  content20Monthly: 699,
+  googleProfileSetup: 149,
+  googleProfileManagementMonthly: 199,
+  strategyReportingMonthly: 199,
+  automationBasicSetup: 399,
+  automationAdvancedSetup: 1_499,
+  adsPlatformMonthly: 349,
+  seoMonthly: 399,
+  aeoMonthly: 249,
+  geoMonthly: 299,
+  backlinksMonthly: 249,
+  marketplacePlatformMonthly: 249,
 };
 
 export type PackageSelection = {
@@ -192,12 +192,7 @@ export const AUTOMATION_TYPE_LABELS = automationTypeLabels;
 
 function getMatchedPackage(selection: PackageSelection, pricing: ServicePricing) {
   const sharedPackageServices =
-    selection.websiteEnabled &&
-    selection.websiteService === "new" &&
-    selection.websiteType === "business" &&
-    selection.websitePages === 5 &&
-    selection.hostingFiveYears &&
-    selection.websiteManagement &&
+    !selection.websiteEnabled &&
     selection.socialEnabled &&
     selection.socialService === "management" &&
     selection.googleProfile &&

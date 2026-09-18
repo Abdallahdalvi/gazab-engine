@@ -36,14 +36,70 @@ const countryOptions = [
   ["NZ", "New Zealand — USD ($)"], ["ZA", "South Africa — USD ($)"], ["OTHER", "Other country — USD ($)"],
 ] as const;
 const services = [
-  ["01", "SOCIAL MEDIA", "Content calendars, reels, posts, community management and growth strategy.", "✦"],
-  ["02", "CONTENT THAT HITS", "Creative concepts, short-form video, graphics and campaign creatives.", "↗"],
-  ["03", "PAID ADS", "Meta Ads, lead generation, retargeting and creative testing.", "◎"],
-  ["04", "LEAD GENERATION", "IndiaMART, landing pages, social campaigns and conversion systems.", "⚡"],
-  ["05", "WEBSITE & DIGITAL", "Website strategy, development, management, maintenance and conversion improvements.", "◒"],
-  ["06", "AI + AUTOMATION", "n8n workflows, AI tools, reporting, lead handling and custom business systems.", "✳"],
-  ["07", "MARKETPLACE GROWTH", "IndiaMART, Facebook, OLX, Amazon, Flipkart and listing optimisation.", "＋"],
-  ["08", "GOOGLE PRESENCE", "Business Profile, reviews, reputation and local discoverability.", "★"],
+  {
+    number: "01",
+    title: "SOCIAL MEDIA",
+    copy: "A consistent, brand-led presence that turns everyday expertise into attention and trust.",
+    icon: "✦",
+    outcome: "PRESENCE → ENGAGEMENT → DEMAND",
+    includes: ["Profile audit and optimisation", "Monthly strategy and content calendar", "Captions, design, reels and publishing", "Community management and reporting"],
+  },
+  {
+    number: "02",
+    title: "CONTENT & CREATIVE",
+    copy: "Campaign ideas and repeatable creative formats built for how people actually consume content.",
+    icon: "↗",
+    outcome: "IDEAS → ASSETS → ATTENTION",
+    includes: ["Brand messaging and campaign concepts", "Scripts and short-form video", "Static, carousel and campaign design", "Content repurposing across channels"],
+  },
+  {
+    number: "03",
+    title: "PAID ADS & PERFORMANCE",
+    copy: "Measured campaigns across Meta, Google and LinkedIn—built around leads, sales and learning.",
+    icon: "◎",
+    outcome: "SPEND → QUALIFIED LEADS → ROAS",
+    includes: ["Audience, offer and tracking setup", "Campaign structure and launch", "Creative and audience testing", "Optimisation and performance reporting"],
+  },
+  {
+    number: "04",
+    title: "LEAD GENERATION",
+    copy: "A complete path from first click to organised follow-up, not a spreadsheet of cold names.",
+    icon: "⚡",
+    outcome: "TRAFFIC → LEADS → FOLLOW-UP",
+    includes: ["Landing pages and conversion forms", "Lead magnets and campaign offers", "IndiaMART and social lead systems", "CRM routing, alerts and lead reporting"],
+  },
+  {
+    number: "05",
+    title: "WEBSITES & COMMERCE",
+    copy: "Fast, responsive websites that explain the offer clearly and make the next step obvious.",
+    icon: "◒",
+    outcome: "VISITS → TRUST → CONVERSION",
+    includes: ["Strategy, sitemap and conversion journeys", "Responsive UI and development", "Business, WordPress and e-commerce builds", "Maintenance, analytics and improvements"],
+  },
+  {
+    number: "06",
+    title: "AI + AUTOMATION",
+    copy: "Practical AI and n8n workflows that remove repetitive work from real business operations.",
+    icon: "✳",
+    outcome: "REPETITION → SYSTEM → TIME BACK",
+    includes: ["Workflow discovery and solution design", "n8n integrations and AI workflows", "Lead routing, reporting and content systems", "Testing, documentation and handover"],
+  },
+  {
+    number: "07",
+    title: "MARKETPLACE GROWTH",
+    copy: "Better listings and smoother enquiry operations across the marketplaces your buyers use.",
+    icon: "＋",
+    outcome: "LISTINGS → DISCOVERY → ENQUIRIES",
+    includes: ["Account and catalogue audit", "Listing creation and keyword optimisation", "IndiaMART, Amazon, Flipkart, OLX and more", "Enquiry workflows and performance reporting"],
+  },
+  {
+    number: "08",
+    title: "SEARCH + LOCAL VISIBILITY",
+    copy: "Make the business easier to find, understand and trust across search and AI answers.",
+    icon: "★",
+    outcome: "SEARCH → DISCOVERY → TRUST",
+    includes: ["Google Business Profile setup and care", "Technical and on-page SEO", "AEO, GEO and AI visibility monitoring", "Reviews, reputation and visibility reporting"],
+  },
 ];
 const stats = [
   { value: "100M+", label: "COMBINED ORGANIC REACH", detail: "Across managed client channels" },
@@ -62,7 +118,7 @@ const resultProofs = [
 const cases = [
   {
     brand: "UBIQEDGE",
-    copy: "LinkedIn followers grew 1,239 → 4,416 (+256.4%), with 99.9% of new followers acquired organically.",
+    copy: "LinkedIn followers grew 1,252 → 4,456 (+255.9%), with 99.8% of new followers acquired organically.",
     discipline: "B2B LINKEDIN",
     href: "/case-studies/ubiqedge",
   },
@@ -187,6 +243,9 @@ function Index() {
   const [selectedCountry, setSelectedCountry] = useState("IN");
   const [market, setMarket] = useState<PricingMarket>("IN");
   const activePricing = market === "INTL" ? INTERNATIONAL_SERVICE_PRICING : pricing;
+  const currency = market === "INTL" ? "USD" : "INR";
+  const trialValue = formatMoney(market === "INTL" ? 149 : 12_000, currency);
+  const customStartingPrice = `${formatMoney(market === "INTL" ? 149 : 12_000, currency)}+`;
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 50);
     onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
@@ -249,7 +308,7 @@ function Index() {
       <section id="services" className="section-shell cream-section">
         <div className="section-heading"><span className="section-number">02</span><div><p className="kicker">WHAT WE DO / WHAT MATTERS</p><h2>BUILD A BUSINESS.<br /><span>MAKE IT GAZAB.</span></h2></div></div>
         <p className="lead-copy">We don't just post content and call it marketing. We build the digital systems around your business — from attention and content to leads, websites and automation.</p>
-        <div className="services-grid">{services.map(([n, title, copy, icon], i) => <article className={`service-card service-${i + 1}`} key={title}><div className="service-top"><span>{n}</span><b>{icon}</b></div><h3>{title}</h3><p>{copy}</p><span className="card-arrow">↗</span></article>)}</div>
+        <div className="services-grid">{services.map(({ number, title, copy, icon, outcome, includes }, i) => <details className={`service-card service-${i + 1}`} key={title}><summary><div className="service-top"><span>{number}</span><b>{icon}</b></div><h3>{title}</h3><p>{copy}</p><strong className="service-outcome">{outcome}</strong><span className="service-expand">SEE WHAT'S INCLUDED <b>＋</b></span></summary><div className="service-details"><ul>{includes.map(item => <li key={item}><Check size={16} />{item}</li>)}</ul><a href="#contact">DISCUSS THIS SERVICE <ArrowRight size={17} /></a></div></details>)}</div>
       </section>
 
       <section id="results" className="black-section section-shell">
@@ -317,14 +376,16 @@ function Index() {
       </section>
 
       <section id="pricing" className="pricing-section section-shell">
-        <p className="kicker">PRICING / STRAIGHT TALK</p><h2>WHAT DOES IT <span>COST?</span></h2><p className="lead-copy">Clear packages, India-first pricing and no confusing 17-page document.</p>
-        <p className="country-pricing-status">Prices below are shown for <b>{selectedCountryLabel}</b>. Change country from the selector beside the top CTA.</p>
-        <div className="pricing-promises"><span><Check size={21} /> <b>NO LOCK-IN. EVER.</b></span><span><Check size={21} /> PAY MONTH-BY-MONTH IN ADVANCE</span><span><Check size={21} /> FREE 5-YEAR HOSTING</span><span><Check size={21} /> FREE LINKS DC + MONTHLY AI VISIBILITY REPORT</span></div>
+        <p className="kicker">PRICING / STRAIGHT TALK</p><h2>KNOW THE BUDGET.<br /><span>BEFORE THE SALES CALL.</span></h2><p className="lead-copy">We prefer transparent starting prices too. You get a realistic budget now; the final quote changes only when your scope, production or technology needs change.</p>
+        <p className="country-pricing-status">Transparent starting prices shown for <b>{selectedCountryLabel}</b>. Change country from the selector beside the top CTA.</p>
+        <div className="pricing-clarity"><div><strong>WHAT THE PRICE INCLUDES</strong><p>Strategy, agreed deliverables, execution, project management and reporting—not just scheduled posts.</p></div><div><strong>WHAT CHANGES THE QUOTE</strong><p>Shoot days, ad spend, travel, creators, paid tools, complex integrations and unusually high production volume.</p></div><div><strong>WHAT STAYS SEPARATE</strong><p>One-time builds such as new websites and advanced automations are priced clearly in the custom builder below.</p></div></div>
+        <div className="pricing-promises"><span><Check size={21} /> <b>NO LOCK-IN. EVER.</b></span><span><Check size={21} /> PAY MONTH-BY-MONTH IN ADVANCE</span><span><Check size={21} /> PUBLIC STARTING PRICES</span><span><Check size={21} /> AD SPEND + THIRD-PARTY TOOLS SEPARATE</span></div>
         <div className="pricing-grid">
-          <PriceCard number="01" title="GAZAB STARTER" price={formatMoney(activePricing.starterMonthly, market === "INTL" ? "USD" : "INR")} billing=" / MONTH" note="The complete digital foundation for a new business or startup that wants us to handle the essentials." items={["Business website setup + development", "FREE hosting for 5 years", "Ongoing website management", "2 social accounts: setup, optimisation + management", "8 posts / reels every month", "Google Business Profile setup + optimisation", "Monthly strategy + performance report", "2 strategy calls every month", "Complimentary Links DC page", "FREE monthly AI visibility report"]} cta="CHOOSE STARTER" />
-          <PriceCard number="02" title="FULL GAZAB" price={formatMoney(activePricing.fullMonthly, market === "INTL" ? "USD" : "INR")} billing=" / MONTH" note="The done-for-you growth package for businesses that want visibility, leads and systems without managing multiple vendors." items={["Everything in Gazab Starter", "12 posts / reels every month", "4 social accounts managed", "Website SEO", "AEO + GEO / AI visibility", "Monthly backlink building", "2 basic business automations", "Paid ads management", "Advanced analysis + reporting", "Priority strategy support"]} cta="CHOOSE FULL GAZAB" featured />
-          <PriceCard number="03" title="CUSTOM GAZAB" price="CUSTOM" note="For businesses with a specific scope, unusual workflow or a combination that does not fit a standard package." items={["Tailored strategy and scope", "Custom AI and n8n systems", "Website, content and ads as needed", "Marketplace operations", "One clear proposal", "Built around your team and tools"]} cta="LET'S SCOPE IT" />
+          <PriceCard number="01" title="GAZAB STARTER" price={formatMoney(activePricing.starterMonthly, currency)} billing=" / MONTH" note="For a growing business that needs consistent content, active channels and clear monthly direction." items={["Growth plan + monthly content calendar", "2 social platforms managed", "8 posts / reels every month", "Captions, publishing + basic community care", "Google Business Profile setup + optimisation", "Monthly performance report + strategy call", "Complimentary Links DC page", "FREE monthly AI visibility report"]} cta="CHOOSE STARTER" />
+          <PriceCard number="02" title="FULL GAZAB" price={formatMoney(activePricing.fullMonthly, currency)} billing=" / MONTH" note="For a business ready to connect content, search, paid growth and automation into one system." items={["Everything in Gazab Starter", "4 social platforms + 12 monthly content pieces", "Paid ads management for 1 platform", "SEO + AEO + GEO / AI visibility", "Monthly backlink outreach", "2 basic business automations", "Monthly website conversion review", "Advanced reporting + priority strategy"]} cta="CHOOSE FULL GAZAB" featured />
+          <PriceCard number="03" title="CUSTOM / ONE-OFF" price={customStartingPrice} priceLabel="SCOPED FROM" note="For websites, campaigns, automations or a precise mix of services that should not be forced into a retainer." items={["Business websites from the public builder rate", "Custom AI and n8n systems", "Campaigns, content sprints and shoots", "Marketplace and lead operations", "One written scope before work starts", "Live estimate in the package builder below"]} cta="BUILD YOUR PACKAGE" href="#build-package" />
         </div>
+        <aside className="barter-trial"><div><p className="kicker">10-DAY TRIAL / CASH OR BARTER</p><h3>TRY THE WORK.<br /><span>THEN DECIDE.</span></h3><p>A focused ten-day sprint for selected product-led businesses. Pay <b>{trialValue}</b> or offer a pre-approved new product or service of equal retail value. One electronics brand, for example, exchanged a brand-new phone worth roughly ₹10–12K for a ten-day engagement.</p></div><div><strong>THE TRIAL INCLUDES</strong><ul><li><Check size={17} />One channel audit + quick-win plan</li><li><Check size={17} />One clearly defined ten-day objective</li><li><Check size={17} />Up to 3 content pieces or equivalent agreed work</li><li><Check size={17} />Publishing / implementation + end-of-trial recap</li></ul><small>One trial per company. Subject to fit and availability. Ad spend, travel, shoots, website builds and paid tools are excluded unless written into the barter agreement.</small><a href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%27d%20like%20to%20discuss%20the%2010-day%20cash%20or%20barter%20trial." target="_blank" rel="noreferrer">PROPOSE A 10-DAY TRIAL <ArrowUpRight size={18} /></a></div></aside>
       </section>
 
       <PackageBuilder pricing={activePricing} market={market} countryLabel={selectedCountryLabel} />
@@ -344,7 +405,7 @@ function Index() {
 
       <section id="contact" className="contact-section section-shell">
         <div className="contact-info"><p className="kicker">NO CORPORATE JARGON REQUIRED.</p><h2>LET'S<br /><span>TALK.</span></h2><a href="mailto:dalviabdallah76@gmail.com">dalviabdallah76@gmail.com ↗</a><a href="tel:+917400239134">+91 74002 39134 ↗</a><a href="https://www.linkedin.com/in/abdallahdalvi" target="_blank" rel="noreferrer">LINKEDIN ↗</a><span className="social-pending">INSTAGRAM — LINK COMING SOON</span></div>
-        <form onSubmit={submit} className="contact-form"><div className="form-row"><label>NAME<input name="name" required maxLength={100} /></label><label>COMPANY<input name="company" maxLength={100} /></label></div><div className="form-row"><label>EMAIL<input name="email" type="email" required maxLength={255} /></label><label>PHONE<input name="phone" type="tel" maxLength={20} /></label></div><div className="form-row"><label>WHAT DO YOU NEED?<select name="need" required defaultValue=""><option value="" disabled>Choose a service</option><option>Social media</option><option>Content & reels</option><option>Paid ads & leads</option><option>Website development & management</option><option>n8n automation</option><option>Custom AI tool or app</option><option>AI visibility / GEO</option><option>Full Gazab</option></select></label><label>BUDGET<select name="budget" required defaultValue=""><option value="" disabled>Pick a range</option>{market === "IN" ? <><option>₹5K–₹15K / month</option><option>₹15K–₹30K / month</option><option>₹30K+ / month</option></> : <><option>$99–$299 / month</option><option>$299–$599 / month</option><option>$599+ / month</option></>}<option>Let's discuss</option></select></label></div><label>MESSAGE<textarea name="message" required maxLength={1500} rows={4} /></label><button className="form-submit" type="submit">START THE CONVERSATION <ArrowRight /></button></form>
+        <form onSubmit={submit} className="contact-form"><div className="form-row"><label>NAME<input name="name" required maxLength={100} /></label><label>COMPANY<input name="company" maxLength={100} /></label></div><div className="form-row"><label>EMAIL<input name="email" type="email" required maxLength={255} /></label><label>PHONE<input name="phone" type="tel" maxLength={20} /></label></div><div className="form-row"><label>WHAT DO YOU NEED?<select name="need" required defaultValue=""><option value="" disabled>Choose a service</option><option>10-day cash / barter trial</option><option>Social media</option><option>Content & reels</option><option>Paid ads & leads</option><option>Website development & management</option><option>n8n automation</option><option>Custom AI tool or app</option><option>AI visibility / GEO</option><option>Full Gazab</option></select></label><label>BUDGET<select name="budget" required defaultValue=""><option value="" disabled>Pick a range</option>{market === "IN" ? <><option>₹10K–₹25K</option><option>₹25K–₹50K / month</option><option>₹50K–₹1L / month</option><option>₹1L+ / month</option><option>Equivalent-value barter</option></> : <><option>$149–$399</option><option>$399–$799 / month</option><option>$799–$1,499 / month</option><option>$1,500+ / month</option><option>Equivalent-value barter</option></>}<option>Let's discuss</option></select></label></div><label>MESSAGE<textarea name="message" required maxLength={1500} rows={4} /></label><button className="form-submit" type="submit">START THE CONVERSATION <ArrowRight /></button></form>
       </section>
 
       <a className="whatsapp-widget" href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%20want%20to%20discuss%20a%20Gazab%20package." target="_blank" rel="noreferrer" aria-label="Chat with Gazab Ki Agency on WhatsApp"><img src="/brand/whatsapp-icon.png" alt="" /><span><small>QUICK QUESTION?</small>CHAT ON WHATSAPP</span></a>
@@ -354,8 +415,8 @@ function Index() {
   );
 }
 
-function PriceCard({ number, title, price, billing, note, items, cta, href = "#contact", featured = false }: { number: string; title: string; price: string; billing?: string; note: string; items: string[]; cta: string; href?: string; featured?: boolean }) {
-  return <article className={`price-card ${featured ? "featured" : ""}`}>{featured && <span className="popular">MOST POPULAR ✦</span>}<span className="price-number">PACKAGE {number}</span><h3>{title}</h3><strong>{price}{billing && <small>{billing}</small>}</strong><p>{note}</p><ul>{items.map(item => <li key={item}><Check size={17} />{item}</li>)}</ul><a href={href}>{cta} <ArrowRight /></a></article>;
+function PriceCard({ number, title, price, billing, priceLabel = "STARTING AT", note, items, cta, href = "#contact", featured = false }: { number: string; title: string; price: string; billing?: string; priceLabel?: string; note: string; items: string[]; cta: string; href?: string; featured?: boolean }) {
+  return <article className={`price-card ${featured ? "featured" : ""}`}>{featured && <span className="popular">MOST POPULAR ✦</span>}<span className="price-number">PACKAGE {number}</span><h3>{title}</h3><span className="price-label">{priceLabel}</span><strong>{price}{billing && <small>{billing}</small>}</strong><p>{note}</p><ul>{items.map(item => <li key={item}><Check size={17} />{item}</li>)}</ul><a href={href}>{cta} <ArrowRight /></a></article>;
 }
 
 type TrackingConfig = { clarityProjectId: string; gaMeasurementId: string; metaPixelId: string };
