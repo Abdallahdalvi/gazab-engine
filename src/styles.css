@@ -355,3 +355,8 @@ img,svg{max-width:100%}
   .package-request-form{padding-top:1.25rem}
   .package-request-form h4{font-size:1.2rem;margin-bottom:1rem}
 }
+
+/* The outlined hero headline needs a little extra optical space before its copy. */
+.hero-copy p{margin-top:1.7rem}
+@media (min-width:641px) and (max-width:1050px){.hero-copy p{margin-top:1.75rem}}
+@media (max-width:640px){.hero-copy p{margin-top:1.45rem}}
