@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Menu, X } from "lucide-react";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 
-import { PackageBuilder } from "../components/package-builder";
 import { getPublicPricing, getPublicTrackingConfig } from "../lib/package-actions";
 import {
   formatMoney,
@@ -267,7 +266,6 @@ function Index() {
     setSelectedCountry(country);
     setMarket(country === "IN" ? "IN" : "INTL");
   };
-  const selectedCountryLabel = countryOptions.find(([code]) => code === selectedCountry)?.[1] || "Other country — USD ($)";
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -307,10 +305,17 @@ function Index() {
         </div>
       </section>
       <div className="marquee"><div>SOCIAL MEDIA • CONTENT • ADS • AI • AUTOMATION • WEBSITES • LEADS • GROWTH • SOCIAL MEDIA • CONTENT • ADS • AI • AUTOMATION • WEBSITES • LEADS • GROWTH •</div></div>
+      <nav className="start-here section-shell" aria-label="Find what you need">
+        <span>START HERE ↘</span>
+        <a href="#services"><strong>NEED A SERVICE?</strong><small>Explore what we do</small><ArrowUpRight size={20} /></a>
+        <a href="#work"><strong>WANT PROOF?</strong><small>See the work</small><ArrowUpRight size={20} /></a>
+        <a href="#pricing"><strong>HAVE A BUDGET?</strong><small>Check starting prices</small><ArrowUpRight size={20} /></a>
+      </nav>
 
       <section id="services" className="section-shell cream-section">
         <div className="section-heading"><span className="section-number">02</span><div><p className="kicker">WHAT WE DO / WHAT MATTERS</p><h2>BUILD A BUSINESS.<br /><span>MAKE IT GAZAB.</span></h2></div></div>
         <p className="lead-copy">We don't just post content and call it marketing. We build the digital systems around your business — from attention and content to leads, websites and automation.</p>
+        <p className="mobile-swipe-hint">SWIPE TO EXPLORE ALL 8 SERVICES →</p>
         <div className="services-grid">{services.map(({ number, title, copy, icon, outcome, includes }, i) => <details className={`service-card service-${i + 1}`} key={title}><summary><div className="service-top"><span>{number}</span><b>{icon}</b></div><h3>{title}</h3><p>{copy}</p><strong className="service-outcome">{outcome}</strong><span className="service-expand">SEE WHAT'S INCLUDED <b>＋</b></span></summary><div className="service-details"><ul>{includes.map(item => <li key={item}><Check size={16} />{item}</li>)}</ul><a href="#contact">DISCUSS THIS SERVICE <ArrowRight size={17} /></a></div></details>)}</div>
       </section>
 
@@ -360,6 +365,7 @@ function Index() {
 
       <section id="work" className="work-section">
         <div className="section-shell work-head"><p className="kicker">SELECTED WORK / TAKE A LOOK →</p><h2>SEE THE WORK.<br /><span>THEN LET'S TALK.</span></h2></div>
+        <p className="mobile-swipe-hint section-shell">SWIPE TO EXPLORE THE PROJECTS →</p>
         <div className="case-scroll">{cases.map(({ brand, copy, discipline, ...item }, i) => {
           const content = <><div className={`case-image case-visual case-visual-${i + 1}`}><span>0{i + 1} / {discipline}</span><strong>{brand}</strong><b>GAZAB / WORK ↗</b></div><div className="case-copy"><span>0{i + 1} / CASE STUDY</span><h3>{brand}</h3><p>{copy}</p><b>{"href" in item ? "READ THE CASE STUDY" : "FULL CASE STUDY COMING SOON"} <ArrowUpRight /></b></div></>;
           return "href" in item
@@ -379,18 +385,15 @@ function Index() {
       </section>
 
       <section id="pricing" className="pricing-section section-shell">
-        <p className="kicker">PRICING / STRAIGHT TALK</p><h2>KNOW THE BUDGET.<br /><span>BEFORE THE SALES CALL.</span></h2><p className="lead-copy">Clear starting prices for the most common growth needs. For a different mix, build your scope below and choose the retainer length that works for you.</p>
-        <div className="scope-benefits"><div><strong>CHOOSE WHAT FITS</strong><p>Pick the services, platforms and output that make sense for your business—not a forced package.</p></div><div><strong>LONGER RETAINERS SAVE MORE</strong><p>Choose 3, 6 or 12 months in the builder to receive a modest saving on ongoing services.</p></div><div><strong>CLEAR EXCLUSIONS</strong><p>Ad spend, travel, shoots, paid tools and complex production are scoped separately when needed.</p></div></div>
-        <div className="pricing-promises"><span><Check size={21} /> <b>NO LOCK-IN. EVER.</b></span><span><Check size={21} /> PAY MONTH-BY-MONTH IN ADVANCE</span><span><Check size={21} /> LOWER STARTING PRICES</span><span><Check size={21} /> AD SPEND + THIRD-PARTY TOOLS SEPARATE</span></div>
+        <p className="kicker">PRICING / STRAIGHT TALK</p><h2>KNOW THE BUDGET.<br /><span>BEFORE THE SALES CALL.</span></h2><p className="lead-copy">Three clear starting points. Choose a package or tell us the exact mix you need; we’ll confirm the deliverables and price in writing.</p>
+        <div className="scope-benefits"><div><strong>MONTH-TO-MONTH OR LONGER</strong><p>Choose a 1, 3, 6 or 12-month term. Longer commitments can reduce the price of ongoing services.</p></div><div><strong>NO SURPRISE SCOPE</strong><p>Platforms, deliverables and reporting are agreed before work starts.</p></div><div><strong>WHAT’S SEPARATE</strong><p>Ad spend, travel, shoots and paid tools are quoted separately when needed.</p></div></div>
         <div className="pricing-grid">
-          <PriceCard number="01" title="GAZAB STARTER" price={formatMoney(activePricing.starterMonthly, currency)} billing=" / MONTH" note="For businesses that need a consistent, professional social presence without a heavy retainer." items={["Growth plan + monthly content calendar", "2 social platforms managed", "8 posts / reels every month", "Captions, publishing + basic community care", "Google Business Profile setup + optimisation", "Monthly performance report + strategy call", "Complimentary Links DC page", "Monthly AI visibility report"]} cta="CHOOSE STARTER" />
-          <PriceCard number="02" title="FULL GAZAB" price={formatMoney(activePricing.fullMonthly, currency)} billing=" / MONTH" note="For businesses ready to connect content, search, paid growth and automation into one focused system." items={["Everything in Gazab Starter", "4 social platforms + 12 monthly content pieces", "Paid ads management for 1 platform", "SEO + AEO + GEO / AI visibility", "Monthly backlink outreach", "2 basic business automations", "Monthly website conversion review", "Advanced reporting + priority strategy"]} cta="CHOOSE FULL GAZAB" featured />
-          <PriceCard number="03" title="CUSTOM SCOPE" price={customStartingPrice} priceLabel="STARTING FROM" note="For websites, campaigns, automations or the precise service mix your business actually needs." items={["Websites and landing pages", "Custom AI and n8n systems", "Campaigns, content sprints and shoots", "Marketplace and lead operations", "One written scope before work starts", "Live estimate in the package builder below"]} cta="BUILD YOUR SCOPE" href="#build-package" />
+          <PriceCard number="01" title="GAZAB STARTER" price={formatMoney(activePricing.starterMonthly, currency)} billing=" / MONTH" note="A consistent, professional social presence for a growing business." items={["2 social platforms managed", "8 posts or reels each month", "Calendar, captions and publishing", "Google Business Profile setup", "Monthly report and strategy call"]} cta="ASK ABOUT STARTER" />
+          <PriceCard number="02" title="FULL GAZAB" price={formatMoney(activePricing.fullMonthly, currency)} billing=" / MONTH" note="Content, paid growth and automation working together." items={["Everything in Starter", "4 platforms and 12 content pieces", "Paid ads management on 1 platform", "SEO and AI visibility work", "2 basic automations and advanced reporting"]} cta="ASK ABOUT FULL GAZAB" featured />
+          <PriceCard number="03" title="CUSTOM SCOPE" price={customStartingPrice} priceLabel="SINGLE-PAGE WEBSITES FROM" note="A tailored quote for your exact website, campaign or automation brief." items={["Websites and landing pages", "AI and n8n automations", "Content or campaign sprints", "Marketplace and lead operations", "Written deliverables before we begin"]} cta="DISCUSS YOUR SCOPE" />
         </div>
         <aside className="barter-trial"><div><p className="kicker">10-DAY TRIAL / CASH OR BARTER</p><h3>TRY THE WORK.<br /><span>THEN DECIDE.</span></h3><p>A focused ten-day sprint for selected product-led businesses. We can discuss a cash fee or a pre-approved product or service exchange that suits the work.</p></div><div><strong>THE TRIAL INCLUDES</strong><ul><li><Check size={17} />One channel audit + quick-win plan</li><li><Check size={17} />One clearly defined ten-day objective</li><li><Check size={17} />Up to 3 content pieces or equivalent agreed work</li><li><Check size={17} />Publishing / implementation + end-of-trial recap</li></ul><small>Subject to fit and availability. Ad spend, travel, shoots, website builds and paid tools are excluded unless agreed in writing.</small><a href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%27d%20like%20to%20discuss%20the%2010-day%20cash%20or%20barter%20trial." target="_blank" rel="noreferrer">PROPOSE A 10-DAY TRIAL <ArrowUpRight size={18} /></a></div></aside>
       </section>
-
-      <PackageBuilder pricing={activePricing} market={market} countryLabel={selectedCountryLabel} />
 
       <section className="why-section section-shell">
         <p className="kicker">WHY US?</p><h2>WHY <span>GAZAB?</span></h2>
@@ -407,7 +410,7 @@ function Index() {
 
       <section id="contact" className="contact-section section-shell">
         <div className="contact-info"><p className="kicker">NO CORPORATE JARGON REQUIRED.</p><h2>LET'S<br /><span>TALK.</span></h2><a href="mailto:dalviabdallah76@gmail.com">dalviabdallah76@gmail.com ↗</a><a href="tel:+917400239134">+91 74002 39134 ↗</a><a href="https://www.linkedin.com/in/abdallahdalvi" target="_blank" rel="noreferrer">LINKEDIN ↗</a><span className="social-pending">INSTAGRAM — LINK COMING SOON</span></div>
-        <form onSubmit={submit} className="contact-form"><div className="form-row"><label>NAME<input name="name" required maxLength={100} /></label><label>COMPANY<input name="company" maxLength={100} /></label></div><div className="form-row"><label>EMAIL<input name="email" type="email" required maxLength={255} /></label><label>PHONE<input name="phone" type="tel" maxLength={20} /></label></div><div className="form-row"><label>WHAT DO YOU NEED?<select name="need" required defaultValue=""><option value="" disabled>Choose a service</option><option>10-day cash / barter trial</option><option>Social media</option><option>Content & reels</option><option>Paid ads & leads</option><option>Website development & management</option><option>n8n automation</option><option>Custom AI tool or app</option><option>AI visibility / GEO</option><option>Full Gazab</option></select></label><label>BUDGET<select name="budget" required defaultValue=""><option value="" disabled>Pick a range</option>{market === "IN" ? <><option>₹10K–₹25K</option><option>₹25K–₹50K / month</option><option>₹50K–₹1L / month</option><option>₹1L+ / month</option><option>Equivalent-value barter</option></> : <><option>$149–$399</option><option>$399–$799 / month</option><option>$799–$1,499 / month</option><option>$1,500+ / month</option><option>Equivalent-value barter</option></>}<option>Let's discuss</option></select></label></div><label>MESSAGE<textarea name="message" required maxLength={1500} rows={4} /></label><button className="form-submit" type="submit">START THE CONVERSATION <ArrowRight /></button></form>
+        <form onSubmit={submit} className="contact-form"><div className="form-row"><label>NAME<input name="name" required maxLength={100} /></label><label>COMPANY<input name="company" maxLength={100} /></label></div><div className="form-row"><label>EMAIL<input name="email" type="email" required maxLength={255} /></label><label>PHONE<input name="phone" type="tel" maxLength={20} /></label></div><div className="form-row"><label>WHAT DO YOU NEED?<select name="need" required defaultValue=""><option value="" disabled>Choose a service</option><option>Gazab Starter</option><option>Full Gazab</option><option>Custom scope</option><option>10-day cash / barter trial</option><option>Social media</option><option>Content & reels</option><option>Paid ads & leads</option><option>Website development & management</option><option>n8n automation</option><option>Custom AI tool or app</option><option>AI visibility / GEO</option></select></label><label>BUDGET<select name="budget" required defaultValue=""><option value="" disabled>Pick a range</option>{market === "IN" ? <><option>Under ₹10K / specific project</option><option>₹10K–₹25K</option><option>₹25K–₹50K / month</option><option>₹50K–₹1L / month</option><option>₹1L+ / month</option><option>Equivalent-value barter</option></> : <><option>Under $149 / specific project</option><option>$149–$399</option><option>$399–$799 / month</option><option>$799–$1,499 / month</option><option>$1,500+ / month</option><option>Equivalent-value barter</option></>}<option>Let's discuss</option></select></label></div><label>MESSAGE<textarea name="message" required maxLength={1500} rows={4} /></label><button className="form-submit" type="submit">START THE CONVERSATION <ArrowRight /></button></form>
       </section>
 
       <a className="whatsapp-widget" href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%20want%20to%20discuss%20a%20Gazab%20package." target="_blank" rel="noreferrer" aria-label="Chat with Gazab Ki Agency on WhatsApp"><img src="/brand/whatsapp-icon.png" alt="" /><span><small>QUICK QUESTION?</small>CHAT ON WHATSAPP</span></a>

@@ -358,6 +358,23 @@ img,svg{max-width:100%}
 
 /* The outlined hero headline needs a little extra optical space before its copy. */
 .hero-copy p{margin-top:1.7rem}
+
+/* Give visitors three clear routes into a content-rich homepage. */
+.start-here{display:grid;grid-template-columns:minmax(120px,.55fr) repeat(3,minmax(0,1fr));align-items:stretch;gap:.75rem;padding-top:1rem;padding-bottom:1rem;background:var(--cream);border-bottom:3px solid var(--ink)}
+.start-here>span{align-self:center;font-family:"Archivo Black";font-size:.78rem}
+.start-here>a{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;gap:.2rem .5rem;padding:.75rem .9rem;border:2px solid var(--ink);background:#fff;color:var(--ink)}
+.start-here>a strong{font-size:.75rem;font-weight:950}
+.start-here>a small{grid-column:1;font-size:.75rem;line-height:1.25}
+.start-here>a svg{grid-column:2;grid-row:1/3;align-self:center}
+.start-here>a:hover,.start-here>a:focus-visible{background:var(--orange)}
+.mobile-swipe-hint{display:none}
+.pricing-section .scope-benefits{margin-bottom:2.25rem}
+.pricing-section .price-card h3{margin:1.1rem 0}
+.pricing-section .price-card>p{min-height:0;margin:1rem 0;line-height:1.5}
+.pricing-section .price-card ul{margin-top:.5rem}
+.pricing-section .price-card>a{margin-top:1rem}
+@media (max-width:1050px){.start-here{grid-template-columns:repeat(3,minmax(0,1fr))}.start-here>span{grid-column:1/-1}.start-here>a{padding:.75rem}}
+@media (max-width:640px){.start-here{grid-template-columns:1fr;gap:.5rem}.start-here>span{grid-column:auto}.start-here>a{padding:.65rem .8rem}.mobile-swipe-hint{display:block;margin:.25rem 0 .2rem;font-size:.7rem;font-weight:900;letter-spacing:.04em}.work-section>.mobile-swipe-hint{margin-bottom:0}}
 @media (min-width:641px) and (max-width:1050px){.hero-copy p{margin-top:1.75rem}}
 @media (max-width:640px){.hero-copy p{margin-top:1.45rem}}
 
