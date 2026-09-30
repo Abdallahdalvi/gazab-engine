@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, Check, Menu, X } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 
+import { WhatsAppFloat } from "../components/whatsapp-float";
 import homeCss from "../homepage.css?url";
+import whatsappFloatCss from "../whatsapp-float.css?url";
 import { getPublicPricing, getPublicTrackingConfig } from "../lib/package-actions";
 import {
   formatMoney,
@@ -31,6 +33,7 @@ export const Route = createFileRoute("/")({
     links: [
       { rel: "canonical", href: "/" },
       { rel: "stylesheet", href: homeCss },
+      { rel: "stylesheet", href: whatsappFloatCss },
     ],
   }),
   loader: async () => {
@@ -857,6 +860,7 @@ function Home() {
           <small>© 2026 Aghanims Group. All rights reserved.</small>
         </div>
       </footer>
+      <WhatsAppFloat />
     </main>
   );
 }

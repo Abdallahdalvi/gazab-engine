@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { WhatsAppFloat } from "../components/whatsapp-float";
 import caseStudyCss from "../case-study.css?url";
+import whatsappFloatCss from "../whatsapp-float.css?url";
 
 export const Route = createFileRoute("/case-studies/ubiqedge")({
   head: () => ({
@@ -12,7 +14,10 @@ export const Route = createFileRoute("/case-studies/ubiqedge")({
           "How Gazab Ki Agency helped AIoT company Ubiqedge grow its LinkedIn audience by 255.9%, generate 83,985 impressions and build an owned newsletter audience.",
       },
     ],
-    links: [{ rel: "stylesheet", href: caseStudyCss }],
+    links: [
+      { rel: "stylesheet", href: caseStudyCss },
+      { rel: "stylesheet", href: whatsappFloatCss },
+    ],
   }),
   component: UbiqedgeCaseStudy,
 });
@@ -217,6 +222,7 @@ function UbiqedgeCaseStudy() {
           </a>
         </section>
       </article>
+      <WhatsAppFloat />
     </main>
   );
 }
