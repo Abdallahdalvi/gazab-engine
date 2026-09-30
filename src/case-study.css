@@ -1,10 +1,10 @@
 .case-study-page {
-  --case-bg: #f7f7f4;
+  --case-bg: #fff9f2;
   --case-surface: #fff;
-  --case-ink: #1d2b31;
-  --case-muted: #53646a;
-  --case-line: #dce3e1;
-  --case-accent: #315e62;
+  --case-ink: #241528;
+  --case-muted: #5c5262;
+  --case-line: #e7ddeb;
+  --case-accent: #5a21b8;
   min-height: 100vh;
   background: var(--case-bg);
   color: var(--case-ink);
@@ -30,7 +30,7 @@
 .case-study-page .case-study-nav {
   height: 72px;
   padding: 0 clamp(1rem, 4vw, 4rem);
-  background: rgba(247, 247, 244, 0.96);
+  background: rgba(255, 249, 242, 0.96);
   border-bottom: 1px solid var(--case-line);
   backdrop-filter: blur(16px);
 }
@@ -68,7 +68,7 @@
   gap: 2.5rem;
   align-items: center;
   padding: clamp(1.5rem, 4vw, 3rem);
-  background: #e9f0ed;
+  background: #f2ebff;
   color: var(--case-ink);
   border: 1px solid var(--case-line);
   border-radius: 12px;
@@ -251,7 +251,7 @@
   box-shadow: none;
 }
 .case-study-page .case-study-cta > p {
-  color: #b8d0c8;
+  color: #e4cbff;
   font-size: 0.75rem;
   font-weight: 700;
 }
