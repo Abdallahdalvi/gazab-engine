@@ -374,25 +374,12 @@ function Home() {
               One service or the whole growth system. Built around what you actually need.
             </p>
           </div>
-          <div className="g-hero-panel" aria-label="Connected growth approach">
-            <div className="g-panel-top">
-              <img src="/brand/brand-icon.jpeg" alt="" />
-              <span>THE GAZAB APPROACH</span>
-              <span className="g-panel-dot" />
-            </div>
-            <p>Attention becomes valuable when the next step is clear.</p>
-            <div className="g-panel-flow">
-              <span>Get seen</span>
-              <ArrowRight size={17} />
-              <span>Get enquiries</span>
-              <ArrowRight size={17} />
-              <span>Grow better</span>
-            </div>
-            <div className="g-panel-bottom">
-              <span>Strategy</span>
-              <span>Creative</span>
-              <span>Technology</span>
-            </div>
+          <div className="g-hero-panel">
+            <img
+              className="g-hero-artwork"
+              src="/brand/hero-brand.jpeg"
+              alt="Gazab Ki — Marketing, AI and Automation"
+            />
           </div>
         </div>
       </section>
@@ -727,8 +714,11 @@ function Home() {
       <section className="g-section g-about" id="about">
         <div className="g-wrap g-about-grid">
           <div className="g-about-mark">
-            <img src="/brand/brand-icon.jpeg" alt="Gazab Ki Agency logo" />
-            <span>Strategy meets execution.</span>
+            <img
+              src="/brand/hero-brand.jpeg"
+              alt="Gazab Ki — Marketing, AI and Automation"
+              loading="lazy"
+            />
           </div>
           <div>
             <span className="g-eyebrow">07 / About</span>
