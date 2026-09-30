@@ -9,6 +9,8 @@
   --g-orange: #f16325;
   --g-soft: #f2ebff;
   --g-warm: #fff0dd;
+  --g-shadow: 0 10px 30px rgba(54, 24, 75, 0.09), 0 2px 6px rgba(54, 24, 75, 0.05);
+  --g-shadow-lift: 0 20px 38px rgba(54, 24, 75, 0.16), 0 5px 12px rgba(54, 24, 75, 0.07);
   min-height: 100vh;
   background: var(--g-bg);
   color: var(--g-ink);
@@ -84,24 +86,36 @@
   transition:
     background 0.2s,
     color 0.2s,
-    border-color 0.2s;
+    border-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
   cursor: pointer;
 }
 #home-v2 .g-button-primary {
   background: var(--g-accent);
   color: white;
   border-color: var(--g-accent);
+  box-shadow:
+    0 5px 0 #36106e,
+    0 10px 20px rgba(54, 16, 110, 0.2);
 }
 #home-v2 .g-button-primary:hover {
   background: var(--g-accent-dark);
   border-color: var(--g-accent-dark);
+  transform: translateY(2px);
+  box-shadow:
+    0 3px 0 #36106e,
+    0 6px 14px rgba(54, 16, 110, 0.16);
 }
 #home-v2 .g-button-secondary {
   background: transparent;
   color: var(--g-ink);
+  box-shadow: 0 4px 0 #e5d8eb;
 }
 #home-v2 .g-button-secondary:hover {
   background: var(--g-soft);
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #e5d8eb;
 }
 #home-v2 .g-actions {
   display: flex;
@@ -167,9 +181,16 @@
   font-size: 0.8rem;
   font-weight: 700;
   white-space: nowrap;
+  box-shadow: 0 4px 0 #ad3d17;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
 #home-v2 .g-nav-cta:hover {
   background: #ff814a;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #ad3d17;
 }
 #home-v2 .g-menu-button,
 #home-v2 .g-mobile-links {
@@ -179,7 +200,10 @@
 /* Hero */
 #home-v2 .g-hero {
   padding: clamp(4rem, 6vw, 6.5rem) 0 4rem;
-  background: linear-gradient(140deg, #fffaf4 30%, #f4edff);
+  background:
+    radial-gradient(circle at 78% 40%, rgba(227, 204, 255, 0.62), transparent 32%),
+    radial-gradient(circle at 14% 80%, rgba(255, 219, 173, 0.46), transparent 28%),
+    linear-gradient(140deg, #fffaf4 30%, #f4edff);
 }
 #home-v2 .g-hero-grid {
   display: grid;
@@ -210,7 +234,10 @@
   background: #f7dbad;
   border: 1px solid var(--g-line);
   border-radius: 14px;
-  box-shadow: 0 22px 70px rgba(64, 27, 92, 0.09);
+  box-shadow:
+    11px 12px 0 rgba(90, 33, 184, 0.2),
+    24px 30px 50px rgba(64, 27, 92, 0.18);
+  transform: perspective(1100px) rotateY(-5deg) rotateX(2deg);
 }
 #home-v2 .g-hero-artwork {
   display: block;
@@ -260,10 +287,21 @@
   background: var(--g-bg);
   border: 1px solid var(--g-line);
   border-radius: 8px;
+  box-shadow: var(--g-shadow);
+  transition:
+    transform 0.22s,
+    box-shadow 0.22s,
+    border-color 0.22s;
+}
+#home-v2 .g-service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--g-shadow-lift);
+  border-color: #bba5da;
 }
 #home-v2 .g-service-card[open] {
   background: white;
   border-color: #bba5da;
+  box-shadow: 0 12px 34px rgba(90, 33, 184, 0.13);
 }
 #home-v2 .g-service-card summary {
   display: flex;
@@ -368,6 +406,7 @@
   background: white;
   border: 1px solid var(--g-line);
   border-radius: 8px;
+  box-shadow: var(--g-shadow);
 }
 #home-v2 .g-metric-grid strong {
   font-size: clamp(1.7rem, 2.6vw, 2.6rem);
@@ -414,6 +453,14 @@
   background: white;
   border: 1px solid var(--g-line);
   border-radius: 8px;
+  box-shadow: var(--g-shadow);
+  transition:
+    transform 0.22s,
+    box-shadow 0.22s;
+}
+#home-v2 .g-proof-grid > a:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--g-shadow-lift);
 }
 #home-v2 .g-proof-grid img {
   grid-column: 1/-1;
@@ -461,10 +508,21 @@
   background: var(--g-bg);
   border: 1px solid var(--g-line);
   border-radius: 8px;
+  box-shadow: var(--g-shadow);
+  transition:
+    transform 0.22s,
+    box-shadow 0.22s;
+}
+#home-v2 .g-work-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--g-shadow-lift);
 }
 #home-v2 .g-work-featured {
-  background: var(--g-soft);
+  background: linear-gradient(145deg, #fff, var(--g-soft));
   border-color: #bba5da;
+  box-shadow:
+    7px 8px 0 rgba(90, 33, 184, 0.15),
+    var(--g-shadow);
 }
 #home-v2 .g-work-card h3 {
   margin-top: 1.25rem;
@@ -532,9 +590,16 @@
   background: white;
   border: 1px solid var(--g-line);
   border-radius: 6px;
+  box-shadow: 0 3px 8px rgba(54, 24, 75, 0.05);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
 }
 #home-v2 .g-product-list > a:hover {
   border-color: #b69bdc;
+  transform: translateY(-3px);
+  box-shadow: var(--g-shadow);
 }
 #home-v2 .g-product-list > a > span {
   display: flex;
@@ -570,6 +635,7 @@
   background: var(--g-soft);
   border: 1px solid var(--g-line);
   border-radius: 8px;
+  box-shadow: var(--g-shadow);
 }
 #home-v2 .g-solution-bottom > div + div {
   background: var(--g-warm);
@@ -664,9 +730,20 @@
   background: white;
   border: 1px solid var(--g-line);
   border-radius: 9px;
+  box-shadow: var(--g-shadow);
+  transition:
+    transform 0.22s,
+    box-shadow 0.22s;
+}
+#home-v2 .g-price-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--g-shadow-lift);
 }
 #home-v2 .g-price-featured {
   border: 2px solid var(--g-accent);
+  box-shadow:
+    8px 9px 0 rgba(90, 33, 184, 0.17),
+    var(--g-shadow);
 }
 #home-v2 .g-price-badge {
   position: absolute;
@@ -753,6 +830,7 @@
   background: white;
   border: 1px solid var(--g-line);
   border-radius: 10px;
+  box-shadow: var(--g-shadow);
 }
 #home-v2 .g-trial h3 {
   margin-top: 0.6rem;
@@ -801,6 +879,9 @@
   aspect-ratio: 1;
   background: #f7dbad;
   border-radius: 12px;
+  box-shadow:
+    10px 12px 0 rgba(241, 99, 37, 0.24),
+    var(--g-shadow-lift);
 }
 #home-v2 .g-about-mark img {
   display: block;
@@ -866,6 +947,9 @@
   background: white;
   color: var(--g-ink);
   border-radius: 10px;
+  box-shadow:
+    11px 12px 0 rgba(241, 99, 37, 0.4),
+    0 20px 44px rgba(0, 0, 0, 0.22);
 }
 #home-v2 .g-form-row {
   display: grid;
@@ -1017,6 +1101,12 @@
   #home-v2 .g-hero-lead {
     font-size: 1rem;
   }
+  #home-v2 .g-hero-panel {
+    transform: none;
+    box-shadow:
+      8px 9px 0 rgba(90, 33, 184, 0.18),
+      0 18px 32px rgba(64, 27, 92, 0.14);
+  }
   #home-v2 .g-quick-nav {
     grid-template-columns: 1fr;
     padding-top: 0.5rem;
@@ -1123,7 +1213,16 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  #home-v2 .g-button {
+  #home-v2
+    :is(
+      .g-button,
+      .g-nav-cta,
+      .g-service-card,
+      .g-proof-grid > a,
+      .g-work-card,
+      .g-product-list > a,
+      .g-price-card
+    ) {
     transition: none;
   }
 }
