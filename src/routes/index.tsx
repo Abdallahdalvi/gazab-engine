@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Menu, X } from "lucide-react";
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { ArrowRight, ArrowUpRight, Check, Menu, X } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
 
+import homeCss from "../homepage.css?url";
 import { getPublicPricing, getPublicTrackingConfig } from "../lib/package-actions";
 import {
   formatMoney,
@@ -12,438 +13,906 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Gazab Ki Agency — Marketing, AI & Automation" },
-      { name: "description", content: "A bold growth agency for social media, content, ads, websites, lead generation, AI and business automation." },
-      { property: "og:title", content: "Gazab Ki Agency — Marketing, AI & Automation" },
-      { property: "og:description", content: "Make your marketing remarkable with creative growth systems built for ambitious brands." },
+      { title: "Gazab Ki Agency — Clearer growth, less noise" },
+      {
+        name: "description",
+        content:
+          "Thoughtful marketing, content, websites and automation for businesses ready to grow with clarity.",
+      },
+      { property: "og:title", content: "Gazab Ki Agency — Clearer growth, less noise" },
+      {
+        property: "og:description",
+        content: "A connected approach to attention, enquiries and better business systems.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "/" },
+      { rel: "stylesheet", href: homeCss },
+    ],
   }),
   loader: async () => {
     const [pricing, tracking] = await Promise.all([getPublicPricing(), getPublicTrackingConfig()]);
     return { pricing, tracking };
   },
-  component: Index,
+  component: Home,
 });
 
-const nav = ["home", "services", "results", "solutions", "work", "pricing", "about", "contact"];
-const heroKeywords = ["ATTENTION.", "LEADS.", "SALES.", "TIME BACK."];
-const countryOptions = [
-  ["IN", "India — INR (₹)"], ["US", "United States — USD ($)"], ["GB", "United Kingdom — USD ($)"],
-  ["AE", "United Arab Emirates — USD ($)"], ["QA", "Qatar — USD ($)"], ["SA", "Saudi Arabia — USD ($)"],
-  ["CA", "Canada — USD ($)"], ["AU", "Australia — USD ($)"], ["SG", "Singapore — USD ($)"],
-  ["DE", "Germany — USD ($)"], ["FR", "France — USD ($)"], ["NL", "Netherlands — USD ($)"],
-  ["NZ", "New Zealand — USD ($)"], ["ZA", "South Africa — USD ($)"], ["OTHER", "Other country — USD ($)"],
+const navigation = [
+  ["Services", "#services"],
+  ["Results", "#results"],
+  ["Work", "#work"],
+  ["Solutions", "#solutions"],
+  ["Pricing", "#pricing"],
+  ["About", "#about"],
 ] as const;
+
+const countryOptions = [
+  ["IN", "India — INR (₹)"],
+  ["US", "United States — USD ($)"],
+  ["GB", "United Kingdom — USD ($)"],
+  ["AE", "United Arab Emirates — USD ($)"],
+  ["QA", "Qatar — USD ($)"],
+  ["SA", "Saudi Arabia — USD ($)"],
+  ["CA", "Canada — USD ($)"],
+  ["AU", "Australia — USD ($)"],
+  ["SG", "Singapore — USD ($)"],
+  ["DE", "Germany — USD ($)"],
+  ["FR", "France — USD ($)"],
+  ["NL", "Netherlands — USD ($)"],
+  ["NZ", "New Zealand — USD ($)"],
+  ["ZA", "South Africa — USD ($)"],
+  ["OTHER", "Other country — USD ($)"],
+] as const;
+
 const services = [
   {
-    number: "01",
-    title: "SOCIAL MEDIA",
-    copy: "A consistent, brand-led presence that turns everyday expertise into attention and trust.",
-    icon: "✦",
-    outcome: "PRESENCE → ENGAGEMENT → DEMAND",
-    includes: ["Profile audit and optimisation", "Monthly strategy and content calendar", "Captions, design, reels and publishing", "Community management and reporting"],
+    title: "Social media",
+    summary: "A consistent presence that builds familiarity and trust.",
+    includes: [
+      "Channel strategy and calendar",
+      "Posts, reels and captions",
+      "Publishing and reporting",
+    ],
   },
   {
-    number: "02",
-    title: "CONTENT & CREATIVE",
-    copy: "Campaign ideas and repeatable creative formats built for how people actually consume content.",
-    icon: "↗",
-    outcome: "IDEAS → ASSETS → ATTENTION",
-    includes: ["Brand messaging and campaign concepts", "Scripts and short-form video", "Static, carousel and campaign design", "Content repurposing across channels"],
+    title: "Content & creative",
+    summary: "Ideas and assets shaped for the people you want to reach.",
+    includes: ["Campaign concepts", "Short-form video and design", "Cross-channel repurposing"],
   },
   {
-    number: "03",
-    title: "PAID ADS & PERFORMANCE",
-    copy: "Measured campaigns across Meta, Google and LinkedIn—built around leads, sales and learning.",
-    icon: "◎",
-    outcome: "SPEND → QUALIFIED LEADS → ROAS",
-    includes: ["Audience, offer and tracking setup", "Campaign structure and launch", "Creative and audience testing", "Optimisation and performance reporting"],
+    title: "Paid ads",
+    summary: "Campaigns built around useful leads and measurable learning.",
+    includes: [
+      "Meta, Google or LinkedIn setup",
+      "Creative and audience tests",
+      "Optimisation and reporting",
+    ],
   },
   {
-    number: "04",
-    title: "LEAD GENERATION",
-    copy: "A complete path from first click to organised follow-up, not a spreadsheet of cold names.",
-    icon: "⚡",
-    outcome: "TRAFFIC → LEADS → FOLLOW-UP",
-    includes: ["Landing pages and conversion forms", "Lead magnets and campaign offers", "IndiaMART and social lead systems", "CRM routing, alerts and lead reporting"],
+    title: "Lead generation",
+    summary: "Turn interest into enquiries your team can follow up.",
+    includes: ["Landing pages and offers", "Forms and lead routing", "CRM alerts and reporting"],
   },
   {
-    number: "05",
-    title: "WEBSITES & COMMERCE",
-    copy: "Fast, responsive websites that explain the offer clearly and make the next step obvious.",
-    icon: "◒",
-    outcome: "VISITS → TRUST → CONVERSION",
-    includes: ["Strategy, sitemap and conversion journeys", "Responsive UI and development", "Business, WordPress and e-commerce builds", "Maintenance, analytics and improvements"],
+    title: "Websites",
+    summary: "Fast, clear websites that make the next step obvious.",
+    includes: [
+      "Strategy and responsive design",
+      "Business or commerce builds",
+      "Analytics and ongoing care",
+    ],
   },
   {
-    number: "06",
-    title: "AI + AUTOMATION",
-    copy: "Practical AI and n8n workflows that remove repetitive work from real business operations.",
-    icon: "✳",
-    outcome: "REPETITION → SYSTEM → TIME BACK",
-    includes: ["Workflow discovery and solution design", "n8n integrations and AI workflows", "Lead routing, reporting and content systems", "Testing, documentation and handover"],
+    title: "AI & automation",
+    summary: "Remove repetitive work with practical, well-tested systems.",
+    includes: ["Workflow discovery", "n8n and AI integrations", "Documentation and handover"],
   },
   {
-    number: "07",
-    title: "MARKETPLACE GROWTH",
-    copy: "Better listings and smoother enquiry operations across the marketplaces your buyers use.",
-    icon: "＋",
-    outcome: "LISTINGS → DISCOVERY → ENQUIRIES",
-    includes: ["Account and catalogue audit", "Listing creation and keyword optimisation", "IndiaMART, Amazon, Flipkart, OLX and more", "Enquiry workflows and performance reporting"],
+    title: "Marketplace growth",
+    summary: "Improve listings and enquiry operations where buyers already are.",
+    includes: ["Account and catalogue audit", "Listing optimisation", "Enquiry workflows"],
   },
   {
-    number: "08",
-    title: "SEARCH + LOCAL VISIBILITY",
-    copy: "Make the business easier to find, understand and trust across search and AI answers.",
-    icon: "★",
-    outcome: "SEARCH → DISCOVERY → TRUST",
-    includes: ["Google Business Profile setup and care", "Technical and on-page SEO", "AEO, GEO and AI visibility monitoring", "Reviews, reputation and visibility reporting"],
+    title: "Search visibility",
+    summary: "Help customers find and understand your business.",
+    includes: ["Google Business Profile", "SEO, AEO and GEO", "Reviews and visibility reporting"],
   },
 ];
-const stats = [
-  { value: "100M+", label: "COMBINED ORGANIC REACH", detail: "Across managed client channels" },
-  { value: "330K+", label: "FOLLOWERS GROWN", detail: "Combined client audience growth" },
-  { value: "16.5M+", label: "CONTENT INTERACTIONS", detail: "Likes, comments, shares and saves" },
-  { value: "1.3M+", label: "WEBSITE VISITS", detail: "Generated across client properties" },
-  { value: "7.8X", label: "AVERAGE PAID ADS ROAS", detail: "Average return on tracked ad spend" },
-  { value: "30K", label: "COMMUNITY GROWN IN 1 MONTH", detail: "7.5K → 30K · +300%" },
+
+const metrics = [
+  { value: "100M+", label: "Organic reach", detail: "Across managed client channels" },
+  { value: "330K+", label: "Followers grown", detail: "Combined audience growth" },
+  { value: "16.5M+", label: "Interactions", detail: "Likes, comments, shares and saves" },
+  { value: "7.8×", label: "Average ads ROAS", detail: "On tracked campaigns" },
 ];
-const resultProofs = [
-  { client: "RADIOANDMUSIC", platform: "INSTAGRAM INSIGHTS", result: "Reach grew from 1.3M to 73.1M", image: "/results/radioandmusic-instagram.png" },
-  { client: "GERRYSON MEHTA", platform: "LINKEDIN INSIGHTS", result: "49,733 impressions and 3,681 followers", image: "/results/gerryson-mehta-linkedin.png" },
-  { client: "DATA ANALYTICS COMPANY — HR", platform: "LINKEDIN INSIGHTS", result: "96,966 impressions and 1,306 followers", image: "/results/data-analytics-hr-linkedin.png" },
-  { client: "DATA ANALYTICS COMPANY", platform: "WHATSAPP CHANNEL", result: "Built from scratch to 101 followers", image: "/results/data-analytics-whatsapp.png" },
-];
-const cases = [
+
+const proof = [
   {
-    brand: "UBIQEDGE",
-    copy: "LinkedIn followers grew 1,252 → 4,456 (+255.9%), with 99.8% of new followers acquired organically.",
-    discipline: "B2B LINKEDIN",
+    client: "Radioandmusic",
+    result: "Reach grew from 1.3M to 73.1M",
+    image: "/results/radioandmusic-instagram.png",
+  },
+  {
+    client: "Gerryson Mehta",
+    result: "49,733 impressions and 3,681 followers",
+    image: "/results/gerryson-mehta-linkedin.png",
+  },
+  {
+    client: "Data analytics company",
+    result: "96,966 LinkedIn impressions",
+    image: "/results/data-analytics-hr-linkedin.png",
+  },
+  {
+    client: "WhatsApp community",
+    result: "Built from zero to 101 followers",
+    image: "/results/data-analytics-whatsapp.png",
+  },
+];
+
+const projects = [
+  {
+    name: "Ubiqedge",
+    type: "B2B LinkedIn",
+    copy: "A professional audience grew from 1,252 to 4,456 followers (+255.9%).",
     href: "/case-studies/ubiqedge",
   },
-  { brand: "RADIOANDMUSIC / INDIAN TELEVISION", copy: "Social growth, content, event promotions and monetisation.", discipline: "SOCIAL GROWTH" },
-  { brand: "BARRIERBREAK", copy: "Event social media coverage for Inclusive India: Digital First 2025.", discipline: "EVENT COVERAGE" },
-  { brand: "RENTMAX", copy: "Website improvement, content strategy and Meta lead generation.", discipline: "LEAD GENERATION" },
-  { brand: "MOTOHOM", copy: "Content production, community management and Instagram growth.", discipline: "CONTENT SYSTEM" },
-  { brand: "FURNDEPOT", copy: "Organic growth strategy, analytics and creative campaigns.", discipline: "ORGANIC GROWTH" },
+  {
+    name: "Radioandmusic",
+    type: "Social growth",
+    copy: "Content and channel growth for an entertainment audience.",
+  },
+  {
+    name: "BarrierBreak",
+    type: "Event coverage",
+    copy: "Social coverage for Inclusive India: Digital First 2025.",
+  },
+  {
+    name: "Rentmax",
+    type: "Lead generation",
+    copy: "A clearer website journey supported by content and Meta campaigns.",
+  },
+  {
+    name: "Motohom",
+    type: "Content system",
+    copy: "Content production, community care and Instagram growth.",
+  },
+  {
+    name: "Furndepot",
+    type: "Organic growth",
+    copy: "Creative campaigns guided by audience and performance data.",
+  },
 ] as const;
-const process = [
-  ["01", "DISCOVER", "We understand the business, audience, competitors and actual problem."],
-  ["02", "BUILD", "We create the content, campaigns, websites and systems."],
-  ["03", "AUTOMATE", "We remove repetitive work wherever technology can handle it."],
-  ["04", "GROW", "We track what works, optimise it and keep improving."],
-];
-const builtProducts = [
+
+const products = [
   {
-    name: "LINKS DC",
-    category: "LINK-IN-BIO / LIVE",
-    copy: "Custom link-in-bio pages with analytics, brand controls and custom-domain support.",
+    name: "Links DC",
+    kind: "Link-in-bio",
     href: "https://links.dalvi.cloud/",
+    copy: "Brand-led link pages with analytics and custom domains.",
   },
   {
-    name: "YT SCHEDULER",
-    category: "CONTENT OPS / LIVE",
-    copy: "A multi-platform content workspace with queues, calendar, analytics, media library and account health.",
+    name: "YT Scheduler",
+    kind: "Content operations",
     href: "https://ytscheduler.dalvi.cloud/",
+    copy: "A workspace for planning, publishing and tracking content.",
   },
   {
-    name: "DALVICARD CRM",
-    category: "AI TOOL / LIVE",
-    copy: "An AI-powered business-card scanner that turns physical cards into organised CRM contacts.",
+    name: "DalviCard CRM",
+    kind: "AI tool",
     href: "https://cards.dalvi.cloud/",
+    copy: "Turn business cards into organised CRM contacts.",
   },
   {
-    name: "MONEYFIVE",
-    category: "ANDROID APP / LIVE",
-    copy: "An AI money manager for expenses, SMS payment parsing, budgets, cards and private money insights.",
+    name: "MoneyFive",
+    kind: "Android app",
     href: "https://play.google.com/store/apps/details?id=com.moneyfive.moneyfive&hl=en_IN",
+    copy: "A private AI money manager for daily finances.",
   },
   {
-    name: "INDIAMART LEAD EXTRACTOR",
-    category: "CHROME EXTENSION / LIVE",
-    copy: "Exports IndiaMART buyer leads to Google Sheets, skips duplicates and supports bulk extraction.",
-    href: "https://chromewebstore.google.com/detail/indiamart-lead-extractor/oohpjlfnfogjchmdeemhipjjdjbgegic?hl=en-US&utm_source=ext_sidebar",
+    name: "IndiaMART Lead Extractor",
+    kind: "Chrome extension",
+    href: "https://chromewebstore.google.com/detail/indiamart-lead-extractor/oohpjlfnfogjchmdeemhipjjdjbgegic",
+    copy: "Move buyer leads into Google Sheets without duplicates.",
   },
   {
-    name: "IM APPLIER",
-    category: "INDIAMART AUTOMATION / GITHUB",
-    copy: "Automates IndiaMART product listings with AI-written titles and descriptions plus image, PDF and video uploads — built for up to 1,000 products a day.",
+    name: "IM Applier",
+    kind: "Marketplace automation",
     href: "https://github.com/Abdallahdalvi/IM-Applier-V1",
-    linkLabel: "VIEW ON GITHUB",
+    copy: "Automate high-volume product listing work.",
   },
-];
-const automationSystems = [
-  {
-    type: "N8N + AI AUTOMATION",
-    title: "WEEKLY WORK REPORTING",
-    copy: "Collect employee updates on schedule, structure and summarise them with AI, then deliver one manager-ready report.",
-  },
-  {
-    type: "AI VISIBILITY / GEO",
-    title: "AI PRESENCE MONITORING",
-    copy: "Repeatable checks track how a company or founder appears in AI answers, then reveal citation gaps, competitor mentions and next actions.",
-  },
-  {
-    type: "CUSTOM OPERATIONS",
-    title: "WORKFLOWS THAT DO THE BUSYWORK",
-    copy: "Connect forms, sheets, inboxes, CRMs and alerts so leads move faster and routine admin stops eating the week.",
-  },
-];
-const clientWebsites = [
-  {
-    name: "UNIVERSAL TRADER INDIA",
-    category: "CLASSIC PHONES / E-COMMERCE",
-    copy: "Nokia and BlackBerry keypad, QWERTY, flip and slide phones with accessories and nationwide ordering.",
-    href: "https://universaltraderindia.com/",
-  },
-  {
-    name: "RENTMAX",
-    category: "REAL ESTATE / LEAD GENERATION",
-    copy: "Premium rental listings, property filters and visit-booking journeys.",
-    href: "https://rentmax.in/",
-  },
-  {
-    name: "GERRYSON MEHTA",
-    category: "PERSONAL BRAND / SERVICES",
-    copy: "A data analyst's portfolio with mentorship offers, work history and conversion CTAs.",
-    href: "https://gerrysonmehta.com/",
-  },
-  {
-    name: "RED OLIVE VACATIONS",
-    category: "TRAVEL / PILGRIMAGE",
-    copy: "Tour packages, pilgrimage and visa services with clear enquiry flows.",
-    href: "https://www.redolivevnl.com/",
-  },
-  {
-    name: "AGHANIMS PHONES",
-    category: "HARD-TO-FIND PHONES / GADGETS",
-    copy: "Unique keypad, QWERTY, flip and compact devices you will not find in a regular smartphone store.",
-    href: "https://aghanimsphones.in/",
-  },
-];
-const buildServices = [
-  "WEBSITE DEVELOPMENT",
-  "ONGOING WEBSITE MANAGEMENT",
-  "N8N AUTOMATIONS",
-  "CUSTOM AI TOOLS",
-  "INTERNAL APPS",
-  "AI VISIBILITY / GEO",
-  "MARKETPLACE AUTOMATION",
 ];
 
-function ButtonLink({ href, children, dark = false }: { href: string; children: ReactNode; dark?: boolean }) {
-  return <a href={href} className={`brand-button ${dark ? "brand-button-dark" : ""}`}>{children}</a>;
+const websites = [
+  { name: "Universal Trader India", href: "https://universaltraderindia.com/" },
+  { name: "Rentmax", href: "https://rentmax.in/" },
+  { name: "Gerryson Mehta", href: "https://gerrysonmehta.com/" },
+  { name: "Red Olive Vacations", href: "https://www.redolivevnl.com/" },
+  { name: "Aghanims Phones", href: "https://aghanimsphones.in/" },
+];
+
+function SectionHeading({
+  eyebrow,
+  title,
+  copy,
+}: {
+  eyebrow: string;
+  title: string;
+  copy?: string;
+}) {
+  return (
+    <div className="g-section-head">
+      <div>
+        <span className="g-eyebrow">{eyebrow}</span>
+        <h2>{title}</h2>
+      </div>
+      {copy && <p>{copy}</p>}
+    </div>
+  );
 }
 
-function Index() {
+function Home() {
   const { pricing, tracking } = Route.useLoaderData();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [compact, setCompact] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("IN");
   const [market, setMarket] = useState<PricingMarket>("IN");
   const activePricing = market === "INTL" ? INTERNATIONAL_SERVICE_PRICING : pricing;
   const currency = market === "INTL" ? "USD" : "INR";
-  const customStartingPrice = formatMoney(activePricing.websiteSingleSetup, currency);
-  useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > 50);
-    onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+
   useEffect(() => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const localeRegion = navigator.languages.map((language) => language.match(/[-_]([A-Z]{2})$/i)?.[1]?.toUpperCase()).find(Boolean);
-    const timezoneCountry = timezone === "Asia/Kolkata" || timezone === "Asia/Calcutta" ? "IN" : timezone === "Asia/Qatar" ? "QA" : timezone === "Asia/Dubai" ? "AE" : undefined;
+    const localeRegion = navigator.languages
+      .map((language) => language.match(/[-_]([A-Z]{2})$/i)?.[1]?.toUpperCase())
+      .find(Boolean);
+    const timezoneCountry =
+      timezone === "Asia/Kolkata" || timezone === "Asia/Calcutta"
+        ? "IN"
+        : timezone === "Asia/Qatar"
+          ? "QA"
+          : timezone === "Asia/Dubai"
+            ? "AE"
+            : undefined;
     const detected = timezoneCountry || localeRegion || "OTHER";
     const supported = countryOptions.some(([code]) => code === detected) ? detected : "OTHER";
     setSelectedCountry(supported);
     setMarket(supported === "IN" ? "IN" : "INTL");
   }, []);
+
   const changeCountry = (country: string) => {
     setSelectedCountry(country);
     setMarket(country === "IN" ? "IN" : "INTL");
   };
+
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const subject = encodeURIComponent(`Gazab project enquiry — ${String(data.get("company") || data.get("name"))}`);
-    const body = encodeURIComponent(`Name: ${data.get("name")}\nCompany: ${data.get("company")}\nEmail: ${data.get("email")}\nPhone: ${data.get("phone")}\nNeed: ${data.get("need")}\nBudget: ${data.get("budget")}\n\n${data.get("message")}`);
-    window.location.href = `mailto:dalviabdallah76@gmail.com?subject=${subject}&body=${body}`;
+    const subject = encodeURIComponent(
+      "Gazab project enquiry — " + String(data.get("company") || data.get("name")),
+    );
+    const body = encodeURIComponent(
+      "Name: " +
+        data.get("name") +
+        "\nCompany: " +
+        data.get("company") +
+        "\nEmail: " +
+        data.get("email") +
+        "\nPhone: " +
+        data.get("phone") +
+        "\nNeed: " +
+        data.get("need") +
+        "\nBudget: " +
+        data.get("budget") +
+        "\n\n" +
+        data.get("message"),
+    );
+    window.location.href = "mailto:dalviabdallah76@gmail.com?subject=" + subject + "&body=" + body;
   };
+
   return (
-    <main id="home" className="overflow-hidden bg-background text-foreground">
+    <main id="home-v2">
       <TrackingPixels config={tracking} />
-      <header className={`site-nav ${compact ? "site-nav-compact" : ""}`}>
-        <a href="#home" aria-label="Gazab Ki Agency home" className="nav-brand"><img src="/brand/brand-icon.jpeg" alt="" /><span>GAZAB KI AGENCY</span></a>
-        <nav className="desktop-nav" aria-label="Main navigation">{nav.map((item) => <a key={item} href={`#${item}`}>{item.replace("-", " ").toUpperCase()}</a>)}</nav>
-        <div className="nav-actions"><label className="nav-country"><select value={selectedCountry} onChange={(event) => changeCountry(event.target.value)} aria-label="Choose your country for pricing">{countryOptions.map(([code, label]) => <option value={code} key={code}>{label}</option>)}</select></label><a className="nav-cta" href="#contact">LET'S MAKE IT GAZAB <ArrowRight size={18} /></a></div>
-        <button className="menu-button" aria-label="Toggle menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
-        {menuOpen && <nav className="mobile-nav">{nav.map((item) => <a key={item} onClick={() => setMenuOpen(false)} href={`#${item}`}>{item.replace("-", " ").toUpperCase()}</a>)}</nav>}
+      <header className="g-nav">
+        <div className="g-wrap g-nav-inner">
+          <a className="g-brand" href="#top" aria-label="Gazab Ki Agency home">
+            <img src="/brand/brand-icon.jpeg" alt="" />
+            <span>Gazab Ki Agency</span>
+          </a>
+          <nav className="g-desktop-links" aria-label="Main navigation">
+            {navigation.map(([label, href]) => (
+              <a key={label} href={href}>
+                {label}
+              </a>
+            ))}
+          </nav>
+          <a className="g-nav-cta" href="#contact">
+            Start a project <ArrowUpRight size={16} />
+          </a>
+          <button
+            className="g-menu-button"
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-expanded={menuOpen}
+            aria-label="Toggle navigation"
+          >
+            {menuOpen ? <X size={23} /> : <Menu size={23} />}
+          </button>
+        </div>
+        {menuOpen && (
+          <nav className="g-mobile-links" aria-label="Mobile navigation">
+            {navigation.map(([label, href]) => (
+              <a key={label} href={href} onClick={() => setMenuOpen(false)}>
+                {label}
+              </a>
+            ))}
+            <a href="#contact" onClick={() => setMenuOpen(false)}>
+              Start a project
+            </a>
+          </nav>
+        )}
       </header>
 
-      <section className="hero-section section-shell">
-        <div className="hero-copy">
-          <span className="eyebrow">MARKETING <i>•</i> AI <i>•</i> AUTOMATION</span>
-          <h1 aria-label="More attention, leads, sales and time back. Less chaos.">
-            <span className="hero-line hero-line-dark">MORE</span>
-            <span className="hero-word-window" aria-hidden="true">
-              <span className="hero-word-track">
-                {[...heroKeywords, heroKeywords[0]].map((keyword, index) => <span className="hero-word" key={`${keyword}-${index}`}>{keyword}</span>)}
-              </span>
-            </span>
-            <span className="hero-line hero-line-purple">LESS CHAOS.</span>
-          </h1>
-          <p>Marketing, AI and automation built to win attention,<br className="hidden sm:block" /> generate leads and give your team time back.</p>
-          <div className="button-row"><ButtonLink href="#contact">LET'S MAKE IT GAZAB <ArrowRight /></ButtonLink><ButtonLink href="#work" dark>SEE WHAT WE'VE DONE <ArrowDown /></ButtonLink></div>
-        </div>
-        <div className="hero-art" aria-label="Gazab Ki Agency logo artwork">
-          <img src="/brand/hero-brand.jpeg" alt="Gazab Ki Agency — Marketing, AI, Automation" />
-          <span className="sticker sticker-one">NO BORING BRANDS</span><span className="sticker sticker-two">AI IN ACTION</span><span className="sticker sticker-three">MORE LEADS ↗</span>
+      <section className="g-hero" id="top">
+        <div className="g-wrap g-hero-grid">
+          <div>
+            <span className="g-eyebrow">Marketing · AI · Automation</span>
+            <h1>Make growth simple.</h1>
+            <p className="g-hero-lead">
+              Clear strategy. Strong creative. Useful technology. We connect the pieces that help
+              your business get noticed, win enquiries and work smarter.
+            </p>
+            <div className="g-actions">
+              <a className="g-button g-button-primary" href="#services">
+                Explore services <ArrowRight size={18} />
+              </a>
+              <a className="g-button g-button-secondary" href="#work">
+                See our work <ArrowUpRight size={18} />
+              </a>
+            </div>
+            <p className="g-hero-footnote">
+              One service or the whole growth system. Built around what you actually need.
+            </p>
+          </div>
+          <div className="g-hero-panel" aria-label="Connected growth approach">
+            <div className="g-panel-top">
+              <img src="/brand/brand-icon.jpeg" alt="" />
+              <span>THE GAZAB APPROACH</span>
+              <span className="g-panel-dot" />
+            </div>
+            <p>Attention becomes valuable when the next step is clear.</p>
+            <div className="g-panel-flow">
+              <span>Get seen</span>
+              <ArrowRight size={17} />
+              <span>Get enquiries</span>
+              <ArrowRight size={17} />
+              <span>Grow better</span>
+            </div>
+            <div className="g-panel-bottom">
+              <span>Strategy</span>
+              <span>Creative</span>
+              <span>Technology</span>
+            </div>
+          </div>
         </div>
       </section>
-      <div className="marquee"><div>SOCIAL MEDIA • CONTENT • ADS • AI • AUTOMATION • WEBSITES • LEADS • GROWTH • SOCIAL MEDIA • CONTENT • ADS • AI • AUTOMATION • WEBSITES • LEADS • GROWTH •</div></div>
-      <nav className="start-here section-shell" aria-label="Find what you need">
-        <span>START HERE ↘</span>
-        <a href="#services"><strong>NEED A SERVICE?</strong><small>Explore what we do</small><ArrowUpRight size={20} /></a>
-        <a href="#work"><strong>WANT PROOF?</strong><small>See the work</small><ArrowUpRight size={20} /></a>
-        <a href="#pricing"><strong>HAVE A BUDGET?</strong><small>Check starting prices</small><ArrowUpRight size={20} /></a>
-      </nav>
 
-      <section id="services" className="section-shell cream-section">
-        <div className="section-heading"><span className="section-number">02</span><div><p className="kicker">WHAT WE DO / WHAT MATTERS</p><h2>BUILD A BUSINESS.<br /><span>MAKE IT GAZAB.</span></h2></div></div>
-        <p className="lead-copy">We don't just post content and call it marketing. We build the digital systems around your business — from attention and content to leads, websites and automation.</p>
-        <p className="mobile-swipe-hint">SWIPE TO EXPLORE ALL 8 SERVICES →</p>
-        <div className="services-grid">{services.map(({ number, title, copy, icon, outcome, includes }, i) => <details className={`service-card service-${i + 1}`} key={title}><summary><div className="service-top"><span>{number}</span><b>{icon}</b></div><h3>{title}</h3><p>{copy}</p><strong className="service-outcome">{outcome}</strong><span className="service-expand">SEE WHAT'S INCLUDED <b>＋</b></span></summary><div className="service-details"><ul>{includes.map(item => <li key={item}><Check size={16} />{item}</li>)}</ul><a href="#contact">DISCUSS THIS SERVICE <ArrowRight size={17} /></a></div></details>)}</div>
+      <div className="g-quick-nav g-wrap" aria-label="Quick links">
+        <a href="#services">
+          Find a service <ArrowUpRight size={17} />
+        </a>
+        <a href="#results">
+          Check the results <ArrowUpRight size={17} />
+        </a>
+        <a href="#pricing">
+          See starting prices <ArrowUpRight size={17} />
+        </a>
+      </div>
+
+      <section className="g-section g-services" id="services">
+        <div className="g-wrap">
+          <SectionHeading
+            eyebrow="01 / Services"
+            title="What we do"
+            copy="Choose a focused service or connect several. We’ll shape the work around your goals, not a generic checklist."
+          />
+          <div className="g-service-grid">
+            {services.map((service, index) => (
+              <details className="g-service-card" key={service.title}>
+                <summary>
+                  <span className="g-card-index">{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{service.title}</h3>
+                  <p>{service.summary}</p>
+                  <span className="g-card-more">
+                    What’s included <span aria-hidden="true">+</span>
+                  </span>
+                </summary>
+                <div className="g-service-detail">
+                  <ul>
+                    {service.includes.map((item) => (
+                      <li key={item}>
+                        <Check size={16} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <a href="#contact">
+                    Discuss this service <ArrowRight size={16} />
+                  </a>
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
       </section>
 
-      <section id="results" className="black-section section-shell">
-        <p className="kicker kicker-orange">OK BUT CAN YOU ACTUALLY DO IT?</p><h2 className="receipts">THE<br /><span>RECEIPTS.</span></h2>
-        <div className="proof-intro"><h3>Organic growth.<br />Real numbers.</h3><p>Across client channels, our founder-led work has generated more than 100M organic reach, 330K followers and 16.5M meaningful interactions — including likes, comments, shares and saves. Paid campaigns average 7.8x ROAS.</p></div>
-        <div className="stats-grid">{stats.map(({ value, label, detail }, i) => <article key={label} className={`stat stat-${i + 1}`}><strong>{value}</strong><span>{label}<small>{detail}</small></span></article>)}</div>
-        <div className="results-gallery">
-          {resultProofs.map(({ client, platform, result, image }, index) => <article className="result-proof-card" key={client + platform}>
-            <a className="result-proof-image" href={image} target="_blank" rel="noreferrer" aria-label={`Open full ${platform.toLowerCase()} for ${client}`}>
-              <img src={image} alt={`${platform} showing ${result} for ${client}`} loading="lazy" />
+      <section className="g-section g-results" id="results">
+        <div className="g-wrap">
+          <SectionHeading
+            eyebrow="02 / Results"
+            title="Proof that counts"
+            copy="Real channel work, measured over time. These figures come from client projects and Abdallah’s professional track record."
+          />
+          <div className="g-metric-grid">
+            {metrics.map((metric) => (
+              <article key={metric.label}>
+                <strong>{metric.value}</strong>
+                <span>{metric.label}</span>
+                <small>{metric.detail}</small>
+              </article>
+            ))}
+          </div>
+          <div className="g-proof-head">
+            <h3>Open the evidence</h3>
+            <p>See the platform screenshots behind a selection of results.</p>
+          </div>
+          <div className="g-proof-grid">
+            {proof.map((item) => (
+              <a href={item.image} target="_blank" rel="noreferrer" key={item.client}>
+                <img
+                  src={item.image}
+                  alt={item.client + " insights showing " + item.result}
+                  loading="lazy"
+                />
+                <span>
+                  <strong>{item.client}</strong>
+                  <small>{item.result}</small>
+                </span>
+                <ArrowUpRight size={18} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="g-section g-work" id="work">
+        <div className="g-wrap">
+          <SectionHeading
+            eyebrow="03 / Work"
+            title="Selected work"
+            copy="A few of the brands and challenges we’ve worked on. Open Ubiqedge for the full story and source screenshots."
+          />
+          <div className="g-work-grid">
+            {projects.map((project, index) => {
+              const card = (
+                <>
+                  <span className="g-card-index">
+                    {String(index + 1).padStart(2, "0")} / {project.type}
+                  </span>
+                  <h3>{project.name}</h3>
+                  <p>{project.copy}</p>
+                  <span className="g-work-action">
+                    {"href" in project ? "Read the case study" : "Project snapshot"}{" "}
+                    {"href" in project && <ArrowUpRight size={17} />}
+                  </span>
+                </>
+              );
+              return "href" in project ? (
+                <a className="g-work-card g-work-featured" href={project.href} key={project.name}>
+                  {card}
+                </a>
+              ) : (
+                <article className="g-work-card" key={project.name}>
+                  {card}
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="g-section g-solutions" id="solutions">
+        <div className="g-wrap">
+          <SectionHeading
+            eyebrow="04 / Solutions"
+            title="Beyond campaigns"
+            copy="We also build the tools and web experiences that help teams move faster. Explore live examples below."
+          />
+          <div className="g-solution-group">
+            <div className="g-solution-intro">
+              <span>01</span>
+              <h3>Products & tools</h3>
+              <p>Useful software we’ve designed and shipped.</p>
+            </div>
+            <div className="g-product-list">
+              {products.map((product) => (
+                <a href={product.href} target="_blank" rel="noreferrer" key={product.name}>
+                  <span>
+                    <small>{product.kind}</small>
+                    <strong>{product.name}</strong>
+                    <em>{product.copy}</em>
+                  </span>
+                  <ArrowUpRight size={18} />
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="g-solution-bottom">
+            <div>
+              <span>02 / AUTOMATION</span>
+              <h3>Less busywork.</h3>
+              <p>
+                Lead routing, reporting, content operations and AI-assisted workflows built around
+                your team.
+              </p>
+              <a href="#contact">
+                Discuss automation <ArrowRight size={17} />
+              </a>
+            </div>
+            <div>
+              <span>03 / WEB DEVELOPMENT</span>
+              <h3>Better journeys.</h3>
+              <p>
+                Business websites, stores and lead-focused pages—designed, launched and improved.
+              </p>
+              <div className="g-site-links">
+                {websites.map((site) => (
+                  <a href={site.href} target="_blank" rel="noreferrer" key={site.name}>
+                    {site.name} <ArrowUpRight size={15} />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="g-section g-process">
+        <div className="g-wrap">
+          <SectionHeading
+            eyebrow="05 / Approach"
+            title="How we work"
+            copy="No mystery process. A clear brief, useful execution and regular improvement."
+          />
+          <div className="g-process-grid">
+            <article>
+              <span>01</span>
+              <h3>Understand</h3>
+              <p>We learn the business, audience and bottleneck before recommending a solution.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>Build</h3>
+              <p>We create the content, campaigns, website or workflow with agreed deliverables.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>Improve</h3>
+              <p>We review the numbers, share what we learned and make the next round stronger.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="g-section g-pricing" id="pricing">
+        <div className="g-wrap">
+          <SectionHeading
+            eyebrow="06 / Pricing"
+            title="Simple pricing"
+            copy="Starting prices, visible before a call. Every project gets a written scope and a clear final quote."
+          />
+          <label className="g-country-picker">
+            View prices for
+            <select
+              value={selectedCountry}
+              onChange={(event) => changeCountry(event.target.value)}
+              aria-label="Choose your country for pricing"
+            >
+              {countryOptions.map(([code, label]) => (
+                <option value={code} key={code}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="g-pricing-grid">
+            <PriceCard
+              title="Gazab Starter"
+              price={formatMoney(activePricing.starterMonthly, currency)}
+              suffix="/ month"
+              description="A dependable social presence for a growing business."
+              items={[
+                "2 social platforms managed",
+                "8 posts or reels each month",
+                "Calendar, captions and publishing",
+                "Google Business Profile setup",
+                "Monthly report and strategy call",
+              ]}
+              cta="Ask about Starter"
+            />
+            <PriceCard
+              title="Full Gazab"
+              price={formatMoney(activePricing.fullMonthly, currency)}
+              suffix="/ month"
+              description="Content, paid growth and smarter operations together."
+              items={[
+                "Everything in Starter",
+                "4 platforms and 12 content pieces",
+                "Ads management on 1 platform",
+                "SEO and AI visibility work",
+                "2 basic automations and advanced reporting",
+              ]}
+              cta="Ask about Full Gazab"
+              featured
+            />
+            <PriceCard
+              title="Custom scope"
+              price={formatMoney(activePricing.websiteSingleSetup, currency)}
+              label="Single-page websites from"
+              description="A precise quote for your website, campaign or automation brief."
+              items={[
+                "Websites and landing pages",
+                "AI and n8n automations",
+                "Content or campaign sprints",
+                "Marketplace and lead operations",
+                "Written deliverables before we begin",
+              ]}
+              cta="Discuss your scope"
+            />
+          </div>
+          <div className="g-pricing-notes">
+            <p>
+              <strong>Flexible terms.</strong> Choose 1, 3, 6 or 12 months. Longer ongoing retainers
+              can cost less.
+            </p>
+            <p>
+              <strong>Clear exclusions.</strong> Ad spend, travel, shoots and paid tools are quoted
+              separately when needed.
+            </p>
+          </div>
+          <div className="g-trial">
+            <div>
+              <span className="g-eyebrow">10-day trial / cash or barter</span>
+              <h3>Try working together.</h3>
+              <p>
+                A focused ten-day sprint for selected product-led businesses. We can agree a cash
+                fee or suitable product/service exchange before work begins.
+              </p>
+            </div>
+            <div>
+              <ul>
+                <li>
+                  <Check size={17} />
+                  One channel audit and quick-win plan
+                </li>
+                <li>
+                  <Check size={17} />
+                  One clearly defined objective
+                </li>
+                <li>
+                  <Check size={17} />
+                  Up to 3 content pieces or equivalent work
+                </li>
+                <li>
+                  <Check size={17} />
+                  Implementation and a short recap
+                </li>
+              </ul>
+              <small>
+                Subject to fit and availability. Ad spend, shoots, travel and paid tools are
+                separate unless agreed in writing.
+              </small>
+              <a
+                href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%27d%20like%20to%20discuss%20the%2010-day%20cash%20or%20barter%20trial."
+                target="_blank"
+                rel="noreferrer"
+              >
+                Discuss a trial <ArrowUpRight size={17} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="g-section g-about" id="about">
+        <div className="g-wrap g-about-grid">
+          <div className="g-about-mark">
+            <img src="/brand/brand-icon.jpeg" alt="Gazab Ki Agency logo" />
+            <span>Strategy meets execution.</span>
+          </div>
+          <div>
+            <span className="g-eyebrow">07 / About</span>
+            <h2>Meet Abdallah</h2>
+            <p>
+              Abdallah Dalvi works across marketing, content, websites, AI and automation. His
+              approach brings creative thinking and practical systems into the same conversation.
+            </p>
+            <p>
+              Gazab Ki Agency is built for teams that want an active partner: someone who can make
+              the work, measure it and improve it.
+            </p>
+            <a className="g-text-link" href="#contact">
+              Tell us what you’re building <ArrowRight size={17} />
             </a>
-            <div className="result-proof-copy"><span>0{index + 1} / {platform}</span><h3>{client}</h3><p>{result}</p><a href={image} target="_blank" rel="noreferrer">OPEN FULL INSIGHT <ArrowUpRight size={17} /></a></div>
-          </article>)}
+          </div>
         </div>
-        <p className="proof-note">Founder-led track record based on Abdallah's professional experience. No borrowed glory. No made-up numbers.</p>
       </section>
 
-      <section id="solutions" className="solutions-section section-shell">
-        <div className="solutions-heading">
-          <div><p className="kicker">PRODUCTS / AUTOMATIONS / CLIENT PLATFORMS</p><h2>NOT JUST IDEAS.<br /><span>WORKING SYSTEMS.</span></h2></div>
-          <p>Gazab has shipped real apps, browser tools, AI products, n8n workflows and business websites. We can build the whole system or handle one clearly defined service.</p>
+      <section className="g-section g-contact" id="contact">
+        <div className="g-wrap g-contact-grid">
+          <div>
+            <span className="g-eyebrow">08 / Contact</span>
+            <h2>Let’s talk</h2>
+            <p>
+              Tell us what you need. We’ll help you find a sensible next step and an honest starting
+              budget.
+            </p>
+            <div className="g-contact-links">
+              <a href="mailto:dalviabdallah76@gmail.com">
+                dalviabdallah76@gmail.com <ArrowUpRight size={17} />
+              </a>
+              <a href="tel:+917400239134">
+                +91 74002 39134 <ArrowUpRight size={17} />
+              </a>
+              <a href="https://wa.me/917400239134" target="_blank" rel="noreferrer">
+                Chat on WhatsApp <ArrowUpRight size={17} />
+              </a>
+            </div>
+          </div>
+          <form className="g-contact-form" onSubmit={submit}>
+            <div className="g-form-row">
+              <label>
+                Name
+                <input name="name" required maxLength={100} />
+              </label>
+              <label>
+                Company
+                <input name="company" maxLength={100} />
+              </label>
+            </div>
+            <div className="g-form-row">
+              <label>
+                Email
+                <input name="email" type="email" required maxLength={255} />
+              </label>
+              <label>
+                Phone
+                <input name="phone" type="tel" maxLength={20} />
+              </label>
+            </div>
+            <div className="g-form-row">
+              <label>
+                What do you need?
+                <select name="need" required defaultValue="">
+                  <option value="" disabled>
+                    Select a service
+                  </option>
+                  <option>Gazab Starter</option>
+                  <option>Full Gazab</option>
+                  <option>Custom scope</option>
+                  <option>10-day cash / barter trial</option>
+                  <option>Social media and content</option>
+                  <option>Paid ads and leads</option>
+                  <option>Website development</option>
+                  <option>AI and automation</option>
+                  <option>Search visibility</option>
+                </select>
+              </label>
+              <label>
+                Budget
+                <select name="budget" required defaultValue="">
+                  <option value="" disabled>
+                    Select a range
+                  </option>
+                  {market === "IN" ? (
+                    <>
+                      <option>Under ₹10K / specific project</option>
+                      <option>₹10K–₹25K</option>
+                      <option>₹25K–₹50K / month</option>
+                      <option>₹50K–₹1L / month</option>
+                      <option>₹1L+ / month</option>
+                      <option>Equivalent-value barter</option>
+                    </>
+                  ) : (
+                    <>
+                      <option>Under $149 / specific project</option>
+                      <option>$149–$399</option>
+                      <option>$399–$799 / month</option>
+                      <option>$799–$1,499 / month</option>
+                      <option>$1,500+ / month</option>
+                      <option>Equivalent-value barter</option>
+                    </>
+                  )}
+                  <option>Let’s discuss</option>
+                </select>
+              </label>
+            </div>
+            <label>
+              What are you trying to achieve?
+              <textarea name="message" required maxLength={1500} rows={4} />
+            </label>
+            <button className="g-button g-button-primary" type="submit">
+              Start the conversation <ArrowRight size={18} />
+            </button>
+            <small>
+              This opens your email app with the details you entered. Nothing is submitted in the
+              background.
+            </small>
+          </form>
         </div>
+      </section>
 
-        <div className="solutions-label"><span>01</span><h3>LIVE PRODUCTS</h3><p>Open them. Use them. Judge the work.</p></div>
-        <div className="product-grid">
-          {builtProducts.map(({ name, category, copy, href, linkLabel }, index) => <a className="product-card" href={href} target="_blank" rel="noreferrer" key={name}>
-            <div className={`product-thumbnail product-thumbnail-${index + 1}`} aria-hidden="true"><i /><i /><i /><strong>{["LINKS", "SCHEDULE", "SCAN", "₹ AI", "LEADS", "1K/DAY"][index]}</strong><span>{["↗", "▦", "▣", "₹", "⇩", "⚡"][index]}</span></div>
-            <span>{String(index + 1).padStart(2, "0")} / {category}</span><h3>{name}</h3><p>{copy}</p><b>{linkLabel || "OPEN PRODUCT"} <ArrowUpRight size={18} /></b>
-          </a>)}
+      <footer className="g-footer">
+        <div className="g-wrap g-footer-inner">
+          <div>
+            <strong>Gazab Ki Agency</strong>
+            <span>Clearer growth. Less noise.</span>
+          </div>
+          <nav aria-label="Footer navigation">
+            <a href="#top">Back to top ↑</a>
+            <a href="#services">Services</a>
+            <a href="#work">Work</a>
+            <a href="#pricing">Pricing</a>
+          </nav>
+          <small>© 2026 Aghanims Group. All rights reserved.</small>
         </div>
-
-        <div className="solutions-label"><span>02</span><h3>AUTOMATION SYSTEMS</h3><p>Built around the way your team actually works.</p></div>
-        <div className="automation-grid">
-          {automationSystems.map(({ type, title, copy }) => <article className="automation-card" key={title}><span>{type}</span><h3>{title}</h3><p>{copy}</p><a href="#contact">BUILD A SYSTEM <ArrowRight size={18} /></a></article>)}
-        </div>
-
-        <div className="websites-block">
-          <div className="solutions-label"><span>03</span><h3>CLIENT WEBSITES</h3><p>Strategy, build, launch and ongoing management.</p></div>
-          <div className="website-list">{clientWebsites.map(({ name, category, copy, href }, index) => <a href={href} target="_blank" rel="noreferrer" key={name}>
-            <span>{String(index + 1).padStart(2, "0")}</span><div><strong>{name}</strong><small>{category}</small></div><p>{copy}</p><ArrowUpRight />
-          </a>)}</div>
-        </div>
-
-        <div className="build-service-strip"><strong>AVAILABLE INDIVIDUALLY:</strong>{buildServices.map((service) => <span key={service}>{service}</span>)}</div>
-      </section>
-
-      <section id="work" className="work-section">
-        <div className="section-shell work-head"><p className="kicker">SELECTED WORK / TAKE A LOOK →</p><h2>SEE THE WORK.<br /><span>THEN LET'S TALK.</span></h2></div>
-        <p className="mobile-swipe-hint section-shell">SWIPE TO EXPLORE THE PROJECTS →</p>
-        <div className="case-scroll">{cases.map(({ brand, copy, discipline, ...item }, i) => {
-          const content = <><div className={`case-image case-visual case-visual-${i + 1}`}><span>0{i + 1} / {discipline}</span><strong>{brand}</strong><b>GAZAB / WORK ↗</b></div><div className="case-copy"><span>0{i + 1} / CASE STUDY</span><h3>{brand}</h3><p>{copy}</p><b>{"href" in item ? "READ THE CASE STUDY" : "FULL CASE STUDY COMING SOON"} <ArrowUpRight /></b></div></>;
-          return "href" in item
-            ? <a className="case-card case-card-link" href={item.href} key={brand} aria-label={`Read the ${brand} case study`}>{content}</a>
-            : <article className="case-card" key={brand}>{content}</article>;
-        })}</div>
-      </section>
-
-      <section className="process-section section-shell">
-        <p className="kicker">OUR APPROACH</p><h2>HOW WE MAKE IT <span>HAPPEN.</span></h2>
-        <div className="process-grid">{process.map(([n, title, copy]) => <article key={n}><strong>{n}</strong><div><h3>{title}</h3><p>{copy}</p></div><span className="process-arrow">→</span></article>)}</div>
-      </section>
-
-      <section className="systems-section section-shell">
-        <div><p className="kicker kicker-orange">POSTING ≠ MARKETING</p><h2>POSTS ALONE<br /><span>DON'T GROW A BUSINESS.</span></h2><p className="lead-copy">Marketing works when content, traffic, conversion and operations are connected.</p></div>
-        <div className="system-flow">{["ATTENTION", "CONTENT", "TRAFFIC", "LEADS", "SALES", "RETENTION", "AUTOMATION"].map((item, i) => <div key={item}><span>{String(i + 1).padStart(2, "0")}</span><strong>{item}</strong>{i < 6 && <b>↓</b>}</div>)}</div>
-      </section>
-
-      <section id="pricing" className="pricing-section section-shell">
-        <p className="kicker">PRICING / STRAIGHT TALK</p><h2>KNOW THE BUDGET.<br /><span>BEFORE THE SALES CALL.</span></h2><p className="lead-copy">Three clear starting points. Choose a package or tell us the exact mix you need; we’ll confirm the deliverables and price in writing.</p>
-        <div className="scope-benefits"><div><strong>MONTH-TO-MONTH OR LONGER</strong><p>Choose a 1, 3, 6 or 12-month term. Longer commitments can reduce the price of ongoing services.</p></div><div><strong>NO SURPRISE SCOPE</strong><p>Platforms, deliverables and reporting are agreed before work starts.</p></div><div><strong>WHAT’S SEPARATE</strong><p>Ad spend, travel, shoots and paid tools are quoted separately when needed.</p></div></div>
-        <div className="pricing-grid">
-          <PriceCard number="01" title="GAZAB STARTER" price={formatMoney(activePricing.starterMonthly, currency)} billing=" / MONTH" note="A consistent, professional social presence for a growing business." items={["2 social platforms managed", "8 posts or reels each month", "Calendar, captions and publishing", "Google Business Profile setup", "Monthly report and strategy call"]} cta="ASK ABOUT STARTER" />
-          <PriceCard number="02" title="FULL GAZAB" price={formatMoney(activePricing.fullMonthly, currency)} billing=" / MONTH" note="Content, paid growth and automation working together." items={["Everything in Starter", "4 platforms and 12 content pieces", "Paid ads management on 1 platform", "SEO and AI visibility work", "2 basic automations and advanced reporting"]} cta="ASK ABOUT FULL GAZAB" featured />
-          <PriceCard number="03" title="CUSTOM SCOPE" price={customStartingPrice} priceLabel="SINGLE-PAGE WEBSITES FROM" note="A tailored quote for your exact website, campaign or automation brief." items={["Websites and landing pages", "AI and n8n automations", "Content or campaign sprints", "Marketplace and lead operations", "Written deliverables before we begin"]} cta="DISCUSS YOUR SCOPE" />
-        </div>
-        <aside className="barter-trial"><div><p className="kicker">10-DAY TRIAL / CASH OR BARTER</p><h3>TRY THE WORK.<br /><span>THEN DECIDE.</span></h3><p>A focused ten-day sprint for selected product-led businesses. We can discuss a cash fee or a pre-approved product or service exchange that suits the work.</p></div><div><strong>THE TRIAL INCLUDES</strong><ul><li><Check size={17} />One channel audit + quick-win plan</li><li><Check size={17} />One clearly defined ten-day objective</li><li><Check size={17} />Up to 3 content pieces or equivalent agreed work</li><li><Check size={17} />Publishing / implementation + end-of-trial recap</li></ul><small>Subject to fit and availability. Ad spend, travel, shoots, website builds and paid tools are excluded unless agreed in writing.</small><a href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%27d%20like%20to%20discuss%20the%2010-day%20cash%20or%20barter%20trial." target="_blank" rel="noreferrer">PROPOSE A 10-DAY TRIAL <ArrowUpRight size={18} /></a></div></aside>
-      </section>
-
-      <section className="why-section section-shell">
-        <p className="kicker">WHY US?</p><h2>WHY <span>GAZAB?</span></h2>
-        <div className="why-list"><strong>NO BORING CONTENT.</strong><strong>NO COPY-PASTE STRATEGIES.</strong><strong>NO RANDOM POSTING.</strong><strong>NO EMPTY PROMISES.</strong></div>
-        <div className="formula"><span>STRATEGY</span><b>+</b><span>CREATIVITY</span><b>+</b><span>TECHNOLOGY</span></div>
-      </section>
-
-      <section id="about" className="about-section section-shell">
-        <div className="founder-art"><div className="founder-z">Z</div><span>FOUNDER-LED.<br />SYSTEM-OBSESSED.</span></div>
-        <div><p className="kicker">ABOUT THE FOUNDER</p><h2>MEET THE MIND<br /><span>BEHIND GAZAB.</span></h2><h3>ABDALLAH DALVI</h3><h4>FOUNDER / GROWTH & MARKETING STRATEGIST</h4><p>Abdallah works across social media, digital marketing, growth, content, websites, AI and automation — combining creative execution with systems that help businesses grow.</p><div className="tag-list">{["SOCIAL STRATEGY", "AI AUTOMATION", "LEAD GENERATION", "WEBSITES", "CONTENT", "PAID ADS"].map(t => <span key={t}>{t}</span>)}</div></div>
-      </section>
-
-      <section className="mega-cta section-shell"><span className="cta-sticker">READY?</span><p>YOUR NEXT STEP.</p><h2>LET'S MAKE<br />YOUR BUSINESS<br /><span>GAZAB.</span></h2><div className="button-row"><ButtonLink href="#contact">START A PROJECT <ArrowRight /></ButtonLink><ButtonLink dark href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20let%27s%20make%20my%20business%20Gazab!">WHATSAPP US <ArrowUpRight /></ButtonLink></div></section>
-
-      <section id="contact" className="contact-section section-shell">
-        <div className="contact-info"><p className="kicker">NO CORPORATE JARGON REQUIRED.</p><h2>LET'S<br /><span>TALK.</span></h2><a href="mailto:dalviabdallah76@gmail.com">dalviabdallah76@gmail.com ↗</a><a href="tel:+917400239134">+91 74002 39134 ↗</a><a href="https://www.linkedin.com/in/abdallahdalvi" target="_blank" rel="noreferrer">LINKEDIN ↗</a><span className="social-pending">INSTAGRAM — LINK COMING SOON</span></div>
-        <form onSubmit={submit} className="contact-form"><div className="form-row"><label>NAME<input name="name" required maxLength={100} /></label><label>COMPANY<input name="company" maxLength={100} /></label></div><div className="form-row"><label>EMAIL<input name="email" type="email" required maxLength={255} /></label><label>PHONE<input name="phone" type="tel" maxLength={20} /></label></div><div className="form-row"><label>WHAT DO YOU NEED?<select name="need" required defaultValue=""><option value="" disabled>Choose a service</option><option>Gazab Starter</option><option>Full Gazab</option><option>Custom scope</option><option>10-day cash / barter trial</option><option>Social media</option><option>Content & reels</option><option>Paid ads & leads</option><option>Website development & management</option><option>n8n automation</option><option>Custom AI tool or app</option><option>AI visibility / GEO</option></select></label><label>BUDGET<select name="budget" required defaultValue=""><option value="" disabled>Pick a range</option>{market === "IN" ? <><option>Under ₹10K / specific project</option><option>₹10K–₹25K</option><option>₹25K–₹50K / month</option><option>₹50K–₹1L / month</option><option>₹1L+ / month</option><option>Equivalent-value barter</option></> : <><option>Under $149 / specific project</option><option>$149–$399</option><option>$399–$799 / month</option><option>$799–$1,499 / month</option><option>$1,500+ / month</option><option>Equivalent-value barter</option></>}<option>Let's discuss</option></select></label></div><label>MESSAGE<textarea name="message" required maxLength={1500} rows={4} /></label><button className="form-submit" type="submit">START THE CONVERSATION <ArrowRight /></button></form>
-      </section>
-
-      <a className="whatsapp-widget" href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%20want%20to%20discuss%20a%20Gazab%20package." target="_blank" rel="noreferrer" aria-label="Chat with Gazab Ki Agency on WhatsApp"><img src="/brand/whatsapp-icon.png" alt="" /><span><small>QUICK QUESTION?</small>CHAT ON WHATSAPP</span></a>
-
-      <footer><div className="footer-main section-shell"><img className="footer-brand-banner" src="/brand/footer-brand-banner.png" alt="Gazab Ki Agency — Marketing, AI and Automation" /><nav>{nav.map(item => <a key={item} href={`#${item}`}>{item.replace("-", " ").toUpperCase()}</a>)}</nav></div><div className="footer-strip"><strong>GAZAB KI AGENCY BY AGHANIMS GROUP</strong><span>© 2026 Aghanims Group. All Rights Reserved.</span><span>Made with too much coffee & too many ideas.</span></div></footer>
+      </footer>
     </main>
   );
 }
 
 function PriceCard({
-  number,
   title,
   price,
-  billing,
-  priceLabel = "STARTING AT",
-  note,
+  suffix,
+  label = "Starting at",
+  description,
   items,
   cta,
-  href = "#contact",
   featured = false,
 }: {
-  number: string;
   title: string;
   price: string;
-  billing?: string;
-  priceLabel?: string;
-  note: string;
+  suffix?: string;
+  label?: string;
+  description: string;
   items: string[];
   cta: string;
-  href?: string;
   featured?: boolean;
 }) {
-  return <article className={`price-card ${featured ? "featured" : ""}`}>{featured && <span className="popular">MOST POPULAR ✦</span>}<span className="price-number">PACKAGE {number}</span><h3>{title}</h3><span className="price-label">{priceLabel}</span><strong>{price}{billing && <small>{billing}</small>}</strong><p>{note}</p><ul>{items.map(item => <li key={item}><Check size={17} />{item}</li>)}</ul><a href={href}>{cta} <ArrowRight /></a></article>;
+  return (
+    <article className={"g-price-card" + (featured ? " g-price-featured" : "")}>
+      {featured && <span className="g-price-badge">Most popular</span>}
+      <h3>{title}</h3>
+      <p>{description}</p>
+      <span className="g-price-label">{label}</span>
+      <strong>
+        {price}
+        <small>{suffix}</small>
+      </strong>
+      <ul>
+        {items.map((item) => (
+          <li key={item}>
+            <Check size={16} />
+            {item}
+          </li>
+        ))}
+      </ul>
+      <a href="#contact">
+        {cta} <ArrowRight size={17} />
+      </a>
+    </article>
+  );
 }
 
 type TrackingConfig = { clarityProjectId: string; gaMeasurementId: string; metaPixelId: string };
@@ -457,16 +926,34 @@ function TrackingPixels({ config }: { config: TrackingConfig }) {
       script.textContent = code;
       document.head.appendChild(script);
     };
-    if (config.clarityProjectId) appendInline("gazab-clarity", `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",${JSON.stringify(config.clarityProjectId)});`);
+    if (config.clarityProjectId)
+      appendInline(
+        "gazab-clarity",
+        '(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",' +
+          JSON.stringify(config.clarityProjectId) +
+          ");",
+      );
     if (config.gaMeasurementId && !document.getElementById("gazab-ga-loader")) {
       const loader = document.createElement("script");
       loader.id = "gazab-ga-loader";
       loader.async = true;
-      loader.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(config.gaMeasurementId)}`;
+      loader.src =
+        "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(config.gaMeasurementId);
       document.head.appendChild(loader);
-      appendInline("gazab-ga", `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config",${JSON.stringify(config.gaMeasurementId)});`);
+      appendInline(
+        "gazab-ga",
+        'window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config",' +
+          JSON.stringify(config.gaMeasurementId) +
+          ");",
+      );
     }
-    if (config.metaPixelId) appendInline("gazab-meta-pixel", `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init",${JSON.stringify(config.metaPixelId)});fbq("track","PageView");`);
+    if (config.metaPixelId)
+      appendInline(
+        "gazab-meta-pixel",
+        '!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init",' +
+          JSON.stringify(config.metaPixelId) +
+          ');fbq("track","PageView");',
+      );
   }, [config]);
   return null;
 }
