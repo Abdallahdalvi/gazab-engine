@@ -599,7 +599,7 @@ function Home() {
           <SectionHeading
             eyebrow="06 / Pricing"
             title="Simple pricing"
-            copy="Starting prices, visible before a call. Every project gets a written scope and a clear final quote."
+            copy="Starting prices for set packages, visible before a call. Custom work gets a written scope and quote."
           />
           <label className="g-country-picker">
             View prices for
@@ -647,8 +647,6 @@ function Home() {
             />
             <PriceCard
               title="Custom scope"
-              price={formatMoney(activePricing.websiteSingleSetup, currency)}
-              label="Single-page websites from"
               description="A precise quote for your website, campaign or automation brief."
               items={[
                 "Websites and landing pages",
@@ -876,7 +874,7 @@ function PriceCard({
   featured = false,
 }: {
   title: string;
-  price: string;
+  price?: string;
   suffix?: string;
   label?: string;
   description: string;
@@ -889,11 +887,15 @@ function PriceCard({
       {featured && <span className="g-price-badge">Most popular</span>}
       <h3>{title}</h3>
       <p>{description}</p>
-      <span className="g-price-label">{label}</span>
-      <strong>
-        {price}
-        <small>{suffix}</small>
-      </strong>
+      {price && (
+        <>
+          <span className="g-price-label">{label}</span>
+          <strong>
+            {price}
+            {suffix && <small>{suffix}</small>}
+          </strong>
+        </>
+      )}
       <ul>
         {items.map((item) => (
           <li key={item}>
