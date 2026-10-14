@@ -351,7 +351,7 @@
   padding: 0 1.2rem 1.2rem;
 }
 #home-v2 .g-service-detail ul,
-#home-v2 .g-price-card ul,
+#home-v2 .g-engagement-card ul,
 #home-v2 .g-trial ul {
   display: grid;
   gap: 0.55rem;
@@ -364,7 +364,7 @@
   border-top: 1px solid var(--g-line);
 }
 #home-v2 .g-service-detail li,
-#home-v2 .g-price-card li,
+#home-v2 .g-engagement-card li,
 #home-v2 .g-trial li {
   display: flex;
   align-items: flex-start;
@@ -373,7 +373,7 @@
   line-height: 1.45;
 }
 #home-v2 .g-service-detail li svg,
-#home-v2 .g-price-card li svg,
+#home-v2 .g-engagement-card li svg,
 #home-v2 .g-trial li svg {
   flex: 0 0 auto;
   margin-top: 0.12rem;
@@ -694,34 +694,16 @@
   line-height: 1.55;
 }
 
-/* Pricing */
-#home-v2 .g-pricing {
+/* Ways to work */
+#home-v2 .g-engagement {
   background: #f4edff;
 }
-#home-v2 .g-country-picker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 1.1rem;
-  color: var(--g-muted);
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-#home-v2 .g-country-picker select {
-  min-width: 190px;
-  padding: 0.5rem 0.7rem;
-  background: white;
-  color: var(--g-ink);
-  border: 1px solid #cbbbd9;
-  border-radius: 5px;
-  font-size: 0.8rem;
-}
-#home-v2 .g-pricing-grid {
+#home-v2 .g-engagement-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.85rem;
 }
-#home-v2 .g-price-card {
+#home-v2 .g-engagement-card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -735,17 +717,17 @@
     transform 0.22s,
     box-shadow 0.22s;
 }
-#home-v2 .g-price-card:hover {
+#home-v2 .g-engagement-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--g-shadow-lift);
 }
-#home-v2 .g-price-featured {
+#home-v2 .g-engagement-featured {
   border: 2px solid var(--g-accent);
   box-shadow:
     8px 9px 0 rgba(90, 33, 184, 0.17),
     var(--g-shadow);
 }
-#home-v2 .g-price-badge {
+#home-v2 .g-engagement-badge {
   position: absolute;
   top: -12px;
   right: 1rem;
@@ -756,46 +738,25 @@
   font-size: 0.68rem;
   font-weight: 700;
 }
-#home-v2 .g-price-card h3 {
+#home-v2 .g-engagement-card h3 {
   font-size: 1.35rem;
 }
-#home-v2 .g-price-card > p {
-  min-height: 3.4em;
-  margin: 0.75rem 0 1.3rem;
+#home-v2 .g-engagement-card > p {
+  min-height: 3.2em;
+  margin: 0.75rem 0 0;
   color: var(--g-muted);
   font-size: 0.82rem;
   line-height: 1.5;
 }
-#home-v2 .g-price-label {
-  color: var(--g-muted);
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-#home-v2 .g-price-card > strong {
-  display: flex;
-  align-items: baseline;
-  gap: 0.3rem;
-  margin-top: 0.15rem;
-  font-size: clamp(1.75rem, 2.5vw, 2.4rem);
-  letter-spacing: -0.06em;
-}
-#home-v2 .g-price-card > strong small {
-  color: var(--g-muted);
-  font-size: 0.77rem;
-  font-weight: 600;
-  letter-spacing: 0;
-}
-#home-v2 .g-price-card ul {
+#home-v2 .g-engagement-card ul {
   margin-top: 1.4rem;
   padding-top: 1.2rem;
   border-top: 1px solid var(--g-line);
 }
-#home-v2 .g-price-card li {
+#home-v2 .g-engagement-card li {
   font-size: 0.81rem;
 }
-#home-v2 .g-price-card > a {
+#home-v2 .g-engagement-card > a {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -806,20 +767,22 @@
   font-size: 0.82rem;
   font-weight: 700;
 }
-#home-v2 .g-pricing-notes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
-  margin: 1rem 0 3rem;
+#home-v2 .g-proposal-promise {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 2.25rem 0;
+  color: var(--g-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
 }
-#home-v2 .g-pricing-notes p {
-  margin: 0;
-  color: var(--g-muted);
-  font-size: 0.79rem;
-  line-height: 1.5;
-}
-#home-v2 .g-pricing-notes strong {
-  color: var(--g-ink);
+#home-v2 .g-proposal-promise span {
+  padding: 0.6rem 0.8rem;
+  background: #fff;
+  border: 1px solid var(--g-line);
+  border-radius: 5px;
+  box-shadow: 0 3px 8px rgba(54, 24, 75, 0.05);
 }
 #home-v2 .g-trial {
   display: grid;
@@ -950,6 +913,15 @@
   box-shadow:
     11px 12px 0 rgba(241, 99, 37, 0.4),
     0 20px 44px rgba(0, 0, 0, 0.22);
+}
+#home-v2 .g-contact-form h3 {
+  margin-bottom: 0.3rem;
+  font-size: 1.3rem;
+}
+#home-v2 .g-contact-form > p {
+  margin: 0 0 1.35rem;
+  color: var(--g-muted);
+  font-size: 0.83rem;
 }
 #home-v2 .g-form-row {
   display: grid;
@@ -1137,23 +1109,19 @@
     grid-template-columns: 1fr;
     gap: 0.6rem;
   }
-  #home-v2 .g-pricing-grid {
+  #home-v2 .g-engagement-grid {
     grid-template-columns: 1fr;
   }
-  #home-v2 .g-price-card > p {
+  #home-v2 .g-engagement-card > p {
     min-height: 0;
   }
-  #home-v2 .g-price-card > a {
+  #home-v2 .g-engagement-card > a {
     padding-top: 1.25rem;
   }
-  #home-v2 .g-pricing-notes,
   #home-v2 .g-trial,
   #home-v2 .g-about-grid,
   #home-v2 .g-contact-grid {
     grid-template-columns: 1fr;
-  }
-  #home-v2 .g-pricing-notes {
-    gap: 0.5rem;
   }
   #home-v2 .g-contact-grid {
     gap: 2rem;
@@ -1194,10 +1162,14 @@
   #home-v2 .g-process-grid article:last-child {
     border-bottom: 0;
   }
-  #home-v2 .g-country-picker {
-    display: flex;
+  #home-v2 .g-proposal-promise {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.5rem;
+  }
+  #home-v2 .g-proposal-promise > svg {
+    transform: rotate(90deg);
+    margin-left: 0.65rem;
   }
   #home-v2 .g-actions {
     display: grid;
@@ -1221,7 +1193,7 @@
       .g-proof-grid > a,
       .g-work-card,
       .g-product-list > a,
-      .g-price-card
+      .g-engagement-card
     ) {
     transition: none;
   }

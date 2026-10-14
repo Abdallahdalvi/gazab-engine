@@ -5,12 +5,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { WhatsAppFloat } from "../components/whatsapp-float";
 import homeCss from "../homepage.css?url";
 import whatsappFloatCss from "../whatsapp-float.css?url";
-import { getPublicPricing, getPublicTrackingConfig } from "../lib/package-actions";
-import {
-  formatMoney,
-  INTERNATIONAL_SERVICE_PRICING,
-  type PricingMarket,
-} from "../lib/package-types";
+import { getPublicTrackingConfig } from "../lib/package-actions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,8 +32,8 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: async () => {
-    const [pricing, tracking] = await Promise.all([getPublicPricing(), getPublicTrackingConfig()]);
-    return { pricing, tracking };
+    const tracking = await getPublicTrackingConfig();
+    return { tracking };
   },
   component: Home,
 });
@@ -48,26 +43,8 @@ const navigation = [
   ["Results", "#results"],
   ["Work", "#work"],
   ["Solutions", "#solutions"],
-  ["Pricing", "#pricing"],
+  ["Ways to work", "#ways-to-work"],
   ["About", "#about"],
-] as const;
-
-const countryOptions = [
-  ["IN", "India — INR (₹)"],
-  ["US", "United States — USD ($)"],
-  ["GB", "United Kingdom — USD ($)"],
-  ["AE", "United Arab Emirates — USD ($)"],
-  ["QA", "Qatar — USD ($)"],
-  ["SA", "Saudi Arabia — USD ($)"],
-  ["CA", "Canada — USD ($)"],
-  ["AU", "Australia — USD ($)"],
-  ["SG", "Singapore — USD ($)"],
-  ["DE", "Germany — USD ($)"],
-  ["FR", "France — USD ($)"],
-  ["NL", "Netherlands — USD ($)"],
-  ["NZ", "New Zealand — USD ($)"],
-  ["ZA", "South Africa — USD ($)"],
-  ["OTHER", "Other country — USD ($)"],
 ] as const;
 
 const services = [
@@ -257,42 +234,15 @@ function SectionHeading({
 }
 
 function Home() {
-  const { pricing, tracking } = Route.useLoaderData();
+  const { tracking } = Route.useLoaderData();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState("IN");
-  const [market, setMarket] = useState<PricingMarket>("IN");
-  const activePricing = market === "INTL" ? INTERNATIONAL_SERVICE_PRICING : pricing;
-  const currency = market === "INTL" ? "USD" : "INR";
-
-  useEffect(() => {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const localeRegion = navigator.languages
-      .map((language) => language.match(/[-_]([A-Z]{2})$/i)?.[1]?.toUpperCase())
-      .find(Boolean);
-    const timezoneCountry =
-      timezone === "Asia/Kolkata" || timezone === "Asia/Calcutta"
-        ? "IN"
-        : timezone === "Asia/Qatar"
-          ? "QA"
-          : timezone === "Asia/Dubai"
-            ? "AE"
-            : undefined;
-    const detected = timezoneCountry || localeRegion || "OTHER";
-    const supported = countryOptions.some(([code]) => code === detected) ? detected : "OTHER";
-    setSelectedCountry(supported);
-    setMarket(supported === "IN" ? "IN" : "INTL");
-  }, []);
-
-  const changeCountry = (country: string) => {
-    setSelectedCountry(country);
-    setMarket(country === "IN" ? "IN" : "INTL");
-  };
+  const [selectedNeed, setSelectedNeed] = useState("");
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const subject = encodeURIComponent(
-      "Gazab project enquiry — " + String(data.get("company") || data.get("name")),
+      "Gazab project brief — " + String(data.get("company") || data.get("name")),
     );
     const body = encodeURIComponent(
       "Name: " +
@@ -305,8 +255,12 @@ function Home() {
         data.get("phone") +
         "\nNeed: " +
         data.get("need") +
-        "\nBudget: " +
-        data.get("budget") +
+        "\nGoal: " +
+        data.get("goal") +
+        "\nTimeline: " +
+        data.get("timeline") +
+        "\nWebsite or social link: " +
+        data.get("link") +
         "\n\n" +
         data.get("message"),
     );
@@ -330,7 +284,7 @@ function Home() {
             ))}
           </nav>
           <a className="g-nav-cta" href="#contact">
-            Start a project <ArrowUpRight size={16} />
+            Request a proposal <ArrowUpRight size={16} />
           </a>
           <button
             className="g-menu-button"
@@ -394,8 +348,8 @@ function Home() {
         <a href="#results">
           Check the results <ArrowUpRight size={17} />
         </a>
-        <a href="#pricing">
-          See starting prices <ArrowUpRight size={17} />
+        <a href="#contact">
+          Share your brief <ArrowUpRight size={17} />
         </a>
       </div>
 
@@ -426,7 +380,7 @@ function Home() {
                       </li>
                     ))}
                   </ul>
-                  <a href="#contact">
+                  <a href="#contact" onClick={() => setSelectedNeed(service.title)}>
                     Discuss this service <ArrowRight size={16} />
                   </a>
                 </div>
@@ -594,87 +548,66 @@ function Home() {
         </div>
       </section>
 
-      <section className="g-section g-pricing" id="pricing">
+      <section className="g-section g-engagement" id="ways-to-work">
         <div className="g-wrap">
           <SectionHeading
-            eyebrow="06 / Pricing"
-            title="Simple pricing"
-            copy="Starting prices for set packages, visible before a call. Custom work gets a written scope and quote."
+            eyebrow="06 / Ways to work"
+            title="Ways to work"
+            copy="Start with the kind of help you need. We’ll shape the deliverables, team and timeline around your goal."
           />
-          <label className="g-country-picker">
-            View prices for
-            <select
-              value={selectedCountry}
-              onChange={(event) => changeCountry(event.target.value)}
-              aria-label="Choose your country for pricing"
-            >
-              {countryOptions.map(([code, label]) => (
-                <option value={code} key={code}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="g-pricing-grid">
-            <PriceCard
-              title="Gazab Starter"
-              price={formatMoney(activePricing.starterMonthly, currency)}
-              suffix="/ month"
-              description="A dependable social presence for a growing business."
+          <div className="g-engagement-grid">
+            <EngagementCard
+              title="Ongoing growth"
+              description="A consistent partner for content, channels and lead generation."
               items={[
-                "2 social platforms managed",
-                "8 posts or reels each month",
-                "Calendar, captions and publishing",
-                "Google Business Profile setup",
-                "Monthly report and strategy call",
+                "Channel plan and content priorities",
+                "Creative, publishing and campaign support",
+                "Lead journey and conversion improvements",
+                "Reporting and regular reviews",
               ]}
-              cta="Ask about Starter"
-            />
-            <PriceCard
-              title="Full Gazab"
-              price={formatMoney(activePricing.fullMonthly, currency)}
-              suffix="/ month"
-              description="Content, paid growth and smarter operations together."
-              items={[
-                "Everything in Starter",
-                "4 platforms and 12 content pieces",
-                "Ads management on 1 platform",
-                "SEO and AI visibility work",
-                "2 basic automations and advanced reporting",
-              ]}
-              cta="Ask about Full Gazab"
+              cta="Discuss ongoing work"
+              onSelect={() => setSelectedNeed("Ongoing growth")}
               featured
             />
-            <PriceCard
-              title="Custom scope"
-              description="A precise quote for your website, campaign or automation brief."
+            <EngagementCard
+              title="Campaign launch"
+              description="A focused push for a launch, event or measurable growth objective."
               items={[
-                "Websites and landing pages",
-                "AI and n8n automations",
-                "Content or campaign sprints",
-                "Marketplace and lead operations",
-                "Written deliverables before we begin",
+                "Audience and message planning",
+                "Creative assets and channel activation",
+                "Paid or organic campaign management",
+                "Clear measures and a closing review",
               ]}
-              cta="Discuss your scope"
+              cta="Plan a campaign"
+              onSelect={() => setSelectedNeed("Campaign launch")}
+            />
+            <EngagementCard
+              title="Web & automation"
+              description="A stronger digital experience and less manual work behind it."
+              items={[
+                "Website or landing-page planning",
+                "AI and workflow mapping",
+                "Build, testing and handover",
+                "A practical support plan",
+              ]}
+              cta="Explore a build"
+              onSelect={() => setSelectedNeed("Web & automation")}
             />
           </div>
-          <div className="g-pricing-notes">
-            <p>
-              <strong>Flexible terms.</strong> Choose 1, 3, 6 or 12 months. Longer ongoing retainers
-              can cost less.
-            </p>
-            <p>
-              <strong>Clear exclusions.</strong> Ad spend, travel, shoots and paid tools are quoted
-              separately when needed.
-            </p>
+          <div className="g-proposal-promise" aria-label="What happens after you get in touch">
+            <span>01 / Tell us your goal</span>
+            <ArrowRight size={17} aria-hidden="true" />
+            <span>02 / We map the work</span>
+            <ArrowRight size={17} aria-hidden="true" />
+            <span>03 / You get a clear proposal</span>
           </div>
           <div className="g-trial">
             <div>
-              <span className="g-eyebrow">10-day trial / cash or barter</span>
+              <span className="g-eyebrow">10-day trial / selected brands</span>
               <h3>Try working together.</h3>
               <p>
-                A focused ten-day sprint for selected product-led businesses. We can agree a cash
-                fee or suitable product/service exchange before work begins.
+                A focused ten-day sprint for selected product-led businesses. Barter collaborations
+                may be possible when the product and project are a good fit.
               </p>
             </div>
             <div>
@@ -697,14 +630,10 @@ function Home() {
                 </li>
               </ul>
               <small>
-                Subject to fit and availability. Ad spend, shoots, travel and paid tools are
-                separate unless agreed in writing.
+                We agree the objective, deliverables and responsibilities in writing before work
+                begins.
               </small>
-              <a
-                href="https://wa.me/917400239134?text=Hi%20Abdallah%2C%20I%27d%20like%20to%20discuss%20the%2010-day%20cash%20or%20barter%20trial."
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="#contact" onClick={() => setSelectedNeed("10-day trial")}>
                 Discuss a trial <ArrowUpRight size={17} />
               </a>
             </div>
@@ -743,10 +672,10 @@ function Home() {
         <div className="g-wrap g-contact-grid">
           <div>
             <span className="g-eyebrow">08 / Contact</span>
-            <h2>Let’s talk</h2>
+            <h2>Tell us your brief</h2>
             <p>
-              Tell us what you need. We’ll help you find a sensible next step and an honest starting
-              budget.
+              Tell us what you want to achieve. We’ll recommend a sensible approach and send a
+              proposal shaped around your project.
             </p>
             <div className="g-contact-links">
               <a href="mailto:dalviabdallah76@gmail.com">
@@ -761,6 +690,8 @@ function Home() {
             </div>
           </div>
           <form className="g-contact-form" onSubmit={submit}>
+            <h3>Start a project conversation</h3>
+            <p>Share the essentials; we’ll take it from there.</p>
             <div className="g-form-row">
               <label>
                 Name
@@ -783,49 +714,62 @@ function Home() {
             </div>
             <div className="g-form-row">
               <label>
-                What do you need?
-                <select name="need" required defaultValue="">
+                Where do you need help?
+                <select
+                  name="need"
+                  required
+                  value={selectedNeed}
+                  onChange={(event) => setSelectedNeed(event.target.value)}
+                >
                   <option value="" disabled>
-                    Select a service
+                    Select an area
                   </option>
-                  <option>Gazab Starter</option>
-                  <option>Full Gazab</option>
-                  <option>Custom scope</option>
-                  <option>10-day cash / barter trial</option>
-                  <option>Social media and content</option>
-                  <option>Paid ads and leads</option>
-                  <option>Website development</option>
-                  <option>AI and automation</option>
+                  <option>Ongoing growth</option>
+                  <option>Campaign launch</option>
+                  <option>Web &amp; automation</option>
+                  <option>10-day trial</option>
+                  <option>Social media</option>
+                  <option>Content &amp; creative</option>
+                  <option>Paid ads</option>
+                  <option>Lead generation</option>
+                  <option>Websites</option>
+                  <option>AI &amp; automation</option>
+                  <option>Marketplace growth</option>
                   <option>Search visibility</option>
+                  <option>Something else</option>
                 </select>
               </label>
               <label>
-                Budget
-                <select name="budget" required defaultValue="">
+                Main goal
+                <select name="goal" required defaultValue="">
                   <option value="" disabled>
-                    Select a range
+                    Select a goal
                   </option>
-                  {market === "IN" ? (
-                    <>
-                      <option>Under ₹10K / specific project</option>
-                      <option>₹10K–₹25K</option>
-                      <option>₹25K–₹50K / month</option>
-                      <option>₹50K–₹1L / month</option>
-                      <option>₹1L+ / month</option>
-                      <option>Equivalent-value barter</option>
-                    </>
-                  ) : (
-                    <>
-                      <option>Under $149 / specific project</option>
-                      <option>$149–$399</option>
-                      <option>$399–$799 / month</option>
-                      <option>$799–$1,499 / month</option>
-                      <option>$1,500+ / month</option>
-                      <option>Equivalent-value barter</option>
-                    </>
-                  )}
-                  <option>Let’s discuss</option>
+                  <option>Get more qualified enquiries</option>
+                  <option>Grow brand visibility</option>
+                  <option>Launch a campaign or product</option>
+                  <option>Improve a website or conversion path</option>
+                  <option>Save time through automation</option>
+                  <option>Not sure yet</option>
                 </select>
+              </label>
+            </div>
+            <div className="g-form-row">
+              <label>
+                When would you like to start?
+                <select name="timeline" required defaultValue="">
+                  <option value="" disabled>
+                    Select a timeframe
+                  </option>
+                  <option>As soon as possible</option>
+                  <option>Within a month</option>
+                  <option>In the next 1–3 months</option>
+                  <option>Just exploring</option>
+                </select>
+              </label>
+              <label>
+                Website or social link (optional)
+                <input name="link" type="url" placeholder="https://" maxLength={300} />
               </label>
             </div>
             <label>
@@ -833,7 +777,7 @@ function Home() {
               <textarea name="message" required maxLength={1500} rows={4} />
             </label>
             <button className="g-button g-button-primary" type="submit">
-              Start the conversation <ArrowRight size={18} />
+              Email your brief <ArrowRight size={18} />
             </button>
             <small>
               This opens your email app with the details you entered. Nothing is submitted in the
@@ -853,7 +797,7 @@ function Home() {
             <a href="#top">Back to top ↑</a>
             <a href="#services">Services</a>
             <a href="#work">Work</a>
-            <a href="#pricing">Pricing</a>
+            <a href="#ways-to-work">Ways to work</a>
           </nav>
           <small>© 2026 Aghanims Group. All rights reserved.</small>
         </div>
@@ -863,39 +807,26 @@ function Home() {
   );
 }
 
-function PriceCard({
+function EngagementCard({
   title,
-  price,
-  suffix,
-  label = "Starting at",
   description,
   items,
   cta,
+  onSelect,
   featured = false,
 }: {
   title: string;
-  price?: string;
-  suffix?: string;
-  label?: string;
   description: string;
   items: string[];
   cta: string;
+  onSelect: () => void;
   featured?: boolean;
 }) {
   return (
-    <article className={"g-price-card" + (featured ? " g-price-featured" : "")}>
-      {featured && <span className="g-price-badge">Most popular</span>}
+    <article className={"g-engagement-card" + (featured ? " g-engagement-featured" : "")}>
+      {featured && <span className="g-engagement-badge">Ongoing collaboration</span>}
       <h3>{title}</h3>
       <p>{description}</p>
-      {price && (
-        <>
-          <span className="g-price-label">{label}</span>
-          <strong>
-            {price}
-            {suffix && <small>{suffix}</small>}
-          </strong>
-        </>
-      )}
       <ul>
         {items.map((item) => (
           <li key={item}>
@@ -904,7 +835,7 @@ function PriceCard({
           </li>
         ))}
       </ul>
-      <a href="#contact">
+      <a href="#contact" onClick={onSelect}>
         {cta} <ArrowRight size={17} />
       </a>
     </article>

@@ -126,11 +126,6 @@ function safeCompare(left: string, right: string) {
   return timingSafeEqual(first, second);
 }
 
-export const getPublicPricing = createServerFn({ method: "GET" }).handler(async () => {
-  const { getPricing } = await import("./package-store.server");
-  return getPricing();
-});
-
 export const getPublicTrackingConfig = createServerFn({ method: "GET" }).handler(async () => ({
   clarityProjectId: process.env["CLARITY_PROJECT_ID"] || "",
   gaMeasurementId: process.env["GA_MEASUREMENT_ID"] || "",
