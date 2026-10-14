@@ -1,5 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, ArrowUpRight, Check, Menu, X } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Bot,
+  CalendarDays,
+  ChartNoAxesCombined,
+  Check,
+  Clapperboard,
+  Compass,
+  House,
+  Instagram,
+  Linkedin,
+  Megaphone,
+  Menu,
+  MessagesSquare,
+  MousePointerClick,
+  PanelsTopLeft,
+  Radio,
+  Search,
+  Sofa,
+  Store,
+  Workflow,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 
 import { WhatsAppFloat } from "../components/whatsapp-float";
@@ -50,6 +74,7 @@ const navigation = [
 const services = [
   {
     title: "Social media",
+    icon: MessagesSquare,
     summary: "A consistent presence that builds familiarity and trust.",
     includes: [
       "Channel strategy and calendar",
@@ -59,11 +84,13 @@ const services = [
   },
   {
     title: "Content & creative",
+    icon: Clapperboard,
     summary: "Ideas and assets shaped for the people you want to reach.",
     includes: ["Campaign concepts", "Short-form video and design", "Cross-channel repurposing"],
   },
   {
     title: "Paid ads",
+    icon: Megaphone,
     summary: "Campaigns built around useful leads and measurable learning.",
     includes: [
       "Meta, Google or LinkedIn setup",
@@ -73,11 +100,13 @@ const services = [
   },
   {
     title: "Lead generation",
+    icon: MousePointerClick,
     summary: "Turn interest into enquiries your team can follow up.",
     includes: ["Landing pages and offers", "Forms and lead routing", "CRM alerts and reporting"],
   },
   {
     title: "Websites",
+    icon: PanelsTopLeft,
     summary: "Fast, clear websites that make the next step obvious.",
     includes: [
       "Strategy and responsive design",
@@ -87,16 +116,19 @@ const services = [
   },
   {
     title: "AI & automation",
+    icon: Bot,
     summary: "Remove repetitive work with practical, well-tested systems.",
     includes: ["Workflow discovery", "n8n and AI integrations", "Documentation and handover"],
   },
   {
     title: "Marketplace growth",
+    icon: Store,
     summary: "Improve listings and enquiry operations where buyers already are.",
     includes: ["Account and catalogue audit", "Listing optimisation", "Enquiry workflows"],
   },
   {
     title: "Search visibility",
+    icon: Search,
     summary: "Help customers find and understand your business.",
     includes: ["Google Business Profile", "SEO, AEO and GEO", "Reviews and visibility reporting"],
   },
@@ -135,32 +167,38 @@ const proof = [
 const projects = [
   {
     name: "Ubiqedge",
+    icon: Linkedin,
     type: "B2B LinkedIn",
     copy: "A professional audience grew from 1,252 to 4,456 followers (+255.9%).",
     href: "/case-studies/ubiqedge",
   },
   {
     name: "Radioandmusic",
+    icon: Radio,
     type: "Social growth",
     copy: "Content and channel growth for an entertainment audience.",
   },
   {
     name: "BarrierBreak",
+    icon: CalendarDays,
     type: "Event coverage",
     copy: "Social coverage for Inclusive India: Digital First 2025.",
   },
   {
     name: "Rentmax",
+    icon: House,
     type: "Lead generation",
     copy: "A clearer website journey supported by content and Meta campaigns.",
   },
   {
     name: "Motohom",
+    icon: Instagram,
     type: "Content system",
     copy: "Content production, community care and Instagram growth.",
   },
   {
     name: "Furndepot",
+    icon: Sofa,
     type: "Organic growth",
     copy: "Creative campaigns guided by audience and performance data.",
   },
@@ -361,31 +399,39 @@ function Home() {
             copy="Choose a focused service or connect several. We’ll shape the work around your goals, not a generic checklist."
           />
           <div className="g-service-grid">
-            {services.map((service, index) => (
-              <details className="g-service-card" key={service.title}>
-                <summary>
-                  <span className="g-card-index">{String(index + 1).padStart(2, "0")}</span>
-                  <h3>{service.title}</h3>
-                  <p>{service.summary}</p>
-                  <span className="g-card-more">
-                    What’s included <span aria-hidden="true">+</span>
-                  </span>
-                </summary>
-                <div className="g-service-detail">
-                  <ul>
-                    {service.includes.map((item) => (
-                      <li key={item}>
-                        <Check size={16} />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <a href="#contact" onClick={() => setSelectedNeed(service.title)}>
-                    Discuss this service <ArrowRight size={16} />
-                  </a>
-                </div>
-              </details>
-            ))}
+            {services.map((service, index) => {
+              const ServiceIcon = service.icon;
+              return (
+                <details className="g-service-card" key={service.title}>
+                  <summary>
+                    <span className="g-service-top">
+                      <span className="g-service-icon" aria-hidden="true">
+                        <ServiceIcon size={26} strokeWidth={1.8} />
+                      </span>
+                      <span className="g-card-index">{String(index + 1).padStart(2, "0")}</span>
+                    </span>
+                    <h3>{service.title}</h3>
+                    <p>{service.summary}</p>
+                    <span className="g-card-more">
+                      What’s included <span aria-hidden="true">+</span>
+                    </span>
+                  </summary>
+                  <div className="g-service-detail">
+                    <ul>
+                      {service.includes.map((item) => (
+                        <li key={item}>
+                          <Check size={16} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <a href="#contact" onClick={() => setSelectedNeed(service.title)}>
+                      Discuss this service <ArrowRight size={16} />
+                    </a>
+                  </div>
+                </details>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -438,11 +484,17 @@ function Home() {
           />
           <div className="g-work-grid">
             {projects.map((project, index) => {
+              const ProjectIcon = project.icon;
               const card = (
                 <>
-                  <span className="g-card-index">
-                    {String(index + 1).padStart(2, "0")} / {project.type}
-                  </span>
+                  <div className="g-work-top">
+                    <span className="g-card-index">
+                      {String(index + 1).padStart(2, "0")} / {project.type}
+                    </span>
+                    <span className="g-work-icon" aria-hidden="true">
+                      <ProjectIcon size={23} strokeWidth={1.8} />
+                    </span>
+                  </div>
                   <h3>{project.name}</h3>
                   <p>{project.copy}</p>
                   <span className="g-work-action">
@@ -493,6 +545,12 @@ function Home() {
           </div>
           <div className="g-solution-bottom">
             <div>
+              <Workflow
+                className="g-solution-icon"
+                size={33}
+                strokeWidth={1.8}
+                aria-hidden="true"
+              />
               <span>02 / AUTOMATION</span>
               <h3>Less busywork.</h3>
               <p>
@@ -504,6 +562,12 @@ function Home() {
               </a>
             </div>
             <div>
+              <PanelsTopLeft
+                className="g-solution-icon"
+                size={33}
+                strokeWidth={1.8}
+                aria-hidden="true"
+              />
               <span>03 / WEB DEVELOPMENT</span>
               <h3>Better journeys.</h3>
               <p>
@@ -530,17 +594,26 @@ function Home() {
           />
           <div className="g-process-grid">
             <article>
-              <span>01</span>
+              <div className="g-process-visual" aria-hidden="true">
+                <Compass size={27} strokeWidth={1.8} />
+              </div>
+              <span>01 / DISCOVER</span>
               <h3>Understand</h3>
               <p>We learn the business, audience and bottleneck before recommending a solution.</p>
             </article>
             <article>
-              <span>02</span>
+              <div className="g-process-visual" aria-hidden="true">
+                <Workflow size={27} strokeWidth={1.8} />
+              </div>
+              <span>02 / CREATE</span>
               <h3>Build</h3>
               <p>We create the content, campaigns, website or workflow with agreed deliverables.</p>
             </article>
             <article>
-              <span>03</span>
+              <div className="g-process-visual" aria-hidden="true">
+                <ChartNoAxesCombined size={27} strokeWidth={1.8} />
+              </div>
+              <span>03 / OPTIMISE</span>
               <h3>Improve</h3>
               <p>We review the numbers, share what we learned and make the next round stronger.</p>
             </article>
@@ -558,6 +631,7 @@ function Home() {
           <div className="g-engagement-grid">
             <EngagementCard
               title="Ongoing growth"
+              icon={ChartNoAxesCombined}
               description="A consistent partner for content, channels and lead generation."
               items={[
                 "Channel plan and content priorities",
@@ -571,6 +645,7 @@ function Home() {
             />
             <EngagementCard
               title="Campaign launch"
+              icon={Megaphone}
               description="A focused push for a launch, event or measurable growth objective."
               items={[
                 "Audience and message planning",
@@ -583,6 +658,7 @@ function Home() {
             />
             <EngagementCard
               title="Web & automation"
+              icon={Workflow}
               description="A stronger digital experience and less manual work behind it."
               items={[
                 "Website or landing-page planning",
@@ -809,6 +885,7 @@ function Home() {
 
 function EngagementCard({
   title,
+  icon: Icon,
   description,
   items,
   cta,
@@ -816,6 +893,7 @@ function EngagementCard({
   featured = false,
 }: {
   title: string;
+  icon: LucideIcon;
   description: string;
   items: string[];
   cta: string;
@@ -825,6 +903,12 @@ function EngagementCard({
   return (
     <article className={"g-engagement-card" + (featured ? " g-engagement-featured" : "")}>
       {featured && <span className="g-engagement-badge">Ongoing collaboration</span>}
+      <div className="g-engagement-art" aria-hidden="true">
+        <span className="g-engagement-orbit" />
+        <span className="g-engagement-icon">
+          <Icon size={31} strokeWidth={1.8} />
+        </span>
+      </div>
       <h3>{title}</h3>
       <p>{description}</p>
       <ul>
